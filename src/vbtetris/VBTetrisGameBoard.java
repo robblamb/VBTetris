@@ -18,7 +18,7 @@ import vbtetris.VBTetrisPieces.Tetrominoes;
 
 public class VBTetrisGameBoard extends JPanel implements ActionListener
 {
-	VBTetrisBlock[] _board;												// board array holds the fallen pieces
+	VBTetrisBlock[] _board;	// board array holds the fallen pieces
 	
 	// board constants to be set by constructor
 	private final int BOARD_WIDTH;
@@ -26,14 +26,16 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 	private final int SQUARE_SIZE;
 	private final int KILL_LINE;
 	
-	private Timer timer;												// use a timer to update the pieces
-	private int msToUpdate = 400;										// game speed in milliseconds (i dont like using timer)
+	private enum moveStatus { OK, HIT_BOUNDARY, HIT_PIECE }; 
+	
+	private Timer timer;
+	private int msToUpdate = 400;	// game speed in milliseconds
 	
 	// SHOULD BE IN GAME ENGINE CLASS
 	boolean gameOver;
 	boolean gamePaused;
 	
-	private VBTetrisPlayer players[];									// array of players
+	private VBTetrisPlayer players[];
 
 	public VBTetrisGameBoard(VBTetris parent, int w, int h, int s, int k, VBTetrisPlayer[] players)
 	{
@@ -44,17 +46,22 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 
 		this.players = players;
 		
-		setFocusable(true); 											// give board the keyboard input
+		// give board the keyboard input
+		setFocusable(true);
 		
 		// set spawn point for each player and create a new piece
-		for (int i = 0; i < players.length; ++i){
-			players[i].setStartPos(BOARD_WIDTH);						// set start position
-			players[i].setcurPiece(new VBTetrisPieces());				// create a new piece
+		for (int i = 0; i < players.length; ++i) {
+			// set start position
+			players[i].setStartPos(BOARD_WIDTH);
+			// create a new piece
+			players[i].setcurPiece(new VBTetrisPieces());
 		}
 		
-		timer = new Timer(msToUpdate, this);							// set timer (starting the game starts the timer)
-
-		_board = new VBTetrisBlock[BOARD_WIDTH * BOARD_HEIGHT];			// create the game board (offset access)
+		// set timer
+		timer = new Timer(msToUpdate, this);
+		
+		// create the game board (offset access)
+		_board = new VBTetrisBlock[BOARD_WIDTH * BOARD_HEIGHT];
 		
 		addKeyListener(new TAdapter());
 	}
@@ -62,32 +69,31 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 	// drop down piece at the specified time interval
 	public void actionPerformed(ActionEvent e)
 	{ 
-		for (int i = 0; i < players.length; ++i)
-			dropOneDown(players[i]);																		// try move, else store
+		for (int i = 0; i < players.length; ++i) dropOneDown(players[i]);
 	}
 	
 	// returns a block from a spot on the game board
 	VBTetrisBlock getBlock(int x, int y)
 	{	
-		return _board[(y * BOARD_WIDTH) + x];																// (row_num * row_offset) + col
+		return _board[(y * BOARD_WIDTH) + x];	// (row_num * row_offset) + col
 	}
 	
 	private boolean isPlayerBlock(VBTetrisPlayer currPlayer, int currPlayerX, int currPlayerY)
 	{	
 		// check if any of the other players have a piece in specified location
-		for (int i = 0; i < players.length; ++i) {															// for each player
-			if (!players[i].equals(currPlayer)) {															// that isnt the current player		
+		for (int i = 0; i < players.length; ++i) {	// for each player
+			if (!players[i].equals(currPlayer)) {	// that isnt the current player		
 				// check xy against all blocks in other players piece
-				for (int j = 0; j < VBTetrisPieces.NUM_BLOCKS; ++j) {										// for each block in the other piece
-					if ( (currPlayerX == players[i].getxPos() + players[i].getcurPiece().getBlock(j).getX()) && 	// currX == otherX
+				for (int j = 0; j < VBTetrisPieces.NUM_BLOCKS; ++j) {	// for each block in the other piece
+					if ( (currPlayerX == players[i].getxPos() + players[i].getcurPiece().getBlock(j).getX()) && 	// currX == otherX &&
 						 (currPlayerY == players[i].getyPos() - players[i].getcurPiece().getBlock(j).getY()) ) {	// currY == otherY
-							return true;																			// has player block
+							return true;	// has player block
 					}
 				}
 				
 			}
 		}
-		return false;																						// has no player block
+		return false;	// has no player block
 	}
 	
 	private boolean isBoardBlock(int x, int y)
@@ -108,11 +114,12 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 		timer.start();
 	}
 
+	// toggle pause state
 	private void togglePause()
 	{
-		gamePaused = !gamePaused;						// toggle pause state	
-		if (gamePaused) timer.stop();					// pause stops the timer
-		else timer.start();								// unpause starts the timer
+		gamePaused = !gamePaused;	
+		if (gamePaused) timer.stop();
+		else timer.start();
 	}
 
 	// ****************************************************************************************************************
@@ -136,11 +143,11 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 
 		
 		// Step 2: paint the falling piece
-		for (int j = 0; j < players.length; ++j) {												// for each player
-			if (players[j].getcurPiece().getShape() != Tetrominoes.EMPTY) {						// if the shape is not empty
-				for (int i = 0; i < VBTetrisPieces.NUM_BLOCKS; ++i) {							// for each block in the piece
-					int x = players[j].getxPos() + players[j].getcurPiece().getBlock(i).getX();	// get block x
-					int y = players[j].getyPos() - players[j].getcurPiece().getBlock(i).getY();	// get block y
+		for (int j = 0; j < players.length; ++j) {
+			if (players[j].getcurPiece().getShape() != Tetrominoes.EMPTY) {
+				for (int i = 0; i < VBTetrisPieces.NUM_BLOCKS; ++i) {
+					int x = players[j].getxPos() + players[j].getcurPiece().getBlock(i).getX();
+					int y = players[j].getyPos() - players[j].getcurPiece().getBlock(i).getY();
 					drawSquare(g, 0 + x * SQUARE_SIZE,
 								boardTop + (BOARD_HEIGHT - y - 1) * SQUARE_SIZE,
 								players[j].getcurPiece().getOwner());
@@ -155,9 +162,9 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 		int xRight = xLeft + 300; // hack of + 300, 300 = player area widt
 		int areaSize = ysiz / players.length;
 		for (int i = 0; i < players.length; ++i) {
-			int currTop = areaSize * i;                       // find y value of top of current box
+			int currTop = areaSize * i; // find y value of top of current box
 			int currBottom = areaSize*i + areaSize;
-		//	draw area and box in with boarder
+			//	draw area and box in with boarder
 			g.setColor(VBTetris._gameEnvir.getPieceColor((players[i].getcurPiece().getOwner())));
 			g.fillRect(xLeft, currTop, xRight-xLeft, areaSize);
 			
@@ -172,21 +179,24 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 	}
 	// ****************************************************************************************************************
 
-//	private void dropDown(VBTetrisPlayer player)											// drop the piece to the bottom of the board
+	// drop the piece to the bottom of the board
+//	private void dropDown(VBTetrisPlayer player)
 //	{
-//		int y = player.getyPos();															// find the current y position of the piece
-//		while (y > 0) {																		// while the piece has not hit the ground
-//			if (!tryMove(player, player.getcurPiece(), player.getxPos(), y - 1))			// try to move the piece down one
-//				break;																		// stop if unsuccessful
-//			--y;																			// decrease temp y position 
+//		int y = player.getyPos();
+//		while (y > 0) {
+//			if (!tryMove(player, player.getcurPiece(), player.getxPos(), y - 1))
+//				break;
+//			--y;
 //		}
-//		storePiece(player);																	// update board
+//		storePiece(player);
 //	}
 	
 	private void dropOneDown(VBTetrisPlayer player)
-	{		
-		if (tryMove(player, player.getcurPiece(), player.getxPos(), player.getyPos()-1)==1)	// move piece down one
-			storePiece(player);																// store piece in board if piece == stored block
+	{	
+		// if the piece hits the boundary (in this case the bottom) store the piece in the game board
+		// we can check HIT_BOUNDARY and know we hit the bottom because we only move the piece down
+		if (tryMove(player, player.getcurPiece(), player.getxPos(), player.getyPos()-1)==moveStatus.HIT_BOUNDARY)
+			storePiece(player);
 	}
 	
 	// clears the board
@@ -201,66 +211,62 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 	{
 
 		// *****************************************************
-		for (int i = 0; i < VBTetrisPieces.NUM_BLOCKS; ++i) {								// for each block in the current piece,
-			int x = player.getxPos() + player.getcurPiece().getBlock(i).getX();					// get x pos of block
-			int y =player.getyPos() - player.getcurPiece().getBlock(i).getY();					// get y pos of block
-			_board[(y * BOARD_WIDTH) + x] = player.getcurPiece().getBlock(i);				// transfer block to board
+		for (int i = 0; i < VBTetrisPieces.NUM_BLOCKS; ++i) {
+			int x = player.getxPos() + player.getcurPiece().getBlock(i).getX();
+			int y =player.getyPos() - player.getcurPiece().getBlock(i).getY();
+			_board[(y * BOARD_WIDTH) + x] = player.getcurPiece().getBlock(i);
 			
 			// when a piece has fallen, transfer piece info to gameboard
-			_board[(y * BOARD_WIDTH) + x].setShape(player.getcurPiece().getShape());		// set block shape
-			_board[(y * BOARD_WIDTH) + x].setOwner(player.getcurPiece().getOwner());		// set owner
+			_board[(y * BOARD_WIDTH) + x].setShape(player.getcurPiece().getShape());
+			_board[(y * BOARD_WIDTH) + x].setOwner(player.getPlayerID());
 			
 			// if block is not of shape empty, mark as full
-			if (_board[(y * BOARD_WIDTH) + x].getShape() != Tetrominoes.EMPTY) {			// set block to full
+			if (_board[(y * BOARD_WIDTH) + x].getShape() != Tetrominoes.EMPTY) {
 				_board[(y * BOARD_WIDTH) + x].setEmpty(false);
 			}
 		}
 		// *****************************************************
 		int multiple = removeRow();
-		player.addtoscore(1000*multiple*multiple+15);																		// remove any full lines
+		player.addtoscore(1000*multiple*multiple+15);
 		newPiece(player);
-// spawn new piece
 	}
 	
 	private void newPiece(VBTetrisPlayer player)
 	{
 
-		player.getcurPiece().setRandomShape();												// set rand shape
-		player.getcurPiece().setOwner(player.getPlayerID());								// set owner
+		player.getcurPiece().setRandomShape();
+		player.getcurPiece().setOwner(player.getPlayerID());
 		player.setxPos(player.getStartPos());
 		player.setyPos((int)(BOARD_HEIGHT - Math.sqrt(VBTetrisPieces.NUM_BLOCKS)));
 		
-		if (tryMove(player, player.getcurPiece(), player.getxPos(),player.getyPos())!=0) {	// game is over if a new piece cant spawn
-			timer.stop();																	// stop timer
-			gameOver = true;																// stop game	
+		// game is over if a new piece cant spawn
+		if (tryMove(player, player.getcurPiece(), player.getxPos(),player.getyPos()) != moveStatus.OK) {
+			timer.stop();
+			gameOver = true;
 		}
 		
-		player.setdropping(true);    														// piece is in motion
+		player.setdropping(true);
 	}
 
 	// ********************************************************************************
 	// try to move a piece
-	private int tryMove(VBTetrisPlayer player, VBTetrisPieces newPiece, int newXPos, int newYPos)
-	{
-		// return 0		->	no errors, piece moved
-		// return 1		->	error, piece hit a stored block, or tried to move out of bounds
-		// return 2		->	error, piece hit another piece
-		
+	private moveStatus tryMove(VBTetrisPlayer player, VBTetrisPieces newPiece, int newXPos, int newYPos)
+	{	
 		for (int i = 0; i < VBTetrisPieces.NUM_BLOCKS; ++i) {
-			int x = newXPos + newPiece.getBlock(i).getX();									// block x position
-			int y = newYPos - newPiece.getBlock(i).getY();									// block y position
+			int x = newXPos + newPiece.getBlock(i).getX();
+			int y = newYPos - newPiece.getBlock(i).getY();
 			
-			if (x < 0 || x >= BOARD_WIDTH || y < 0 || y >= BOARD_HEIGHT) return 1;			// check if new xy is in bounds
-			if (isBoardBlock( x, y )) return 1;												// check if new xy is occupied by a fallen block
-			if (isPlayerBlock( player, x, y )) return 2;									// check if new xy is occupied by another piece
+			if (x < 0 || x >= BOARD_WIDTH || y < 0 || y >= BOARD_HEIGHT) return moveStatus.HIT_BOUNDARY;
+			if (isBoardBlock( x, y )) return moveStatus.HIT_BOUNDARY;
+			if (isPlayerBlock( player, x, y )) return moveStatus.HIT_PIECE;
 		}
 
-		player.setcurPiece(newPiece);														// update piece
-		player.setxPos(newXPos);															// update x
-		player.setyPos(newYPos);															// update y
+		player.setcurPiece(newPiece);
+		player.setxPos(newXPos);
+		player.setyPos(newYPos);
 		
 		repaint();
-		return 0;
+		return moveStatus.OK;
 	}
 	// ********************************************************************************
 	
