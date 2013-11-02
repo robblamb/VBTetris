@@ -62,7 +62,7 @@ public class VBTetrisEnvironment {
 		
 	    myLevelImages = new Image[levels];
         myLevelImages[0] = Toolkit.getDefaultToolkit().getImage(getClass().getResource ("../VBTetrisImage/RememberCitadel.jpg"));
-        myLevelImages[1] = Toolkit.getDefaultToolkit().getImage(getClass().getResource ("../VBTetrisImage/SHODAN-BG.jpg"));
+        myLevelImages[1] = Toolkit.getDefaultToolkit().getImage(getClass().getResource ("../VBTetrisImage/SHODAN-BG.png"));
         }
 	
         public Image getLevelImage(int i){

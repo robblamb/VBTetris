@@ -23,7 +23,7 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 	// board constants to be set by constructor
 	private final int BOARD_WIDTH;
 	private final int BOARD_HEIGHT;
-	private final int SQUARE_SIZE;
+	private final int BLOCK_SIZE;
 	private final int KILL_LINE;
 	
 	private enum moveStatus { OK, HIT_BOUNDARY, HIT_PIECE }; 
@@ -37,11 +37,11 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 	
 	private VBTetrisPlayer players[];
 
-	public VBTetrisGameBoard(VBTetris parent, int w, int h, int s, int k, VBTetrisPlayer[] players)
+	public VBTetrisGameBoard(int w, int h, int s, int k, VBTetrisPlayer[] players)
 	{
 		BOARD_WIDTH = w;
 		BOARD_HEIGHT = h;
-		SQUARE_SIZE = s;
+		BLOCK_SIZE = s;
 		KILL_LINE = k;
 
 		this.players = players;
@@ -121,63 +121,71 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 		if (gamePaused) timer.stop();
 		else timer.start();
 	}
-
+	
 	// ****************************************************************************************************************
 	// paints the falling and fallen pieces in two steps
-	public void paint(Graphics g)
-	{ 
-		g.drawImage(VBTetris._gameEnvir.getLevelImage(1), 0,0,this);
-		
+	public void paintComponent(Graphics g)
+	{ 		
 		Dimension size = getSize();
-		int boardTop = (int) size.getHeight() - BOARD_HEIGHT * SQUARE_SIZE;
-		
+		int frameHeight = (int)size.getHeight();
+		int boardTop = frameHeight - BOARD_HEIGHT * BLOCK_SIZE;
+
+		g.drawImage(VBTetris._gameEnvir.getLevelImage(1), 0,0,this);
 		
 		// Step 1: paint items in game board
 		for (int i = 0; i < BOARD_HEIGHT; ++i) {
 			for (int j = 0; j < BOARD_WIDTH; ++j) {	
 				VBTetrisBlock block = getBlock(j, BOARD_HEIGHT - i - 1);
 				if (!block.isEmpty())
-					drawSquare(g, 0 + j * SQUARE_SIZE, boardTop + i * SQUARE_SIZE, block.getOwner());
+					drawSquare(g, 0 + j * BLOCK_SIZE, boardTop + i * BLOCK_SIZE, block.getOwner());
 			}
 		}
 
-		
 		// Step 2: paint the falling piece
 		for (int j = 0; j < players.length; ++j) {
 			if (players[j].getcurPiece().getShape() != Tetrominoes.EMPTY) {
 				for (int i = 0; i < VBTetrisPieces.NUM_BLOCKS; ++i) {
 					int x = players[j].getxPos() + players[j].getcurPiece().getBlock(i).getX();
 					int y = players[j].getyPos() - players[j].getcurPiece().getBlock(i).getY();
-					drawSquare(g, 0 + x * SQUARE_SIZE,
-								boardTop + (BOARD_HEIGHT - y - 1) * SQUARE_SIZE,
+					drawSquare(g, 0 + x * BLOCK_SIZE,
+								boardTop + (BOARD_HEIGHT - y - 1) * BLOCK_SIZE,
 								players[j].getcurPiece().getOwner());
 				}
 			}
 		}
-		// TODO finish the paint for player areas
-		// Step 3: paint the player areas
-		int temp = 2;
-		int ysiz = BOARD_HEIGHT*SQUARE_SIZE;
-		int xLeft = BOARD_WIDTH*SQUARE_SIZE -4; // hack of +4 to fix size issue
-		int xRight = xLeft + 300; // hack of + 300, 300 = player area widt
+		
+		// TODO finish the paint for player panes
+		// Step 3: paint the player panes
+		//int temp = 2;
+		int paneWidth = 200;
+		int ysiz = BOARD_HEIGHT*BLOCK_SIZE;
+		int xLeft = BOARD_WIDTH*BLOCK_SIZE;
+		int xRight = xLeft + paneWidth;
 		int areaSize = ysiz / players.length;
+		
 		for (int i = 0; i < players.length; ++i) {
-			int currTop = areaSize * i; // find y value of top of current box
+			
+			int currTop = areaSize * i;	// find y value of top of current box
 			int currBottom = areaSize*i + areaSize;
-			//	draw area and box in with boarder
+			
+			// draw player pane
 			g.setColor(VBTetris._gameEnvir.getPieceColor((players[i].getcurPiece().getOwner())));
-			g.fillRect(xLeft, currTop, xRight-xLeft, areaSize);
+			g.fillRect(xLeft, currTop, paneWidth, areaSize);
 			
+			// draw score box
 			g.setColor(Color.white);
-			g.fillRect(xLeft + 5, currTop + 5, 270, 35);
+			g.fillRect(xLeft + 5, currTop + 5, paneWidth-10, 30);
 			
+			// draw score
 			g.setColor(Color.black);
-			g.setFont(new Font("Times New Roman", Font.BOLD, 32));
-			g.drawString("Score: " + players[i].getScore(),xLeft + 10, currTop+35);
+			g.setFont(new Font("Times New Roman", Font.BOLD, 26));
+			g.drawString("Score: " + players[i].getScore(),xLeft + 10, currTop+30);
 			
 		}
+		
 	}
 	// ****************************************************************************************************************
+	
 
 	// drop the piece to the bottom of the board
 //	private void dropDown(VBTetrisPlayer player)
@@ -227,7 +235,8 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 		}
 		// *****************************************************
 		int multiple = removeRow();
-		player.addtoscore(1000*multiple*multiple+15);
+		if (multiple > 0) player.addtoscore(1000*multiple*multiple+15);
+		else player.addtoscore(-1000*multiple*multiple+15);
 		newPiece(player);
 	}
 	
@@ -274,50 +283,57 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 	// check for and remove kill lines
 	private int removeRow()
 	{
-		boolean FullLines = false;
-		boolean KillLines = false;
-		int linesFilled = 0;
-		for (int i = BOARD_HEIGHT - 1; i >= 0; --i) {										// starting at the top of the board,
-			boolean lineIsFull = true;														// check if the line is full
-
+		int fullLines = 0;
+		int killLines = 0;
+		int multiplier;
+		
+		// check the board for full rows
+		for (int i = BOARD_HEIGHT - 1; i >= 0; --i) {
+			//boolean isLineFull = true;
+			
+			// check all the blocks in the row
 			for (int j = 0; j < BOARD_WIDTH; ++j) {
-				if (!isBoardBlock(j,i)) {													// if any square in the line is empty,
-					lineIsFull = false;														// we can stop checking, its not full
-					break;
-				}
+				if (!isBoardBlock(j,i)) break;				// row not full
+				else if (j == BOARD_WIDTH-1) ++fullLines;	// row full
 			}
-
-			if (lineIsFull) {
-				FullLines = true;															// line is full
-				for (int k = i; k < BOARD_HEIGHT - 1; ++k) {								// move all the lines above full line down by 1
+			
+			// remove full rows
+			// move all the lines above the full line down by 1
+			if (fullLines > 0) {
+				for (int k = i; k < BOARD_HEIGHT - 1; ++k) {
 					for (int j = 0; j < BOARD_WIDTH; ++j)
 						_board[(k * BOARD_WIDTH) + j] = getBlock(j, k + 1);
 				}
-				linesFilled++;
 			}
 		}
 		
-		for (int i = BOARD_HEIGHT - 1; i >= KILL_LINE; --i) {								// starting at the top of the board,
-			boolean isKillLine = false;														// check if a square exceeds the kill line
+		// check the board for rows above the kill line
+		for (int i = BOARD_HEIGHT - 1; i >= KILL_LINE; --i) {
+			//boolean isKillLine = false;
 
 			for (int j = 0; j < BOARD_WIDTH; ++j) {
-				if (isBoardBlock(j,i)) {													// if any square in the line is full,
-					isKillLine = true;														// we can stop checking, we exceed kill line 
+				if (isBoardBlock(j,i)) {	// kill line exceeded
+					++killLines;
 					break;
 				}
 			}
 			
-			if (isKillLine) {
-				KillLines = true;															// kill line was exceeded
-				for (int k = 0; k < BOARD_HEIGHT - 1; ++k) {								// move all lines down by 1
+			// remove rows that exceed the kill line
+			if (killLines > 0) {
+				for (int k = 0; k < BOARD_HEIGHT - 1; ++k) {
 					for (int j = 0; j < BOARD_WIDTH; ++j)
 						_board[(k * BOARD_WIDTH) + j] = getBlock(j, k + 1);
 				}
 			}
 		}
-		if (FullLines || KillLines) repaint();	
-
-		return linesFilled;
+		if (fullLines > 0 || killLines > 0) repaint();	
+		
+		// calculate multiplier
+		if (killLines > 0) killLines = 1;
+		multiplier = (fullLines - killLines);
+		
+		// return points multiplier
+		return multiplier;
 	}
 
 	private void drawSquare(Graphics g, int x, int y, int player)
@@ -326,17 +342,17 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 		g.setColor(color);
 		
 		// ***********************************************************************************
-		g.fillRect(x + 1, y + 1, SQUARE_SIZE - 2, SQUARE_SIZE - 2);
+		g.fillRect(x + 1, y + 1, BLOCK_SIZE - 2, BLOCK_SIZE - 2);
 		
 		// draw white edge
 		g.setColor(Color.WHITE);
-		g.drawLine(x, y + SQUARE_SIZE - 1, x, y);
-		g.drawLine(x, y, x + SQUARE_SIZE - 1, y);
+		g.drawLine(x, y + BLOCK_SIZE - 1, x, y);
+		g.drawLine(x, y, x + BLOCK_SIZE - 1, y);
 		
 		// draw black edge
 		g.setColor(Color.BLACK);
-		g.drawLine(x + 1, y + SQUARE_SIZE - 1, x + SQUARE_SIZE - 1, y + SQUARE_SIZE - 1);
-		g.drawLine(x + SQUARE_SIZE - 1, y + SQUARE_SIZE - 1, x + SQUARE_SIZE - 1, y + 1);
+		g.drawLine(x + 1, y + BLOCK_SIZE - 1, x + BLOCK_SIZE - 1, y + BLOCK_SIZE - 1);
+		g.drawLine(x + BLOCK_SIZE - 1, y + BLOCK_SIZE - 1, x + BLOCK_SIZE - 1, y + 1);
 		// ***********************************************************************************
 	}
 	
@@ -381,7 +397,7 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 					dropOneDown(players[0]);
 					break;
 				
-				// player 2
+				// player two
 				case KeyEvent.VK_LEFT:
 					tryMove(players[1],players[1].getcurPiece(), players[1].getxPos() - 1,players[1].getyPos());
 					break;
