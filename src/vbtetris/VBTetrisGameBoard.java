@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
@@ -127,6 +128,11 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 	// paints the falling and fallen pieces in two steps
 	public void paintComponent(Graphics g)
 	{ 		
+		
+		// fix font size across platforms
+	    int screenRes = Toolkit.getDefaultToolkit().getScreenResolution();
+	    int fontSize = (int)Math.round(22.0 / (screenRes / 72.0));
+		
 		Dimension size = getSize();
 		int frameHeight = (int)size.getHeight();
 		int boardTop = frameHeight - BOARD_HEIGHT * BLOCK_SIZE;
@@ -179,8 +185,9 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 			
 			// draw score
 			g.setColor(Color.black);
-			g.setFont(new Font("Times New Roman", Font.BOLD, 26));
+			g.setFont(new Font("Times New Roman", Font.BOLD, fontSize));
 			g.drawString("Score: " + players[i].getScore(),xLeft + 10, currTop+30);
+			
 			
 		}
 		

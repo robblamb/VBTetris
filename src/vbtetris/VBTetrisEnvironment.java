@@ -48,17 +48,17 @@ public class VBTetrisEnvironment {
 
 	public void init() {  // contains audio for both first and second background screen
 		
-	    lineZap1 = Applet.newAudioClip(getClass().getResource("../VBTetrisSound/EXPPOL01.wav")); // Directory needs to be changed to proper directory
-	    lineZap2 = Applet.newAudioClip(getClass().getResource("../VBTetrisSound/EXPPOL02.wav")); // Directory needs to be changed to proper directory
-	    lineZap3 = Applet.newAudioClip(getClass().getResource("../VBTetrisSound/EXPPOL03.wav")); // Directory needs to be changed to proper directory
-	    lineZap4 = Applet.newAudioClip(getClass().getResource("../VBTetrisSound/EXPPOL04.wav")); // Directory needs to be changed to proper directory
-        lineZap5 = Applet.newAudioClip(getClass().getResource("../VBTetrisSound/EXPPOL05.wav")); // Directory needs to be changed to proper directory
+	    lineZap1 = Applet.newAudioClip(getClass().getResource("../VBTetrisSound/EXPPOL01.WAV")); // Directory needs to be changed to proper directory
+	    lineZap2 = Applet.newAudioClip(getClass().getResource("../VBTetrisSound/EXPPOL02.WAV")); // Directory needs to be changed to proper directory
+	    lineZap3 = Applet.newAudioClip(getClass().getResource("../VBTetrisSound/EXPPOL03.WAV")); // Directory needs to be changed to proper directory
+	    lineZap4 = Applet.newAudioClip(getClass().getResource("../VBTetrisSound/EXPPOL04.WAV")); // Directory needs to be changed to proper directory
+        lineZap5 = Applet.newAudioClip(getClass().getResource("../VBTetrisSound/EXPPOL05.WAV")); // Directory needs to be changed to proper directory
  
-        lineZap1A = Applet.newAudioClip(getClass().getResource("../VBTetrisSound/SHODAN1.wav")); // Directory needs to be changed to proper directory
-	    lineZap2A = Applet.newAudioClip(getClass().getResource("../VBTetrisSound/SHODAN2.wav")); // Directory needs to be changed to proper directory
-	    lineZap3A = Applet.newAudioClip(getClass().getResource("../VBTetrisSound/SHODAN3.wav")); // Directory needs to be changed to proper directory
-	    lineZap4A = Applet.newAudioClip(getClass().getResource("../VBTetrisSound/SHODAN4.wav")); // Directory needs to be changed to proper directory
-	    lineZap5A = Applet.newAudioClip(getClass().getResource("../VBTetrisSound/SHODAN5.wav")); // Directory needs to be changed to proper directory
+        lineZap1A = Applet.newAudioClip(getClass().getResource("../VBTetrisSound/SHODAN1.WAV")); // Directory needs to be changed to proper directory
+	    lineZap2A = Applet.newAudioClip(getClass().getResource("../VBTetrisSound/SHODAN2.WAV")); // Directory needs to be changed to proper directory
+	    lineZap3A = Applet.newAudioClip(getClass().getResource("../VBTetrisSound/SHODAN3.WAV")); // Directory needs to be changed to proper directory
+	    lineZap4A = Applet.newAudioClip(getClass().getResource("../VBTetrisSound/SHODAN4.WAV")); // Directory needs to be changed to proper directory
+	    lineZap5A = Applet.newAudioClip(getClass().getResource("../VBTetrisSound/SHODAN5.WAV")); // Directory needs to be changed to proper directory
 		
 	    myLevelImages = new Image[levels];
         myLevelImages[0] = Toolkit.getDefaultToolkit().getImage(getClass().getResource ("../VBTetrisImage/RememberCitadel.jpg"));
