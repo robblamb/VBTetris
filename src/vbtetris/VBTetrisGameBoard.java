@@ -8,6 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.util.Arrays;
 
 import javax.swing.JPanel;
 import javax.swing.Timer;
@@ -199,6 +200,56 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 //		storePiece(player);
 //	}
 	
+	@Override
+	public String toString() {
+		return "VBTetrisGameBoard [BOARD_WIDTH=" + BOARD_WIDTH
+				+ ", BOARD_HEIGHT=" + BOARD_HEIGHT + ", BLOCK_SIZE="
+				+ BLOCK_SIZE + ", KILL_LINE=" + KILL_LINE + ", players="
+				+ Arrays.toString(players) + "]";
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + BLOCK_SIZE;
+		result = prime * result + BOARD_HEIGHT;
+		result = prime * result + BOARD_WIDTH;
+		result = prime * result + KILL_LINE;
+		result = prime * result + Arrays.hashCode(players);
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (!(obj instanceof VBTetrisGameBoard)) {
+			return false;
+		}
+		VBTetrisGameBoard other = (VBTetrisGameBoard) obj;
+		if (BLOCK_SIZE != other.BLOCK_SIZE) {
+			return false;
+		}
+		if (BOARD_HEIGHT != other.BOARD_HEIGHT) {
+			return false;
+		}
+		if (BOARD_WIDTH != other.BOARD_WIDTH) {
+			return false;
+		}
+		if (KILL_LINE != other.KILL_LINE) {
+			return false;
+		}
+		if (!Arrays.equals(players, other.players)) {
+			return false;
+		}
+		return true;
+	}
+
 	private void dropOneDown(VBTetrisPlayer player)
 	{	
 		// if the piece hits the boundary (in this case the bottom) store the piece in the game board

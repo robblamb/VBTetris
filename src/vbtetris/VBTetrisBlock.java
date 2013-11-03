@@ -1,5 +1,7 @@
 package vbtetris;
 
+import java.util.Arrays;
+
 import vbtetris.VBTetrisPieces.Tetrominoes;
 
 public class VBTetrisBlock
@@ -42,5 +44,47 @@ public class VBTetrisBlock
     }
     
     public int[] getBlockCoords() {return blockCoords;}
+
+	@Override
+	public String toString() {
+		return "VBTetrisBlock [isEmpty=" + isEmpty + ", shape=" + shape
+				+ ", owner=" + owner + ", blockCoords="
+				+ Arrays.toString(blockCoords) + "]";
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + Arrays.hashCode(blockCoords);
+		result = prime * result + owner;
+		result = prime * result + ((shape == null) ? 0 : shape.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (!(obj instanceof VBTetrisBlock)) {
+			return false;
+		}
+		VBTetrisBlock other = (VBTetrisBlock) obj;
+		if (!Arrays.equals(blockCoords, other.blockCoords)) {
+			return false;
+		}
+		if (owner != other.owner) {
+			return false;
+		}
+		if (shape != other.shape) {
+			return false;
+		}
+		return true;
+	}
+    
        
 }

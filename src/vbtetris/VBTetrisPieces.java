@@ -2,6 +2,7 @@ package vbtetris;
 
 import vbtetris.VBTetrisBlock;
 
+import java.util.Arrays;
 import java.util.Random;
 import java.lang.Math;
 
@@ -159,6 +160,47 @@ public class VBTetrisPieces
         }
         return result;
     }
+
+	@Override
+	public String toString() {
+		return "VBTetrisPieces [pieceShape=" + pieceShape + ", owner=" + owner
+				+ ", blocks=" + Arrays.toString(blocks) + "]";
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + Arrays.hashCode(blocks);
+		result = prime * result + owner;
+		result = prime * result
+				+ ((pieceShape == null) ? 0 : pieceShape.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (!(obj instanceof VBTetrisPieces)) {
+			return false;
+		}
+		VBTetrisPieces other = (VBTetrisPieces) obj;
+		if (!Arrays.equals(blocks, other.blocks)) {
+			return false;
+		}
+		if (owner != other.owner) {
+			return false;
+		}
+		if (pieceShape != other.pieceShape) {
+			return false;
+		}
+		return true;
+	}
 
     /*
     public VBTetrisPieces rotateRight()
