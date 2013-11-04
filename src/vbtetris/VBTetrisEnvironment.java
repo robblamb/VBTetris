@@ -7,6 +7,11 @@ import java.applet.Applet;
 import java.applet.AudioClip;
 import java.awt.Color;
 import java.awt.Toolkit;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
 
 public class VBTetrisEnvironment {
 
@@ -22,7 +27,8 @@ public class VBTetrisEnvironment {
 	private     AudioClip lineZap4A;
 	private     AudioClip lineZap5A;
 	private static int levels = 2;
-	private Image myLevelImages[];
+	//private Image myLevelImages[];
+	private String myLevelImages[];
 	
 	VBTetrisEnvironment(){
 		
@@ -60,13 +66,23 @@ public class VBTetrisEnvironment {
 	    lineZap4A = Applet.newAudioClip(getClass().getResource("../VBTetrisSound/SHODAN4.WAV")); // Directory needs to be changed to proper directory
 	    lineZap5A = Applet.newAudioClip(getClass().getResource("../VBTetrisSound/SHODAN5.WAV")); // Directory needs to be changed to proper directory
 		
-	    myLevelImages = new Image[levels];
-        myLevelImages[0] = Toolkit.getDefaultToolkit().getImage(getClass().getResource ("../VBTetrisImage/RememberCitadel.jpg"));
-        myLevelImages[1] = Toolkit.getDefaultToolkit().getImage(getClass().getResource ("../VBTetrisImage/SHODAN-BG.png"));
+	    myLevelImages = new String[levels];
+        myLevelImages[0] = "../VBTetrisImage/world2-bg.png";
         }
-	
-        public Image getLevelImage(int i){
-	        return myLevelImages[i];
+		
+        public BufferedImage getLevelImage(int i){
+        	
+    		//String imgPath = "../VBTetrisImage/world2-bg.png";
+    		BufferedImage buffImage = null;
+    		try {
+    			buffImage = ImageIO.read(getClass().getResourceAsStream(myLevelImages[i]));
+    		} catch (IOException e) {
+    			// TODO Auto-generated catch block
+    			e.printStackTrace();
+    		}
+        	
+    		return buffImage;
+    		
         }
 	
         public Color getPieceColor(int i){

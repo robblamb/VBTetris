@@ -11,6 +11,7 @@ import vbtetris.VBTetrisGameBoard;
 public class VBTetris extends JFrame
 {	
 	// constants used by VBTetrisGameBoard
+	// current board ratio: 12:13
 	final static int BOARD_WIDTH = 24;
 	final static int BOARD_HEIGHT = 26;
 	final static int SQUARE_SIZE = 20;

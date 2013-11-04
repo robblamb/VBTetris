@@ -4,15 +4,24 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.Arrays;
 
+import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 import javax.swing.Timer;
+
+import org.imgscalr.Scalr;
+
+import static org.imgscalr.Scalr.*;
 
 import vbtetris.VBTetrisBlock;
 import vbtetris.VBTetrisPieces.Tetrominoes;
@@ -129,17 +138,14 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 	public void paintComponent(Graphics g)
 	{ 		
 		
-		// fix font size across platforms
-	    int screenRes = Toolkit.getDefaultToolkit().getScreenResolution();
-	    int fontSize = (int)Math.round(22.0 / (screenRes / 72.0));
+		int boardTop = getHeight() - BOARD_HEIGHT * BLOCK_SIZE;
 		
-		Dimension size = getSize();
-		int frameHeight = (int)size.getHeight();
-		int boardTop = frameHeight - BOARD_HEIGHT * BLOCK_SIZE;
-
-		g.drawImage(VBTetris._gameEnvir.getLevelImage(1), 0,0,this);
+		// Step 1: scale and draw the background
+		BufferedImage origBG = VBTetris._gameEnvir.getLevelImage(0);
+		BufferedImage scaledBG = Scalr.resize(origBG, getHeight());
+		g.drawImage(scaledBG, 0,0,this);
 		
-		// Step 1: paint items in game board
+		// Step 2: paint items in game board
 		for (int i = 0; i < BOARD_HEIGHT; ++i) {
 			for (int j = 0; j < BOARD_WIDTH; ++j) {	
 				VBTetrisBlock block = getBlock(j, BOARD_HEIGHT - i - 1);
@@ -148,7 +154,7 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 			}
 		}
 
-		// Step 2: paint the falling piece
+		// Step 3: paint the falling pieces
 		for (int j = 0; j < players.length; ++j) {
 			if (players[j].getcurPiece().getShape() != Tetrominoes.EMPTY) {
 				for (int i = 0; i < VBTetrisPieces.NUM_BLOCKS; ++i) {
@@ -162,13 +168,17 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 		}
 		
 		// TODO finish the paint for player panes
-		// Step 3: paint the player panes
+		// Step 4: paint the player panes
 		//int temp = 2;
 		int paneWidth = 200;
 		int ysiz = BOARD_HEIGHT*BLOCK_SIZE;
 		int xLeft = BOARD_WIDTH*BLOCK_SIZE;
 		int xRight = xLeft + paneWidth;
 		int areaSize = ysiz / players.length;
+		
+		// fix font size across platforms
+	    int screenRes = Toolkit.getDefaultToolkit().getScreenResolution();
+	    int fontSize = (int)Math.round(22.0 / (screenRes / 72.0));
 		
 		for (int i = 0; i < players.length; ++i) {
 			
