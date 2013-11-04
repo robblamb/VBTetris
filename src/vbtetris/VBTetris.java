@@ -3,8 +3,6 @@ package vbtetris;
 import java.awt.Dimension;
 
 import javax.swing.JFrame;
-import javax.swing.JPanel;
-
 import vbtetris.VBTetrisEnvironment;
 import vbtetris.VBTetrisGameBoard;
 

@@ -1,7 +1,5 @@
 package vbtetris;
 
-import java.awt.Color;
-
 public class VBTetrisPlayer {
 	
 	static int numPlayers = 0;				// total number of players
