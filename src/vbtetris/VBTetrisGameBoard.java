@@ -15,6 +15,8 @@ import javax.swing.JPanel;
 import javax.swing.Timer;
 
 import org.imgscalr.Scalr;
+import org.imgscalr.Scalr.Method;
+import org.imgscalr.Scalr.Mode;
 
 import vbtetris.VBTetrisBlock;
 import vbtetris.VBTetrisPieces.Tetrominoes;
@@ -131,11 +133,13 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 	public void paintComponent(Graphics g)
 	{ 		
 		
-		int boardTop = getHeight() - BOARD_HEIGHT * BLOCK_SIZE;
+		int boardHeightPixels = BOARD_HEIGHT * BLOCK_SIZE;
+		int boardWidthPixels = BOARD_WIDTH * BLOCK_SIZE;
 		
 		// Step 1: scale and draw the background
 		BufferedImage origBG = VBTetris._gameEnvir.getLevelImage(0);
-		BufferedImage scaledBG = Scalr.resize(origBG, getHeight());
+		//BufferedImage scaledBG = Scalr.resize(origBG, getHeight());
+		BufferedImage scaledBG = Scalr.resize(origBG, Method.QUALITY, Mode.FIT_EXACT, boardWidthPixels, boardHeightPixels);
 		g.drawImage(scaledBG, 0,0,this);
 		
 		// Step 2: paint items in game board
@@ -143,7 +147,7 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 			for (int j = 0; j < BOARD_WIDTH; ++j) {	
 				VBTetrisBlock block = getBlock(j, BOARD_HEIGHT - i - 1);
 				if (!block.isEmpty())
-					drawSquare(g, 0 + j * BLOCK_SIZE, boardTop + i * BLOCK_SIZE, block.getOwner());
+					drawSquare(g, j * BLOCK_SIZE, i * BLOCK_SIZE, block.getOwner());
 			}
 		}
 
@@ -154,7 +158,7 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 					int x = players[j].getxPos() + players[j].getcurPiece().getBlock(i).getX();
 					int y = players[j].getyPos() - players[j].getcurPiece().getBlock(i).getY();
 					drawSquare(g, 0 + x * BLOCK_SIZE,
-								boardTop + (BOARD_HEIGHT - y - 1) * BLOCK_SIZE,
+								(BOARD_HEIGHT - y - 1) * BLOCK_SIZE,
 								players[j].getcurPiece().getOwner());
 				}
 			}
