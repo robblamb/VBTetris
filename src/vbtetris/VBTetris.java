@@ -1,10 +1,7 @@
 package vbtetris;
 
 import java.awt.Dimension;
-
 import javax.swing.JFrame;
-import vbtetris.VBTetrisEnvironment;
-import vbtetris.VBTetrisGameBoard;
 
 public class VBTetris extends JFrame
 {	
@@ -12,14 +9,15 @@ public class VBTetris extends JFrame
 	final static int NUM_PLAYERS = 2;
 	private VBTetrisPlayer players[];
 	
-	// constants used by VBTetrisGameBoard
-	final static int SQUARES_PER_PLAYER = 9;
-	final static int BOARD_WIDTH = SQUARES_PER_PLAYER * NUM_PLAYERS;
+	// game constants
+	final static int PLAYER_GAP = 4;
+	final static int BOARD_WIDTH = PLAYER_GAP + (NUM_PLAYERS*(PLAYER_GAP+(int)Math.sqrt(VBTetrisPieces.NUM_BLOCKS)));
 	final static int BOARD_HEIGHT = 32;
 	final static int SQUARE_SIZE = 20;
 	final static int KILL_LINE = 18;
-
-	// constants used by VBTetris
+	final static int BOARD_WIDTH_PX = BOARD_WIDTH * SQUARE_SIZE;
+	final static int BOARD_HEIGHT_PX = BOARD_HEIGHT * SQUARE_SIZE;
+	
 	final static int PANEL_WIDTH = 200;
 	final static int FRAME_WIDTH = SQUARE_SIZE * BOARD_WIDTH + PANEL_WIDTH;
 	final static int FRAME_HEIGHT = SQUARE_SIZE * BOARD_HEIGHT;

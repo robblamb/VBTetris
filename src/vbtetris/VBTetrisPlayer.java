@@ -34,7 +34,7 @@ public class VBTetrisPlayer {
 	
 	public int getStartPos() {return startPos;}
 	
-	public void setStartPos(int width) {startPos = (width / (numPlayers+1)) * playerNum;}
+	public void setStartPos(int width) {startPos = ((width / (numPlayers+1)) * playerNum);}
 	
 	public boolean isdropping() {return dropping;}
 	
