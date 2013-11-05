@@ -139,22 +139,46 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 		int boardHeightPixels = BOARD_HEIGHT * BLOCK_SIZE;
 		int boardWidthPixels = BOARD_WIDTH * BLOCK_SIZE;
 		
+		BufferedImage origBG;
+		BufferedImage scaledBG;
+		BufferedImage cropBG;
+		
+		double origBG_Width;
+		double origBG_Height;
+		
+		int imgOffset;
+		double widthRatio;
+		double heightRatio;
+		
+		// get orig image
+		origBG = VBTetris._gameEnvir.getLevelImage(0);
+		origBG_Width = origBG.getWidth();
+		origBG_Height = origBG.getHeight();
 		
 		// Step 1: scale, crop and draw the background
 		
-		// get orig image
-		BufferedImage origBG = VBTetris._gameEnvir.getLevelImage(0);
-		
 		// scale the image
-		BufferedImage scaledBG = Scalr.resize(origBG, Mode.FIT_TO_WIDTH, boardWidthPixels);
+		widthRatio = origBG_Width / boardWidthPixels;
+		heightRatio = origBG_Height / boardHeightPixels;
+		
+		if (widthRatio > heightRatio)
+			scaledBG = Scalr.resize(origBG, Mode.FIT_TO_HEIGHT, boardHeightPixels);
+		else
+			scaledBG = Scalr.resize(origBG, Mode.FIT_TO_WIDTH, boardWidthPixels);
 		
 		// crop the image
-		int yOffset = (scaledBG.getHeight() - boardHeightPixels) / 2;
-		BufferedImage cropBG = scaledBG.getSubimage(0, yOffset, boardWidthPixels, boardHeightPixels);
+		if (scaledBG.getWidth() > boardWidthPixels) {
+			imgOffset = (scaledBG.getWidth() - boardWidthPixels) / 2;
+			cropBG = scaledBG.getSubimage(imgOffset, 0, boardWidthPixels, boardHeightPixels);
+		} else if (scaledBG.getHeight() > boardHeightPixels) {
+			imgOffset = (scaledBG.getHeight() - boardHeightPixels) / 2;
+			cropBG = scaledBG.getSubimage(0, imgOffset, boardWidthPixels, boardHeightPixels);
+		} else {
+			cropBG = scaledBG;
+		}
 		
 		// draw the image
 		g.drawImage(cropBG, 0, 0, this);
-		
 		
 		// Step 2: paint items in game board
 		for (int i = 0; i < BOARD_HEIGHT; ++i) {

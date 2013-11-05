@@ -9,7 +9,7 @@ import vbtetris.VBTetrisGameBoard;
 public class VBTetris extends JFrame
 {	
 	// players
-	final static int NUM_PLAYERS = 4;
+	final static int NUM_PLAYERS = 2;
 	private VBTetrisPlayer players[];
 	
 	// constants used by VBTetrisGameBoard
