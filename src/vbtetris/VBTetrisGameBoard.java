@@ -14,13 +14,7 @@ import java.util.Arrays;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
-import org.imgscalr.Scalr;
-import org.imgscalr.Scalr.Method;
-import org.imgscalr.Scalr.Mode;
-
-import vbtetris.VBTetrisBlock;
 import vbtetris.VBTetrisPieces.Tetrominoes;
-
 
 public class VBTetrisGameBoard extends JPanel implements ActionListener
 {
@@ -30,8 +24,9 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 	private final int PANEL_WIDTH;
 	private final int BOARD_WIDTH;
 	private final int BOARD_HEIGHT;
-	private final int BLOCK_SIZE;
+	private final int SQUARE_SIZE;
 	private final int KILL_LINE;
+	
 	
 	private enum moveStatus { OK, HIT_BOUNDARY, HIT_PIECE }; 
 	
@@ -39,20 +34,20 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 	private int msToUpdate = 400;	// game speed in milliseconds
 	
 	// SHOULD BE IN GAME ENGINE CLASS
-	boolean gameOver;
-	boolean gamePaused;
+	private boolean gameOver;
+	private boolean gamePaused;
 	
 	private VBTetrisPlayer players[];
-
+	private BufferedImage boardBackground;
+	
 	public VBTetrisGameBoard(int p, int w, int h, int s, int k, VBTetrisPlayer[] players)
 	{
 		BOARD_WIDTH = w;
 		BOARD_HEIGHT = h;
-		BLOCK_SIZE = s;
+		SQUARE_SIZE = s;
 		KILL_LINE = k;
 		PANEL_WIDTH = p;
 		
-
 		this.players = players;
 		
 		// give board the keyboard input
@@ -71,6 +66,9 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 		
 		// create the game board (offset access)
 		_board = new VBTetrisBlock[BOARD_WIDTH * BOARD_HEIGHT];
+		
+		// create the board background image
+		boardBackground = new VBTetrisBackgroundImage(VBTetris._gameEnvir.getLevelImage(0));
 		
 		addKeyListener(new TAdapter());
 	}
@@ -136,56 +134,15 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 	public void paintComponent(Graphics g)
 	{ 		
 		
-		int boardHeightPixels = BOARD_HEIGHT * BLOCK_SIZE;
-		int boardWidthPixels = BOARD_WIDTH * BLOCK_SIZE;
-		
-		BufferedImage origBG;
-		BufferedImage scaledBG;
-		BufferedImage cropBG;
-		
-		double origBG_Width;
-		double origBG_Height;
-		
-		int imgOffset;
-		double widthRatio;
-		double heightRatio;
-		
-		// get orig image
-		origBG = VBTetris._gameEnvir.getLevelImage(0);
-		origBG_Width = origBG.getWidth();
-		origBG_Height = origBG.getHeight();
-		
-		// Step 1: scale, crop and draw the background
-		
-		// scale the image
-		widthRatio = origBG_Width / boardWidthPixels;
-		heightRatio = origBG_Height / boardHeightPixels;
-		
-		if (widthRatio > heightRatio)
-			scaledBG = Scalr.resize(origBG, Mode.FIT_TO_HEIGHT, boardHeightPixels);
-		else
-			scaledBG = Scalr.resize(origBG, Mode.FIT_TO_WIDTH, boardWidthPixels);
-		
-		// crop the image
-		if (scaledBG.getWidth() > boardWidthPixels) {
-			imgOffset = (scaledBG.getWidth() - boardWidthPixels) / 2;
-			cropBG = scaledBG.getSubimage(imgOffset, 0, boardWidthPixels, boardHeightPixels);
-		} else if (scaledBG.getHeight() > boardHeightPixels) {
-			imgOffset = (scaledBG.getHeight() - boardHeightPixels) / 2;
-			cropBG = scaledBG.getSubimage(0, imgOffset, boardWidthPixels, boardHeightPixels);
-		} else {
-			cropBG = scaledBG;
-		}
-		
-		// draw the image
-		g.drawImage(cropBG, 0, 0, this);
+		// Step 1: draw the background
+		g.drawImage(boardBackground, 0, 0, this);
 		
 		// Step 2: paint items in game board
 		for (int i = 0; i < BOARD_HEIGHT; ++i) {
 			for (int j = 0; j < BOARD_WIDTH; ++j) {	
 				VBTetrisBlock block = getBlock(j, BOARD_HEIGHT - i - 1);
 				if (!block.isEmpty())
-					drawSquare(g, j * BLOCK_SIZE, i * BLOCK_SIZE, block.getOwner());
+					drawSquare(g, j * SQUARE_SIZE, i * SQUARE_SIZE, block.getOwner());
 			}
 		}
 
@@ -195,8 +152,8 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 				for (int i = 0; i < VBTetrisPieces.NUM_BLOCKS; ++i) {
 					int x = players[j].getxPos() + players[j].getcurPiece().getBlock(i).getX();
 					int y = players[j].getyPos() - players[j].getcurPiece().getBlock(i).getY();
-					drawSquare(g, 0 + x * BLOCK_SIZE,
-								(BOARD_HEIGHT - y - 1) * BLOCK_SIZE,
+					drawSquare(g, 0 + x * SQUARE_SIZE,
+								(BOARD_HEIGHT - y - 1) * SQUARE_SIZE,
 								players[j].getcurPiece().getOwner());
 				}
 			}
@@ -205,8 +162,8 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 		// TODO finish the paint for player panes
 		// Step 4: paint the player panes
 		//int temp = 2;
-		int ysiz = BOARD_HEIGHT*BLOCK_SIZE;
-		int xLeft = BOARD_WIDTH*BLOCK_SIZE;
+		int ysiz = BOARD_HEIGHT*SQUARE_SIZE;
+		int xLeft = BOARD_WIDTH*SQUARE_SIZE;
 		int xRight = xLeft + PANEL_WIDTH;
 		int areaSize = ysiz / players.length;
 		
@@ -254,8 +211,8 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 	@Override
 	public String toString() {
 		return "VBTetrisGameBoard [BOARD_WIDTH=" + BOARD_WIDTH
-				+ ", BOARD_HEIGHT=" + BOARD_HEIGHT + ", BLOCK_SIZE="
-				+ BLOCK_SIZE + ", KILL_LINE=" + KILL_LINE + ", players="
+				+ ", BOARD_HEIGHT=" + BOARD_HEIGHT + ", SQUARE_SIZE="
+				+ SQUARE_SIZE + ", KILL_LINE=" + KILL_LINE + ", players="
 				+ Arrays.toString(players) + "]";
 	}
 
@@ -263,7 +220,7 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + BLOCK_SIZE;
+		result = prime * result + SQUARE_SIZE;
 		result = prime * result + BOARD_HEIGHT;
 		result = prime * result + BOARD_WIDTH;
 		result = prime * result + KILL_LINE;
@@ -283,7 +240,7 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 			return false;
 		}
 		VBTetrisGameBoard other = (VBTetrisGameBoard) obj;
-		if (BLOCK_SIZE != other.BLOCK_SIZE) {
+		if (SQUARE_SIZE != other.SQUARE_SIZE) {
 			return false;
 		}
 		if (BOARD_HEIGHT != other.BOARD_HEIGHT) {
@@ -444,17 +401,17 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 		g.setColor(color);
 		
 		// ***********************************************************************************
-		g.fillRect(x + 1, y + 1, BLOCK_SIZE - 2, BLOCK_SIZE - 2);
+		g.fillRect(x + 1, y + 1, SQUARE_SIZE - 2, SQUARE_SIZE - 2);
 		
 		// draw white edge
 		g.setColor(Color.WHITE);
-		g.drawLine(x, y + BLOCK_SIZE - 1, x, y);
-		g.drawLine(x, y, x + BLOCK_SIZE - 1, y);
+		g.drawLine(x, y + SQUARE_SIZE - 1, x, y);
+		g.drawLine(x, y, x + SQUARE_SIZE - 1, y);
 		
 		// draw black edge
 		g.setColor(Color.BLACK);
-		g.drawLine(x + 1, y + BLOCK_SIZE - 1, x + BLOCK_SIZE - 1, y + BLOCK_SIZE - 1);
-		g.drawLine(x + BLOCK_SIZE - 1, y + BLOCK_SIZE - 1, x + BLOCK_SIZE - 1, y + 1);
+		g.drawLine(x + 1, y + SQUARE_SIZE - 1, x + SQUARE_SIZE - 1, y + SQUARE_SIZE - 1);
+		g.drawLine(x + SQUARE_SIZE - 1, y + SQUARE_SIZE - 1, x + SQUARE_SIZE - 1, y + 1);
 		// ***********************************************************************************
 	}
 	
