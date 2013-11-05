@@ -23,7 +23,6 @@ public class VBTetrisEnvironment {
 	private     AudioClip lineZap4A;
 	private     AudioClip lineZap5A;
 	private static int levels = 2;
-	//private Image myLevelImages[];
 	private String myLevelImages[];
 	
 	VBTetrisEnvironment(){
@@ -68,7 +67,6 @@ public class VBTetrisEnvironment {
 		
         public BufferedImage getLevelImage(int i){
         	
-    		//String imgPath = "../VBTetrisImage/world2-bg.png";
     		BufferedImage buffImage = null;
     		try {
     			buffImage = ImageIO.read(getClass().getResourceAsStream(myLevelImages[i]));
@@ -78,7 +76,6 @@ public class VBTetrisEnvironment {
     		}
         	
     		return buffImage;
-    		
         }
 	
         public Color getPieceColor(int i){
