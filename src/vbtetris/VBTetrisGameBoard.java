@@ -27,6 +27,7 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 	VBTetrisBlock[] _board;	// board array holds the fallen pieces
 	
 	// board constants to be set by constructor
+	private final int PANEL_WIDTH;
 	private final int BOARD_WIDTH;
 	private final int BOARD_HEIGHT;
 	private final int BLOCK_SIZE;
@@ -43,12 +44,14 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 	
 	private VBTetrisPlayer players[];
 
-	public VBTetrisGameBoard(int w, int h, int s, int k, VBTetrisPlayer[] players)
+	public VBTetrisGameBoard(int p, int w, int h, int s, int k, VBTetrisPlayer[] players)
 	{
 		BOARD_WIDTH = w;
 		BOARD_HEIGHT = h;
 		BLOCK_SIZE = s;
 		KILL_LINE = k;
+		PANEL_WIDTH = p;
+		
 
 		this.players = players;
 		
@@ -136,11 +139,22 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 		int boardHeightPixels = BOARD_HEIGHT * BLOCK_SIZE;
 		int boardWidthPixels = BOARD_WIDTH * BLOCK_SIZE;
 		
-		// Step 1: scale and draw the background
+		
+		// Step 1: scale, crop and draw the background
+		
+		// get orig image
 		BufferedImage origBG = VBTetris._gameEnvir.getLevelImage(0);
-		//BufferedImage scaledBG = Scalr.resize(origBG, getHeight());
-		BufferedImage scaledBG = Scalr.resize(origBG, Method.QUALITY, Mode.FIT_EXACT, boardWidthPixels, boardHeightPixels);
-		g.drawImage(scaledBG, 0,0,this);
+		
+		// scale the image
+		BufferedImage scaledBG = Scalr.resize(origBG, Mode.FIT_TO_WIDTH, boardWidthPixels);
+		
+		// crop the image
+		int yOffset = (scaledBG.getHeight() - boardHeightPixels) / 2;
+		BufferedImage cropBG = scaledBG.getSubimage(0, yOffset, boardWidthPixels, boardHeightPixels);
+		
+		// draw the image
+		g.drawImage(cropBG, 0, 0, this);
+		
 		
 		// Step 2: paint items in game board
 		for (int i = 0; i < BOARD_HEIGHT; ++i) {
@@ -167,10 +181,9 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 		// TODO finish the paint for player panes
 		// Step 4: paint the player panes
 		//int temp = 2;
-		int paneWidth = 200;
 		int ysiz = BOARD_HEIGHT*BLOCK_SIZE;
 		int xLeft = BOARD_WIDTH*BLOCK_SIZE;
-		int xRight = xLeft + paneWidth;
+		int xRight = xLeft + PANEL_WIDTH;
 		int areaSize = ysiz / players.length;
 		
 		// fix font size across platforms
@@ -184,11 +197,11 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 			
 			// draw player pane
 			g.setColor(VBTetris._gameEnvir.getPieceColor((players[i].getcurPiece().getOwner())));
-			g.fillRect(xLeft, currTop, paneWidth, areaSize);
+			g.fillRect(xLeft, currTop, PANEL_WIDTH, areaSize);
 			
 			// draw score box
 			g.setColor(Color.white);
-			g.fillRect(xLeft + 5, currTop + 5, paneWidth-10, 30);
+			g.fillRect(xLeft + 5, currTop + 5, PANEL_WIDTH-10, 30);
 			
 			// draw score
 			g.setColor(Color.black);
