@@ -27,8 +27,7 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 	private final int SQUARE_SIZE;
 	private final int KILL_LINE;
 	
-	
-	private enum moveStatus { OK, HIT_BOUNDARY, HIT_PIECE }; 
+	public enum moveStatus { OK, HIT_BOUNDARY, HIT_PIECE }; 
 	
 	private Timer timer;
 	private int msToUpdate = 400;	// game speed in milliseconds
@@ -80,12 +79,12 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 	}
 	
 	// returns a block from a spot on the game board
-	VBTetrisBlock getBlock(int x, int y)
+	public VBTetrisBlock getBlock(int x, int y)
 	{	
 		return _board[(y * BOARD_WIDTH) + x];	// (row_num * row_offset) + col
 	}
 	
-	private boolean isPlayerBlock(VBTetrisPlayer currPlayer, int currPlayerX, int currPlayerY)
+	public boolean isPlayerBlock(VBTetrisPlayer currPlayer, int currPlayerX, int currPlayerY)
 	{	
 		// check if any of the other players have a piece in specified location
 		for (int i = 0; i < players.length; ++i) {	// for each player
@@ -103,7 +102,7 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 		return false;	// has no player block
 	}
 	
-	private boolean isBoardBlock(int x, int y)
+	public boolean isBoardBlock(int x, int y)
 	{
 		if (_board[(y * BOARD_WIDTH) + x].isEmpty() ) return false;
 		return true;
@@ -114,10 +113,11 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 	{
 		for (int i = 0; i < _board.length; ++i)
 			_board[i] = new VBTetrisBlock();
+		clear();
 		
 		gameOver = false;
 		gamePaused = false;
-		clear();
+		
 		timer.start();
 	}
 
@@ -258,7 +258,7 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 		return true;
 	}
 
-	private void dropOneDown(VBTetrisPlayer player)
+	public void dropOneDown(VBTetrisPlayer player)
 	{	
 		// if the piece hits the boundary (in this case the bottom) store the piece in the game board
 		// we can check HIT_BOUNDARY and know we hit the bottom because we only move the piece down
@@ -318,7 +318,7 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 
 	// ********************************************************************************
 	// try to move a piece
-	private moveStatus tryMove(VBTetrisPlayer player, VBTetrisPieces newPiece, int newXPos, int newYPos)
+	public moveStatus tryMove(VBTetrisPlayer player, VBTetrisPieces newPiece, int newXPos, int newYPos)
 	{	
 		for (int i = 0; i < VBTetrisPieces.NUM_BLOCKS; ++i) {
 			int x = newXPos + newPiece.getBlock(i).getX();
@@ -348,7 +348,6 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 		
 		// check the board for full rows
 		for (int i = BOARD_HEIGHT - 1; i >= 0; --i) {
-			//boolean isLineFull = true;
 			
 			// check all the blocks in the row
 			for (int j = 0; j < BOARD_WIDTH; ++j) {
@@ -368,7 +367,6 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 		
 		// check the board for rows above the kill line
 		for (int i = BOARD_HEIGHT - 1; i >= KILL_LINE; --i) {
-			//boolean isKillLine = false;
 
 			for (int j = 0; j < BOARD_WIDTH; ++j) {
 				if (isBoardBlock(j,i)) {	// kill line exceeded
@@ -380,8 +378,9 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 			// remove rows that exceed the kill line
 			if (killLines > 0) {
 				for (int k = 0; k < BOARD_HEIGHT - 1; ++k) {
-					for (int j = 0; j < BOARD_WIDTH; ++j)
+					for (int j = 0; j < BOARD_WIDTH; ++j) {
 						_board[(k * BOARD_WIDTH) + j] = getBlock(j, k + 1);
+					}
 				}
 			}
 		}
