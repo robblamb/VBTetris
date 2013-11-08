@@ -293,9 +293,22 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 			}
 		}
 		// *****************************************************
-		int multiple = removeRow();
+		
+		// find (and remove) complete rows
+		int numCompleteRows = checkCompleteRow(player.getMinY(), player.getMaxY());
+		
+		// find (and remove) blocks above kill line
+		int numKillLines = checkKillZone();
+		
+		// calculate score multiplier
+		if (numKillLines > 1) numKillLines = 1;
+		int multiple = numCompleteRows - numKillLines;
+		
+		// modify player score
 		if (multiple > 0) player.addtoscore(1000*multiple*multiple+15);
 		else player.addtoscore(-1000*multiple*multiple+15);
+		
+		// create a new piece
 		newPiece(player);
 	}
 	
@@ -338,60 +351,56 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 	}
 	// ********************************************************************************
 	
-	// check for and remove full lines
-	// check for and remove kill lines
-	private int removeRow()
-	{
-		int fullLines = 0;
-		int killLines = 0;
-		int multiplier;
+	// check if the placed piece completed any rows
+	private int checkCompleteRow (int minY, int maxY)
+	{	
+		int numCompleteRows = 0;
 		
-		// check the board for full rows
-		for (int i = BOARD_HEIGHT - 1; i >= 0; --i) {
-			
-			// check all the blocks in the row
+		int activeRow = minY;
+		int rowsChecked = 0;
+		while (rowsChecked <= maxY-minY) {
 			for (int j = 0; j < BOARD_WIDTH; ++j) {
-				if (!isBoardBlock(j,i)) break;				// row not full
-				else if (j == BOARD_WIDTH-1) ++fullLines;	// row full
-			}
-			
-			// remove full rows
-			// move all the lines above the full line down by 1
-			if (fullLines > 0) {
-				for (int k = i; k < BOARD_HEIGHT - 1; ++k) {
-					for (int j = 0; j < BOARD_WIDTH; ++j)
-						_board[(k * BOARD_WIDTH) + j] = getBlock(j, k + 1);
+				if (!isBoardBlock(j,activeRow)) {
+					++activeRow;
+					break;
+				} else if (j == BOARD_WIDTH-1) {
+					removeRow(activeRow);
+					++numCompleteRows;
 				}
 			}
+			++rowsChecked;
 		}
+		return numCompleteRows;
+	}
+	
+	// check if the placed piece sits above the kill line
+	private int checkKillZone()
+	{	
+		int numKillLines = 0;
 		
-		// check the board for rows above the kill line
-		for (int i = BOARD_HEIGHT - 1; i >= KILL_LINE; --i) {
-
+		int rowsChecked = KILL_LINE;
+		while (rowsChecked <= BOARD_HEIGHT - 1) {
 			for (int j = 0; j < BOARD_WIDTH; ++j) {
-				if (isBoardBlock(j,i)) {	// kill line exceeded
-					++killLines;
+				if (isBoardBlock(j,KILL_LINE)) {
+					removeRow(0);
+					++numKillLines;
 					break;
 				}
 			}
-			
-			// remove rows that exceed the kill line
-			if (killLines > 0) {
-				for (int k = 0; k < BOARD_HEIGHT - 1; ++k) {
-					for (int j = 0; j < BOARD_WIDTH; ++j) {
-						_board[(k * BOARD_WIDTH) + j] = getBlock(j, k + 1);
-					}
-				}
-			}
+			++rowsChecked;
 		}
-		if (fullLines > 0 || killLines > 0) repaint();	
-		
-		// calculate multiplier
-		if (killLines > 0) killLines = 1;
-		multiplier = (fullLines - killLines);
-		
-		// return points multiplier
-		return multiplier;
+        return numKillLines;
+	}
+	
+	// remove a row
+	private void removeRow(int activeRow)
+	{
+		// move all the rows above the target row down by 1
+		for (int k = activeRow; k < BOARD_HEIGHT - 1; ++k) {
+			for (int j = 0; j < BOARD_WIDTH; ++j)
+				_board[(k * BOARD_WIDTH) + j] = getBlock(j, k + 1);
+		}
+		repaint();
 	}
 
 	private void drawSquare(Graphics g, int x, int y, int player)

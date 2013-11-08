@@ -29,8 +29,7 @@ public class VBTetris extends JFrame
 	private VBTetrisGameBoard _board;
 	
 	public VBTetris()
-	{
-		
+	{	
 		// create array of players
 		players = new VBTetrisPlayer[NUM_PLAYERS];
 		for (int i = 0; i < players.length; ++i) {
@@ -56,7 +55,6 @@ public class VBTetris extends JFrame
 		setResizable(false);
 		pack();
 		setLocationRelativeTo(null);
-		
 	}
 	
 	

@@ -56,6 +56,26 @@ public class VBTetrisPlayer {
 	
 	public void setxPos(int xPos) {this.xPos = xPos;}
 	
+    // get min y position of current piece
+    public int getMinY()
+    {	
+    	int minY = yPos - curPiece.getBlock(0).getY();
+        for (int i = 1; i < VBTetrisPieces.NUM_BLOCKS; ++i)
+        	if (minY > yPos - curPiece.getBlock(i).getY())
+        		minY = yPos - curPiece.getBlock(i).getY();
+        return minY;
+    }
+    
+    // get max y position of current piece
+    public int getMaxY()
+    {
+    	int maxY = yPos - curPiece.getBlock(0).getY();
+        for (int i = 1; i < VBTetrisPieces.NUM_BLOCKS; ++i)
+        	if (maxY < yPos - curPiece.getBlock(i).getY())
+        		maxY = yPos - curPiece.getBlock(i).getY();
+        return maxY;
+    }
+	
 	public void resetScore() {score = 0;}
 	
 	public int getScore() {return score;}
