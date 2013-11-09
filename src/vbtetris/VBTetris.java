@@ -1,6 +1,9 @@
 package vbtetris;
 
 import java.awt.Dimension;
+import java.awt.LayoutManager;
+
+import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 
 public class VBTetris extends JFrame
@@ -18,18 +21,21 @@ public class VBTetris extends JFrame
 	final static int BOARD_WIDTH_PX = BOARD_WIDTH * SQUARE_SIZE;
 	final static int BOARD_HEIGHT_PX = BOARD_HEIGHT * SQUARE_SIZE;
 	
-	final static int PANEL_WIDTH = 200;
+	final static int PANEL_WIDTH = 175;
 	final static int FRAME_WIDTH = SQUARE_SIZE * BOARD_WIDTH + PANEL_WIDTH;
 	final static int FRAME_HEIGHT = SQUARE_SIZE * BOARD_HEIGHT;
 	
-	// public environment object
-	public static VBTetrisEnvironment _gameEnvir;
+	// environment object
+	static VBTetrisEnvironment _gameEnvir;
 	
-	// private game board
-	private VBTetrisGameBoard _board;
+	// jpanels
+	static VBTetrisGameBoard _board;
+	static VBTetrisPlayerPane _pane;
 	
 	public VBTetris()
-	{	
+	{
+		setLayout( new BoxLayout( getContentPane(), BoxLayout.X_AXIS ));
+		
 		// create array of players
 		players = new VBTetrisPlayer[NUM_PLAYERS];
 		for (int i = 0; i < players.length; ++i) {
@@ -41,16 +47,21 @@ public class VBTetris extends JFrame
 		_gameEnvir.init();
 		
 		// create the game board
-		_board = new VBTetrisGameBoard(PANEL_WIDTH, BOARD_WIDTH, BOARD_HEIGHT, SQUARE_SIZE, KILL_LINE, players);
+		_board = new VBTetrisGameBoard(BOARD_WIDTH, BOARD_HEIGHT, SQUARE_SIZE, KILL_LINE, players);
+		_board.setPreferredSize(new Dimension(BOARD_WIDTH_PX, BOARD_HEIGHT_PX));
 		_board.init();
 		
-		// add the board to the frame
+		// create the player pane
+		_pane = new VBTetrisPlayerPane(PANEL_WIDTH, BOARD_HEIGHT, SQUARE_SIZE);
+		_pane.setPreferredSize(new Dimension(PANEL_WIDTH, BOARD_HEIGHT_PX));
+		
+		// add the game board and player pane to the jframe
 		add(_board);
+		add(_pane);
 		
 		// set jframe options
 		setResizable(false);
 		setTitle("Virtual Boy Tetris");
-		getContentPane().setPreferredSize(new Dimension(FRAME_WIDTH, FRAME_HEIGHT));
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setVisible(true);
 		pack();

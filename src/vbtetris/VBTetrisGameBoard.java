@@ -21,7 +21,6 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 	VBTetrisBlock[] _board;	// board array holds the fallen pieces
 	
 	// board constants to be set by constructor
-	private final int PANEL_WIDTH;
 	private final int BOARD_WIDTH;
 	private final int BOARD_HEIGHT;
 	private final int SQUARE_SIZE;
@@ -36,16 +35,15 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 	private boolean gameOver;
 	private boolean gamePaused;
 	
-	private VBTetrisPlayer players[];
+	private VBTetrisPlayer[] players;
 	private BufferedImage boardBackground;
 	
-	public VBTetrisGameBoard(int p, int w, int h, int s, int k, VBTetrisPlayer[] players)
+	public VBTetrisGameBoard(int w, int h, int s, int k, VBTetrisPlayer[] players)
 	{
 		BOARD_WIDTH = w;
 		BOARD_HEIGHT = h;
 		SQUARE_SIZE = s;
 		KILL_LINE = k;
-		PANEL_WIDTH = p;
 		
 		this.players = players;
 		
@@ -77,6 +75,11 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 		addKeyListener(new TAdapter());
 	}
 	
+	public VBTetrisPlayer[] getPlayers()
+	{
+		return players;
+	}
+	
 	// drop down piece at the specified time interval
 	public void actionPerformed(ActionEvent e)
 	{ 
@@ -84,12 +87,12 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 	}
 	
 	// returns a block from a spot on the game board
-	public VBTetrisBlock getBlock(int x, int y)
+	private VBTetrisBlock getBlock(int x, int y)
 	{	
 		return _board[(y * BOARD_WIDTH) + x];	// (row_num * row_offset) + col
 	}
 	
-	public boolean isPlayerBlock(VBTetrisPlayer currPlayer, int currPlayerX, int currPlayerY)
+	private boolean isPlayerBlock(VBTetrisPlayer currPlayer, int currPlayerX, int currPlayerY)
 	{	
 		// check if any of the other players have a piece in specified location
 		for (int i = 0; i < players.length; ++i) {	// for each player
@@ -107,7 +110,7 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 		return false;	// has no player block
 	}
 	
-	public boolean isBoardBlock(int x, int y)
+	private boolean isBoardBlock(int x, int y)
 	{
 		if (_board[(y * BOARD_WIDTH) + x].isEmpty() ) return false;
 		return true;
@@ -135,14 +138,16 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 	}
 	
 	// ****************************************************************************************************************
-	// paints the falling and fallen pieces in two steps
+	// paints the background and the falling and fallen pieces
+	@Override
 	public void paintComponent(Graphics g)
-	{ 		
+	{
+		super.paintComponent(g);
 		
-		// Step 1: draw the background
+		// draw the background
 		g.drawImage(boardBackground, 0, 0, this);
 		
-		// Step 2: paint items in game board
+		// paint items in game board
 		for (int i = 0; i < BOARD_HEIGHT; ++i) {
 			for (int j = 0; j < BOARD_WIDTH; ++j) {	
 				VBTetrisBlock block = getBlock(j, BOARD_HEIGHT - i - 1);
@@ -151,7 +156,7 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 			}
 		}
 
-		// Step 3: paint the falling pieces
+		// paint the falling pieces
 		for (int j = 0; j < players.length; ++j) {
 			if (players[j].getcurPiece().getShape() != Tetrominoes.EMPTY) {
 				for (int i = 0; i < VBTetrisPieces.NUM_BLOCKS; ++i) {
@@ -162,45 +167,6 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 								players[j].getcurPiece().getOwner());
 				}
 			}
-		}
-		
-		// TODO finish the paint for player panes
-		// Step 4: paint the player panes
-		//int temp = 2;
-		int ysiz = BOARD_HEIGHT*SQUARE_SIZE;
-		int xLeft = BOARD_WIDTH*SQUARE_SIZE;
-		int xRight = xLeft + PANEL_WIDTH;
-		int areaSize = ysiz / players.length;
-		
-		// fix font size across platforms
-	    int screenRes = Toolkit.getDefaultToolkit().getScreenResolution();
-	    int fontSize = (int)Math.round(22.0 / (screenRes / 72.0));
-		
-		for (int i = 0; i < players.length; ++i) {
-			
-			int currTop = areaSize * i;	// find y value of top of current box
-			int currBottom = areaSize*i + areaSize;
-			
-			// draw player pane
-			g.setColor(VBTetris._gameEnvir.getPieceColor((players[i].getcurPiece().getOwner())));
-			g.fillRect(xLeft, currTop, PANEL_WIDTH, areaSize);
-			
-			// draw score box
-			g.setColor(Color.white);
-			g.fillRect(xLeft + 5, currTop + 5, PANEL_WIDTH-10, 30);
-			
-			// draw score
-			g.setColor(Color.black);
-			g.setFont(new Font("Times New Roman", Font.BOLD, fontSize));
-			g.drawString("Score: " + players[i].getScore(),xLeft + 10, currTop+30);
-			
-			// draw next piece in player pane 
-			for (int j = 0; j < VBTetrisPieces.NUM_BLOCKS; ++j) {
-				int x = (xLeft + (PANEL_WIDTH/2)) + (players[i].getNextPiece().getBlock(j).getX() * SQUARE_SIZE);
-				int y = (currTop + (4*SQUARE_SIZE)) - (players[i].getNextPiece().getBlock(j).getY() * SQUARE_SIZE);
-				drawSquare(g, x, y, players[i].getNextPiece().getOwner());
-			}
-			
 		}
 	}
 	// ****************************************************************************************************************
@@ -362,6 +328,7 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 		player.setyPos(newYPos);
 		
 		repaint();
+		VBTetris._pane.repaint();
 		return moveStatus.OK;
 	}
 	
@@ -417,7 +384,7 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 		repaint();
 	}
 
-	private void drawSquare(Graphics g, int x, int y, int player)
+	public void drawSquare(Graphics g, int x, int y, int player)
 	{
 		Color color = VBTetris._gameEnvir.getPieceColor(player);
 		g.setColor(color);

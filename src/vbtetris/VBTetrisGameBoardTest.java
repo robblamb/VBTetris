@@ -40,7 +40,7 @@ public class VBTetrisGameBoardTest
 			players[i].setcurPiece(new VBTetrisPieces());
 		}
 		
-		_board = new VBTetrisGameBoard(0, BOARD_WIDTH, BOARD_HEIGHT, SQUARE_SIZE, KILL_LINE, players);
+		_board = new VBTetrisGameBoard(BOARD_WIDTH, BOARD_HEIGHT, SQUARE_SIZE, KILL_LINE, players);
 	}
 	
 	/*
@@ -50,25 +50,6 @@ public class VBTetrisGameBoardTest
 	public void init()
 	{
 		_board.init();
-	}
-	
-	/*
-	 * Test that we can get blocks from the board
-	 * Not sure why this is public
-	 */
-	@Test
-	public void testEmptyBlock()
-	{
-		VBTetrisBlock block = _board.getBlock(0,0);
-		assertTrue("This block is not empty!", block.isEmpty());
-	}
-	
-	@Test
-	public void testFullBlock()
-	{
-		_board._board[0].setEmpty(false);
-		VBTetrisBlock block = _board.getBlock(0,0);
-		assertFalse("This block is not full!", block.isEmpty());
 	}
 	
 	/*
