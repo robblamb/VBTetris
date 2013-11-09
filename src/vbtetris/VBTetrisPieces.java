@@ -144,8 +144,8 @@ public class VBTetrisPieces
     public VBTetrisPieces rotateLeft() 
     {
     	// must implement image rotation
-    	//if (pieceShape == Tetrominoes.SQUARE_SHAPE || pieceShape == Tetrominoes.O_SHAPE)
-        //    return this;
+    	if (pieceShape == Tetrominoes.SQUARE_SHAPE)
+            return this;
 
         VBTetrisPieces result = new VBTetrisPieces();						// create new result piece
         result.pieceShape = this.pieceShape;								// set result shape to piece shape
