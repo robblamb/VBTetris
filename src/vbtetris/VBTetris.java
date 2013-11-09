@@ -48,11 +48,11 @@ public class VBTetris extends JFrame
 		add(_board);
 		
 		// set jframe options
+		setResizable(false);
 		setTitle("Virtual Boy Tetris");
 		getContentPane().setPreferredSize(new Dimension(FRAME_WIDTH, FRAME_HEIGHT));
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setVisible(true);
-		setResizable(false);
 		pack();
 		setLocationRelativeTo(null);
 	}
