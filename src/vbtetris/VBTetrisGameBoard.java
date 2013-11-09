@@ -56,8 +56,13 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 		for (int i = 0; i < players.length; ++i) {
 			// set start position
 			players[i].setStartPos(BOARD_WIDTH);
-			// create a new piece
+			// create a new current piece
 			players[i].setcurPiece(new VBTetrisPieces());
+			// create a new next piece
+			players[i].setNextPiece(new VBTetrisPieces());
+			// create initial piece
+			players[i].getNextPiece().setRandomShape();
+			players[i].getNextPiece().setOwner(players[i].getPlayerID());
 		}
 		
 		// set timer
@@ -189,9 +194,14 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 			g.setFont(new Font("Times New Roman", Font.BOLD, fontSize));
 			g.drawString("Score: " + players[i].getScore(),xLeft + 10, currTop+30);
 			
+			// draw next piece in player pane 
+			for (int j = 0; j < VBTetrisPieces.NUM_BLOCKS; ++j) {
+				int x = (xLeft + (PANEL_WIDTH/2)) + (players[i].getNextPiece().getBlock(j).getX() * SQUARE_SIZE);
+				int y = (currTop + (4*SQUARE_SIZE)) - (players[i].getNextPiece().getBlock(j).getY() * SQUARE_SIZE);
+				drawSquare(g, x, y, players[i].getNextPiece().getOwner());
+			}
 			
 		}
-		
 	}
 	// ****************************************************************************************************************
 	
@@ -314,9 +324,14 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 	
 	private void newPiece(VBTetrisPlayer player)
 	{
-
-		player.getcurPiece().setRandomShape();
+		// set the current piece to the next piece
+		player.getcurPiece().setShape(player.getNextPiece().getShape());
 		player.getcurPiece().setOwner(player.getPlayerID());
+		
+		// generate a new next piece
+		player.getNextPiece().setRandomShape();
+		
+		// reset piece xy position
 		player.setxPos(player.getStartPos());
 		player.setyPos((int)(BOARD_HEIGHT - Math.sqrt(VBTetrisPieces.NUM_BLOCKS)));
 		
@@ -329,7 +344,6 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 		player.setdropping(true);
 	}
 
-	// ********************************************************************************
 	// try to move a piece
 	public moveStatus tryMove(VBTetrisPlayer player, VBTetrisPieces newPiece, int newXPos, int newYPos)
 	{	
@@ -341,7 +355,8 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 			if (isBoardBlock( x, y )) return moveStatus.HIT_BOUNDARY;
 			if (isPlayerBlock( player, x, y )) return moveStatus.HIT_PIECE;
 		}
-
+		
+		// update the piece and repaint
 		player.setcurPiece(newPiece);
 		player.setxPos(newXPos);
 		player.setyPos(newYPos);
@@ -349,7 +364,6 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 		repaint();
 		return moveStatus.OK;
 	}
-	// ********************************************************************************
 	
 	// check if the placed piece completed any rows
 	private int checkCompleteRow (int minY, int maxY)

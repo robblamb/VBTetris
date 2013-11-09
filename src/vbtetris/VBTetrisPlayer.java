@@ -9,6 +9,7 @@ public class VBTetrisPlayer {
 	private boolean dropping; 				// is the current piece still moving
 	private int numLinesRemoved; 			// current score
 	private VBTetrisPieces curPiece; 		// current piece
+	private VBTetrisPieces nextPiece; 		// next piece
 	private int xPos, yPos;					// current position of players piece
 	private int score;						// players score
 
@@ -21,12 +22,12 @@ public class VBTetrisPlayer {
 		xPos = yPos = 0;
 		score = 0;
 	}
-
+	
 	@Override
 	public String toString() {
 		return "VBTetrisPlayer [playerNum=" + playerNum + ", startPos="
 				+ startPos + ", dropping=" + dropping + ", numLinesRemoved="
-				+ numLinesRemoved + ", curPiece=" + curPiece + ", xPos=" + xPos
+				+ numLinesRemoved + ", curPiece=" + curPiece + ", nextPiece=" + nextPiece + ", xPos=" + xPos
 				+ ", yPos=" + yPos + ", score=" + score + "]";
 	}
 
@@ -47,6 +48,10 @@ public class VBTetrisPlayer {
 	public VBTetrisPieces getcurPiece() {return curPiece;}
 	
 	public void setcurPiece(VBTetrisPieces curPiece) {this.curPiece = curPiece;}
+	
+	public VBTetrisPieces getNextPiece() {return nextPiece;}
+	
+	public void setNextPiece(VBTetrisPieces nextPiece) {this.nextPiece = nextPiece;}
 	
 	public int getxPos() {return xPos;}
 	
@@ -101,6 +106,13 @@ public class VBTetrisPlayer {
 		} else if (!curPiece.equals(other.curPiece)) {
 			return false;
 		}
+		if (nextPiece == null) {
+			if (other.nextPiece != null) {
+				return false;
+			}
+		} else if (!nextPiece.equals(other.nextPiece)) {
+			return false;
+		}
 		if (playerNum != other.playerNum) {
 			return false;
 		}
@@ -123,6 +135,8 @@ public class VBTetrisPlayer {
 		int result = 1;
 		result = prime * result
 				+ ((curPiece == null) ? 0 : curPiece.hashCode());
+		result = prime * result
+				+ ((nextPiece == null) ? 0 : nextPiece.hashCode());
 		result = prime * result + playerNum;
 		result = prime * result + score;
 		result = prime * result + xPos;
