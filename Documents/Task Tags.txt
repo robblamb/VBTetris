@@ -1,0 +1,22 @@
+Virtual Boy Tetris Task Tags
+
+This document defines and explains the various task tags used in VBTetris.
+
+The authors are Team Virtual Boy, from CSCI 331, Fall 2013, for Dr. J Beeston
+Authors:
+Matthew Cormons, CSCI331 MC [tag] [Keyword for lookup]
+Robert Lamb,     CSCI331 RL [tag]
+Eli Reale,       CSCI331 ER [tag]
+
+As per instructions, we need to have task tags in our code, with explanations.
+We will use this space to explain them. Please check out the coding style marking
+guide to see what needs to be done.  
+
+Example:
+
+
+// in VBTetrisPiecesTest, this line appears:
+CSCI331 MC JUNIT PiecesTest
+	// and is explained here:
+	- Tested the equals methods for all possible conditions
+	

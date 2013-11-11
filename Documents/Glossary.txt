@@ -1,0 +1,85 @@
+Virtual Boy Tetris GLOSSARY
+
+This document is a glossary for terms, methods, objects, and any other possible sources of confusion.
+The authors are Team Virtual Boy, from CSCI 331, Fall 2013, for Dr. J Beeston
+Authors: Matthew Cormons, Robert Lamb, Eli Reale
+
+Background: 
+	Static images that sit behind the game board
+	may be dynamically changing but cannot create
+	effects on the pieces, gameplay, or game board
+	
+Block:
+	A VBTetrisBlock object is a single square unit that can occupy a single square unit of the game board.
+	It knows what Tetriminoe piece it belongs to, what player owns it, and a set of coordinates. The block
+	is used for painting.
+
+Environment:
+	The game environment is held within a class VBTetrisEnvrinment
+	This class is responsible for holding images, colours, sounds.
+	Each level will have a set of images, colours, and sounds, and
+	the environment will keep track of the current level
+	
+GameBoard
+	The Area that the game pieces will be confined to,
+	the area that lines are created and removed,
+	the area that is constantly updated
+	
+GamePiece:
+	An object that belongs to a player while falling,
+	the game pieces can be moved and rotated while active.
+	An active game piece has not come to rest on top of
+	inactive game pieces, or the bottom of the game board
+	A piece that has hit the bottom or pieces that are inactive, 
+	becomes inactive (glues to the board)
+	
+Key Adapter:
+	The VBTetris game has several key adapter working.  
+	One, a private class of game board, simply monitors pausing conditions
+	The VBTetris Adapters have a base class: VBTetrisKeyAdapter, and extended classes
+	for Arrow and wasd key sets. The adapters hold a player object to know which
+	piece to move around the board, and a PieceMover Object that interacts with the
+	board on behalf of the key adapter.
+
+Kill Line:
+	The line that when a piece comes to rest on/above it, 
+	part of the board will be "killed"-> lines/blocks 
+	removed.
+
+NUM_PLAYERS:
+	is the constant integer that represents the number of players in the tetris game.
+
+Piece:
+	A VBTetrisPiece is a Tetriminoe piece, that is one of the available game pieces a player can be.
+	A piece can only be in the shape of the preset Tetriminoe shapes.
+	A piece is comprised of many Blocks.  A piece has an owner, and a particular shape with a particular rotation.
+	The shape is of the enumerated type Tetriminoes
+
+Piece Mover:
+	A class that acts as a message passer between a KeyAdapter and the GameBoard.  The Key adapter will request
+	a move from the piece mover, and the piece mover will relay that request to the board object.
+
+Player:
+	A VBTetris Player is an active player of the game.  
+	The player will have a designated colour that ALL of his/her pieces will be, a score, a number of lines scored,
+	and a set of keys used to move his/her pieces.
+	
+Player Pane:
+	An area of the visual game space used for presenting the user with information on players.  This area shows 
+	the score of each player, the number of lines scored, and the next piece for that player.  The area is 
+	coloured the same as the player's pieces for easy identification.
+
+Tetriminoe:
+	A tetris piece. Players use them to complete lines.
+	
+Tetriminoes: 
+	an enumerated data type to help distinguish between the different types of shapes that a tetriminoe can be.
+	Possible Shapes: EMPTY,	Z_SHAPE, S_SHAPE, LINE_SHAPE, T_SHAPE, SQUARE_SHAPE, L_SHAPE, MIRRORED_L_SHAPE
+
+Timer:
+	The VBTetris Timer is used for updating the board on a given schedule.  The timer will cause an action event
+	that triggers all players pieces to move down. Without this, the only movement a player would see is by 
+	key presses alone.
+	The timer will be updated (sped up) when a new level is reached, or a certain event takes place (like a score going
+	above a preset level or the number of lines scored hits a preset level).
+	
