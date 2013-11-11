@@ -28,13 +28,22 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 	
 	public enum moveStatus { OK, HIT_BOUNDARY, HIT_PIECE }; 
 	
-	private Timer timer;
+	// SHOULD BE IN GAME ENGINE CLASS?
+	private VBTetrisTimer timer;    // timer triggers and action every msToUpdate milliseconds
 	private int msToUpdate = 400;	// game speed in milliseconds
+	private VBTetrisPieceMover _mover;
 	
 	// SHOULD BE IN GAME ENGINE CLASS
 	private boolean gameOver;
 	private boolean gamePaused;
 	
+	public boolean isGameOver() {
+		return gameOver;
+	}
+	public boolean isGamePaused() {
+		return gamePaused;
+	}
+
 	private VBTetrisPlayer[] players;
 	private BufferedImage boardBackground;
 	
@@ -63,16 +72,19 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 			players[i].getNextPiece().setOwner(players[i].getPlayerID());
 		}
 		
-		// set timer
-		timer = new Timer(msToUpdate, this);
+		// set timer with initial time to fire of msToUpdate
+		timer = new VBTetrisTimer(msToUpdate, this);
 		
 		// create the game board (offset access)
 		_board = new VBTetrisBlock[BOARD_WIDTH * BOARD_HEIGHT];
 		
 		// create the board background image
 		boardBackground = new VBTetrisBackgroundImage(VBTetris._gameEnvir.getLevelImage(0));
-		
+		// create the mover that is an interface for pieces to move on the board
+		_mover = new VBTetrisPieceMover(this);
 		addKeyListener(new TAdapter());
+		addKeyListener(new VBTetrisWASDKeys(players[1], _mover));
+		addKeyListener(new VBTetrisArrowKeys(players[0], _mover));
 	}
 	
 	public VBTetrisPlayer[] getPlayers()
@@ -405,11 +417,10 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 	}
 	
 	
-	// ***************************************************************************************
-	// TODO move to own file
-	// TODO make own class and incorporate abstracted multi player
-	class TAdapter extends KeyAdapter
+	// Only respsonsible for pausing or unpausing the game
+	private class TAdapter extends KeyAdapter
 	{
+		@Override
 		public void keyPressed(KeyEvent e)
 		{
 
@@ -423,42 +434,6 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 			} 
 			if (gamePaused) return;
 
-			switch (keycode)
-			{
-				// player one
-				case 'd':
-				case 'D':
-					// left
-					tryMove(players[0],players[0].getcurPiece(), players[0].getxPos() + 1,players[0].getyPos());
-					break;
-				case 'a':
-				case 'A':
-					//right
-					tryMove(players[0],players[0].getcurPiece(), players[0].getxPos() - 1,players[0].getyPos());
-					break;
-				case 'w':
-				case 'W':
-					tryMove(players[0],players[0].getcurPiece().rotateLeft(), players[0].getxPos(),players[0].getyPos());
-					break;
-				case 's':
-				case 'S':
-					dropOneDown(players[0]);
-					break;
-				
-				// player two
-				case KeyEvent.VK_LEFT:
-					tryMove(players[1],players[1].getcurPiece(), players[1].getxPos() - 1,players[1].getyPos());
-					break;
-				case KeyEvent.VK_RIGHT:
-					tryMove(players[1],players[1].getcurPiece(), players[1].getxPos() + 1,players[1].getyPos());
-					break;
-				case KeyEvent.VK_DOWN:
-					dropOneDown(players[1]);
-					break;
-				case KeyEvent.VK_UP:
-					tryMove(players[1],players[1].getcurPiece().rotateLeft(), players[1].getxPos(),players[1].getyPos());
-					break;
-			}
 		}
 	}
 	// ***************************************************************************************

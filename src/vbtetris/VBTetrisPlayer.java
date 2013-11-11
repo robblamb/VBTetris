@@ -15,7 +15,7 @@ public class VBTetrisPlayer {
 
 	VBTetrisPlayer()
 	{	
-		playerNum = ++numPlayers;			// assign player number
+		playerNum = ++numPlayers;			// assign player number (base 1 counting)
 		
 		dropping = true;
 		numLinesRemoved = 0;
