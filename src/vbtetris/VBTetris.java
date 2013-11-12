@@ -8,6 +8,7 @@ import javax.swing.JFrame;
 
 public class VBTetris extends JFrame
 {	
+	//fwnajfeaijfniwk
 	// players
 	final static int NUM_PLAYERS = 2;
 	private VBTetrisPlayer players[];
