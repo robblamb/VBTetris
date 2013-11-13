@@ -49,8 +49,7 @@ public class VBTetrisLevel_2 extends VBTetrisLevel {
 	@Override
 	public void playLineSound(int numLinesScored) {
 		// Code here borrowed from a comment on stackoverflow.com
-		// TODO Auto-generated method stub
-	    URL url = getClass().getResource("../VBTetrisSound/zap2.wav");//You can change this to whatever other sound you have
+		URL url = getClass().getResource("../VBTetrisSound/zap"+numLinesScored+".wav");
   	    setClip(url);//this method will load the sound
 	    if (clip.isRunning())
 		 	 clip.stop();   // Stop the player if it is still running

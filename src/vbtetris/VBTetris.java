@@ -12,7 +12,7 @@ public class VBTetris extends JPanel {
 	// http://docs.oracle.com/javase/tutorial/uiswing/components/layeredpane.html
 	
 	// players
-	final static int NUM_PLAYERS = 2;
+	final static int NUM_PLAYERS = 4;
 	private VBTetrisPlayer players[];
 	
 	final static int PLAYER_GAP = 4;	// squares between each player
