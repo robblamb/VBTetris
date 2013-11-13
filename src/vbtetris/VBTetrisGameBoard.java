@@ -32,6 +32,8 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 	private VBTetrisTimer timer;    // timer triggers and action every msToUpdate milliseconds
 	private int msToUpdate = 400;	// game speed in milliseconds
 	private VBTetrisPieceMover _mover;
+	private VBTetrisPowerUpSelector _power;
+	private VBTetrisPowerUp powUpOnBoard;
 	
 	// SHOULD BE IN GAME ENGINE CLASS
 	private boolean gameOver;
@@ -93,8 +95,11 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 		for (int i = 0; i < players.length; i++) {
 			addKeyListener(playAdapters[i]);
 		}
+		
+		_power = new VBTetrisPowerUpSelector();
+		powUpOnBoard = null;
 	}
-
+	
 	private void stop()
 	{
 		gameOver = true;
@@ -114,6 +119,24 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 	public void actionPerformed(ActionEvent e)
 	{ 
 		for (int i = 0; i < players.length; ++i) dropOneDown(players[i]);
+		
+	}
+	
+	private void putPowerBlock() 
+	{
+		if (!_power.getPowerUpOnGameBoard()) {
+			powUpOnBoard = _power.chooseAPowerUp();
+			if (powUpOnBoard != null) {
+				_power.setPowerUpOnGameBoard(true);
+				int xPos = (int)((BOARD_WIDTH-1)*Math.random());
+				int yPos = (int)((BOARD_HEIGHT-1)*Math.random());
+				while (isPlayerBlock(null, xPos, yPos) || isBoardBlock(xPos, yPos)) {
+					xPos = (int)((BOARD_WIDTH-1)*Math.random());
+					yPos = (int)((BOARD_HEIGHT-1)*Math.random());
+				}
+				
+			}
+		}
 	}
 	
 	// returns a block from a spot on the game board
