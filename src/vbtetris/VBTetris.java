@@ -24,6 +24,7 @@ public class VBTetris extends JFrame
 	final static int PANEL_WIDTH = 175;
 	final static int FRAME_WIDTH = SQUARE_SIZE * BOARD_WIDTH + PANEL_WIDTH;
 	final static int FRAME_HEIGHT = SQUARE_SIZE * BOARD_HEIGHT;
+	final static int VICTORY_SCORE = 20000;
 	
 	// environment object
 	static VBTetrisEnvironment _gameEnvir;
@@ -43,7 +44,7 @@ public class VBTetris extends JFrame
 		// create array of players
 		players = new VBTetrisPlayer[NUM_PLAYERS];
 		for (int i = 0; i < players.length; ++i) {
-			players[i] = new VBTetrisPlayer();
+			players[i] = new VBTetrisPlayer(VICTORY_SCORE);
 		}
 		
 		// create the game environment

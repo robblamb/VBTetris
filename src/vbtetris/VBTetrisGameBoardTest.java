@@ -26,6 +26,7 @@ public class VBTetrisGameBoardTest
 	final static int BOARD_HEIGHT = 20;
 	final static int SQUARE_SIZE = 2;
 	final static int KILL_LINE = 10;
+	final static int VICTORY_SCORE = 20000;
 	
 	/*
 	 * Setup the game board and players
@@ -36,7 +37,7 @@ public class VBTetrisGameBoardTest
 		// create array of players
 		players = new VBTetrisPlayer[NUM_PLAYERS];
 		for (int i = 0; i < players.length; ++i) {
-			players[i] = new VBTetrisPlayer();
+			players[i] = new VBTetrisPlayer(VICTORY_SCORE);
 			players[i].setcurPiece(new VBTetrisPieces());
 		}
 		

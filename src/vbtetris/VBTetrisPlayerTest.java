@@ -8,6 +8,7 @@ import vbtetris.VBTetrisPieces.Tetrominoes;
 
 public class VBTetrisPlayerTest {
 
+	final static int VICTORY_SCORE = 20000;
 	@Test
 	public void testEquals() {
 		//Initialize two VBTetrisPlayer for use in testing
@@ -15,7 +16,7 @@ public class VBTetrisPlayerTest {
 		VBTetrisPlayer other = null;
 				
 		//Make tester point to a VBTetrisPlayer object
-		tester = new VBTetrisPlayer();
+		tester = new VBTetrisPlayer(VICTORY_SCORE);
 				
 		//Ensure that false is returned since an initialized
 		//object cannot be equal to null
@@ -29,7 +30,7 @@ public class VBTetrisPlayerTest {
 		assertFalse("a non-VBTetrisPlayer is equal to a VBTetrisPlayer", tester.equals(notTP));
 		
 		//Make other point to a VBTetrisPieces object
-		other = new VBTetrisPlayer();
+		other = new VBTetrisPlayer(VICTORY_SCORE);
 		
 		//Make a new empty VBTetrisPiece to give to other
 		VBTetrisPieces nNotTP = new VBTetrisPieces();

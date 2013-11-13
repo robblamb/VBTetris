@@ -46,6 +46,8 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 
 	private VBTetrisPlayer[] players;
 	private BufferedImage boardBackground;
+	private VBTetrisKeyAdapter[] playAdapters;
+	private VBTetrisPauser myPause;
 	
 	public VBTetrisGameBoard(int w, int h, int s, int k, VBTetrisPlayer[] players)
 	{
@@ -82,11 +84,26 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 		boardBackground = new VBTetrisBackgroundImage(VBTetris._gameEnvir.getLevelImage());
 		// create the mover that is an interface for pieces to move on the board
 		_mover = new VBTetrisPieceMover(this);
-		addKeyListener(new VBTetrisPauser());
-		addKeyListener(new VBTetrisWASDKeys(players[0], _mover));
-		addKeyListener(new VBTetrisArrowKeys(players[1], _mover));
+		myPause = new VBTetrisPauser();
+		addKeyListener(myPause);
+		
+		playAdapters = new VBTetrisKeyAdapter[players.length];
+		playAdapters[0] = new VBTetrisWASDKeys(players[0], _mover);
+		playAdapters[1] = new VBTetrisArrowKeys(players[1], _mover);
+		for (int i = 0; i < players.length; i++) {
+			addKeyListener(playAdapters[i]);
+		}
 	}
 
+	private void stop()
+	{
+		for (int i = 0; i < players.length; i++) {
+			removeKeyListener(playAdapters[i]);
+		}
+		removeKeyListener(myPause);
+		timer.stop();
+	}
+	
 	public VBTetrisPlayer[] getPlayers()
 	{
 		return players;
@@ -301,6 +318,11 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 		// modify player score
 		if (multiple > 0) player.addtoscore(1000*multiple*multiple+15);
 		else player.addtoscore(-1000*multiple*multiple+15);
+		
+		// check for a victorious player
+		if (player.amIVictorious()) {
+			stop();
+		}
 		
 		// create a new piece
 		newPiece(player);

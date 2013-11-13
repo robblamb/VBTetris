@@ -12,11 +12,13 @@ public class VBTetrisPlayer {
 	private VBTetrisPieces nextPiece; 		// next piece
 	private int xPos, yPos;					// current position of players piece
 	private int score;						// players score
+	private int victoryScore;               // score required for player to be victorious
 	
-	VBTetrisPlayer()
+	VBTetrisPlayer(int victoryValue)
 	{	
 		playerNum = ++numPlayers;			// assign player number (base 1 counting)
 		
+		victoryScore = victoryValue;
 		dropping = true;
 		numLinesRemoved = 0;
 		xPos = yPos = 0;
@@ -60,6 +62,8 @@ public class VBTetrisPlayer {
 	public void setyPos(int yPos) {this.yPos = yPos;}
 	
 	public void setxPos(int xPos) {this.xPos = xPos;}
+	
+	public boolean amIVictorious() {return score >= victoryScore;}
 	
     // get min y position of current piece
     public int getMinY()
