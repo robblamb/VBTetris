@@ -4,6 +4,7 @@ import java.applet.AudioClip;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.Arrays;
 
 import javax.imageio.ImageIO;
 
@@ -32,7 +33,16 @@ public class VBTetrisLevel_2 extends VBTetrisLevel {
 			default: return null;
 		}
 	}
+	@Override
+	public AudioClip getLineSound(int lines) {
+		if (lines>=1 && lines<=numLineZap){return this.lineZap[lines];}
+		else return null;
+	}
 
+	@Override
+	public AudioClip getLineSoundRandom() {
+		return lineZap[(int) (1 + (int)(Math.random() * numLineZap))];
+	}
 	@Override
 	public BufferedImage getLevelImage() {
 		BufferedImage buffImage = null;
@@ -46,13 +56,38 @@ public class VBTetrisLevel_2 extends VBTetrisLevel {
 	}
 
 	@Override
-	public AudioClip getLineSound(int lines) {
-		if (lines>=1 && lines<=numLineZap){return this.lineZap[lines];}
-		else return null;
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((myBackground == null) ? 0 : 57);
+		return result;
 	}
 
 	@Override
-	public AudioClip getLineSoundRandom() {
-		return lineZap[(int) (1 + (int)(Math.random() * numLineZap))];
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (!(obj instanceof VBTetrisLevel_2)) {
+			return false;
+		}
+		VBTetrisLevel_2 other = (VBTetrisLevel_2) obj;
+		if (!Arrays.equals(lineZap, other.lineZap)) {
+			return false;
+		}
+		if (myBackground == null) {
+			if (other.myBackground != null) {
+				return false;
+			}
+		} else if (!myBackground.equals(other.myBackground)) {
+			return false;
+		}
+		return true;
 	}
+
+
 }
