@@ -7,6 +7,7 @@ public class VBTetrisArrowKeys extends VBTetrisKeyAdapter{
 	public VBTetrisArrowKeys(VBTetrisPlayer player, VBTetrisPieceMover mover) {
 		super(player, mover);
 	}
+	
 	@Override
 	public void keyPressed(KeyEvent e)	{
 		int keycode = e.getKeyCode();
