@@ -79,14 +79,14 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 		_board = new VBTetrisBlock[BOARD_WIDTH * BOARD_HEIGHT];
 		
 		// create the board background image
-		boardBackground = new VBTetrisBackgroundImage(VBTetris._gameEnvir.getLevelImage(0));
+		boardBackground = new VBTetrisBackgroundImage(VBTetris._gameEnvir.getLevelImage());
 		// create the mover that is an interface for pieces to move on the board
 		_mover = new VBTetrisPieceMover(this);
-		addKeyListener(new TAdapter());
-		addKeyListener(new VBTetrisWASDKeys(players[1], _mover));
-		addKeyListener(new VBTetrisArrowKeys(players[0], _mover));
+		addKeyListener(new VBTetrisPauser());
+		addKeyListener(new VBTetrisWASDKeys(players[0], _mover));
+		addKeyListener(new VBTetrisArrowKeys(players[1], _mover));
 	}
-	
+
 	public VBTetrisPlayer[] getPlayers()
 	{
 		return players;
@@ -180,6 +180,9 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 				}
 			}
 		}
+		// paint the kill line
+		g.setColor(Color.WHITE);
+		g.drawLine(0, VBTetris.BOARD_HEIGHT_PX-KILL_LINE*VBTetris.SQUARE_SIZE, VBTetris.BOARD_WIDTH_PX, VBTetris.BOARD_HEIGHT_PX-KILL_LINE*VBTetris.SQUARE_SIZE);
 	}
 	// ****************************************************************************************************************
 	
@@ -381,6 +384,7 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 					removeRow(0);
 					++numKillLines;
 					break;
+					
 				}
 			}
 			++rowsChecked;
@@ -421,24 +425,20 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 	
 	
 	// Only respsonsible for pausing or unpausing the game
-	private class TAdapter extends KeyAdapter
+	private class VBTetrisPauser extends KeyAdapter
 	{
 		@Override
 		public void keyPressed(KeyEvent e)
 		{
 
 			if (gameOver) return;
-
-			int keycode = e.getKeyCode();
-
-			if (keycode ==  KeyEvent.VK_SPACE) {
+			if (e.getKeyCode() ==  KeyEvent.VK_SPACE) {
+				e.consume();
 				togglePause();
-				return;
-			} 
-			if (gamePaused) return;
 
+			} 
+	
 		}
 	}
-	// ***************************************************************************************
 
 }

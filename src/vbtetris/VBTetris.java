@@ -8,7 +8,6 @@ import javax.swing.JFrame;
 
 public class VBTetris extends JFrame
 {	
-	//fwnajfeaijfniwk
 	// players
 	final static int NUM_PLAYERS = 2;
 	private VBTetrisPlayer players[];
@@ -37,6 +36,10 @@ public class VBTetris extends JFrame
 	{
 		setLayout( new BoxLayout( getContentPane(), BoxLayout.X_AXIS ));
 		
+		//VBTetrisStartGameData gameData = (new VBTetrisOptions(BOARD_WIDTH_PX+PANEL_WIDTH, BOARD_HEIGHT_PX)).getGameCond();
+	//	VBTetrisOptions _options = new VBTetrisOptions(BOARD_WIDTH_PX+PANEL_WIDTH, BOARD_HEIGHT_PX);
+	//	add(_options);
+		
 		// create array of players
 		players = new VBTetrisPlayer[NUM_PLAYERS];
 		for (int i = 0; i < players.length; ++i) {
@@ -52,7 +55,7 @@ public class VBTetris extends JFrame
 		_board.setPreferredSize(new Dimension(BOARD_WIDTH_PX, BOARD_HEIGHT_PX));
 		_board.init();
 		
-		// create the player pane
+		// create the player paneB
 		_pane = new VBTetrisPlayerPane(PANEL_WIDTH, BOARD_HEIGHT, SQUARE_SIZE);
 		_pane.setPreferredSize(new Dimension(PANEL_WIDTH, BOARD_HEIGHT_PX));
 		
