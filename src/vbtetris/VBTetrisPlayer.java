@@ -12,7 +12,7 @@ public class VBTetrisPlayer {
 	private VBTetrisPieces nextPiece; 		// next piece
 	private int xPos, yPos;					// current position of players piece
 	private int score;						// players score
-
+	
 	VBTetrisPlayer()
 	{	
 		playerNum = ++numPlayers;			// assign player number (base 1 counting)

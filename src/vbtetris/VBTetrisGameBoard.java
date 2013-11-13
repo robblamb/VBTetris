@@ -285,6 +285,9 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 		// find (and remove) complete rows
 		int numCompleteRows = checkCompleteRow(player.getMinY(), player.getMaxY());
 		
+		// update the number of complete rows
+		player.setnumLinesRemoved((player.getnumLinesRemoved()+numCompleteRows));
+		
 		// find (and remove) blocks above kill line
 		int numKillLines = checkKillZone();
 		

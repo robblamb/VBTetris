@@ -51,10 +51,19 @@ public class VBTetrisPlayerPane extends JPanel
 			g.setFont(new Font("Times New Roman", Font.BOLD, fontSize));
 			g.drawString("Score: " + VBTetris._board.getPlayers()[i].getScore(), 10, currTop+30);
 			
+			// draw lines scored
+			g.setColor(Color.white);
+			g.fillRect(5, currTop + 40, PANEL_WIDTH-10, 30);
+			
+			// draw number of lines scored
+			g.setColor(Color.black);
+			g.setFont(new Font("Times New Roman", Font.BOLD, fontSize-2));
+			g.drawString("Cleared Lines: " + VBTetris._board.getPlayers()[i].getnumLinesRemoved(), 10, currTop+62);
+			
 			// draw next piece in player pane 
 			for (int j = 0; j < VBTetrisPieces.NUM_BLOCKS; ++j) {
 				int x = (PANEL_WIDTH/2) + (VBTetris._board.getPlayers()[i].getNextPiece().getBlock(j).getX() * SQUARE_SIZE);
-				int y = (currTop + (4*SQUARE_SIZE)) - (VBTetris._board.getPlayers()[i].getNextPiece().getBlock(j).getY() * SQUARE_SIZE);
+				int y = (currTop + 35 + (4*SQUARE_SIZE)) - (VBTetris._board.getPlayers()[i].getNextPiece().getBlock(j).getY() * SQUARE_SIZE);
 				VBTetris._board.drawSquare(g, x, y, VBTetris._board.getPlayers()[i].getNextPiece().getOwner());
 			}
 		}
