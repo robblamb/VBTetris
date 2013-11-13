@@ -97,6 +97,7 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 
 	private void stop()
 	{
+		gameOver = true;
 		for (int i = 0; i < players.length; i++) {
 			removeKeyListener(playAdapters[i]);
 		}
@@ -322,6 +323,7 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 		// check for a victorious player
 		if (player.amIVictorious()) {
 			stop();
+			return;
 		}
 		
 		// create a new piece
@@ -343,8 +345,7 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 		
 		// game is over if a new piece cant spawn
 		if (tryMove(player, player.getcurPiece(), player.getxPos(),player.getyPos()) != moveStatus.OK) {
-			timer.stop();
-			gameOver = true;
+			stop();
 		}
 		
 		player.setdropping(true);
