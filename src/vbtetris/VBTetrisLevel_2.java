@@ -1,5 +1,15 @@
 package vbtetris;
 
+import java.applet.Applet;
+import java.io.IOException;
+import java.net.URL;
+
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
+
 import java.applet.AudioClip;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
@@ -7,21 +17,53 @@ import java.io.IOException;
 import java.util.Arrays;
 
 import javax.imageio.ImageIO;
+import javax.sound.sampled.Clip;
 
 public class VBTetrisLevel_2 extends VBTetrisLevel {
 	 
 	 private static final int numLineZap = 5;
 	 private AudioClip lineZap[];
-	 String myBackground; 
-	 
+	 private String myBackground; 
+	 private Clip clip;
 	 public VBTetrisLevel_2() {
 		 super();
-		 for (int i = 1; i < numLineZap; ++i) {
-		  //  this.lineZap[i] = Applet.newAudioClip( getClass().getResource("../VBTetrisSound/SHODAN" + i + ".WAV"));
-		 }
 		 myBackground = "../VBTetrisImage/SHODAN-BG.png";
 	}
 
+	 private void setClip(URL url){
+		 try {
+		        // Set up an audio input stream piped from the sound file.
+		        AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(url);
+		        // Get a clip resource.
+		        clip = AudioSystem.getClip();
+		        // Open audio clip and load samples from the audio input stream.
+		        clip.open(audioInputStream);
+		    } catch (UnsupportedAudioFileException e) {
+		        e.printStackTrace();
+		    } catch (IOException e) {
+		        e.printStackTrace();
+		    } catch (LineUnavailableException e) {
+		        e.printStackTrace();
+		    }
+	 }
+	@Override
+	public void playLineSound(int numLinesScored) {
+		// Code here borrowed from a comment on stackoverflow.com
+		// TODO Auto-generated method stub
+	    URL url = getClass().getResource("../VBTetrisSound/zap2.wav");//You can change this to whatever other sound you have
+  	    setClip(url);//this method will load the sound
+	    if (clip.isRunning())
+		 	 clip.stop();   // Stop the player if it is still running
+	   	clip.setFramePosition(0); // rewind to the beginning
+	    clip.start();     // Start playing
+
+	}
+	@Override
+	public void playkillLineSound() {
+		playLineSound(0);
+		
+	}	
+	 
 	@Override
 	public Color getPieceColour(int playerNum) {
 		switch(playerNum) {

@@ -24,4 +24,6 @@ public abstract class VBTetrisLevel {
 	  */
 	 public abstract AudioClip getLineSound(int lines);
 	 public abstract AudioClip getLineSoundRandom();
+	 public abstract void playkillLineSound();
+	 public abstract void playLineSound(int numLinesScored);
 }

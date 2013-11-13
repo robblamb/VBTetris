@@ -200,7 +200,7 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 		}
 		// paint the kill line
 		g.setColor(Color.WHITE);
-		g.drawLine(0, VBTetris.BOARD_HEIGHT_PX-KILL_LINE*VBTetris.SQUARE_SIZE, VBTetris.BOARD_WIDTH_PX, VBTetris.BOARD_HEIGHT_PX-KILL_LINE*VBTetris.SQUARE_SIZE);
+		g.drawLine(0, SQUARE_SIZE*BOARD_HEIGHT-KILL_LINE*SQUARE_SIZE, BOARD_WIDTH*SQUARE_SIZE, SQUARE_SIZE*BOARD_HEIGHT-KILL_LINE*SQUARE_SIZE);
 	}
 	// ****************************************************************************************************************
 	
@@ -319,6 +319,7 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 		// modify player score
 		if (multiple > 0) player.addtoscore(1000*multiple*multiple+15);
 		else player.addtoscore(-1000*multiple*multiple+15);
+<<<<<<< HEAD
 		
 		// check for a victorious player
 		if (player.amIVictorious()) {
@@ -326,6 +327,10 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 			return;
 		}
 		
+=======
+		if (numCompleteRows>0) VBTetris._gameEnvir.playLineSound(numCompleteRows);
+		if (numKillLines>0) VBTetris._gameEnvir.playLineSound(0);
+>>>>>>> stash
 		// create a new piece
 		newPiece(player);
 	}

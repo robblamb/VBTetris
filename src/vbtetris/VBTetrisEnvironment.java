@@ -18,6 +18,12 @@ public class VBTetrisEnvironment {
     // initialize the level 
 	public void init() { setLevel();}
 
+	public void playkillLineSound(){
+		_level.playkillLineSound();
+	}
+	public void playLineSound(int lines){
+		_level.playLineSound(lines);
+	}
 	// returns the current level, base one counting
 	public int getCurrentLevel(){return curLevel;};
 
