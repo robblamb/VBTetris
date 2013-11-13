@@ -459,6 +459,10 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 				e.consume();
 				togglePause();
 				if (isGamePaused()) { VBTetris._pause.repaint(); }
+				else {
+					repaint();
+					VBTetris._pane.repaint();
+				}
 			} 
 	
 		}
