@@ -43,6 +43,7 @@ public class VBTetris extends JPanel {
 	static VBTetrisGameBoard _board;
 	static VBTetrisPlayerPane _pane;
 	static VBTetrisPauseScreen _pause;
+	static VBTetrisOptionsScreen _options;
 	
 	public VBTetris() {
 		
@@ -73,6 +74,9 @@ public class VBTetris extends JPanel {
 		// create pause screen panel
 		_pause = new VBTetrisPauseScreen(BOARD_WIDTH_PX+PANEL_WIDTH_PX, BOARD_HEIGHT_PX, PANEL_WIDTH_PX);
 		
+		// create options screen panel
+		_options = new VBTetrisOptionsScreen(BOARD_WIDTH_PX+PANEL_WIDTH_PX, BOARD_HEIGHT_PX, PANEL_WIDTH_PX);
+		
 		// add the game board pane
 		layeredPane.add(_board);
 		_board.setBounds(0, 0, BOARD_WIDTH_PX, BOARD_HEIGHT_PX);
@@ -84,6 +88,10 @@ public class VBTetris extends JPanel {
 		// add the pause screen pane
 		layeredPane.add(_pause);
 		_pause.setBounds(0, 0, BOARD_WIDTH_PX+PANEL_WIDTH_PX, BOARD_HEIGHT_PX);
+		
+		// add the pause screen pane
+		layeredPane.add(_options);
+		_options.setBounds(0, 0, BOARD_WIDTH_PX+PANEL_WIDTH_PX, BOARD_HEIGHT_PX);			
 		
 		// add the layeredPane to the content pane
 		add(layeredPane);
