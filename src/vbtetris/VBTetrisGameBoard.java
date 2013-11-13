@@ -319,18 +319,17 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 		// modify player score
 		if (multiple > 0) player.addtoscore(1000*multiple*multiple+15);
 		else player.addtoscore(-1000*multiple*multiple+15);
-<<<<<<< HEAD
+
 		
 		// check for a victorious player
 		if (player.amIVictorious()) {
 			stop();
 			return;
 		}
-		
-=======
+
 		if (numCompleteRows>0) VBTetris._gameEnvir.playLineSound(numCompleteRows);
 		if (numKillLines>0) VBTetris._gameEnvir.playLineSound(0);
->>>>>>> stash
+
 		// create a new piece
 		newPiece(player);
 	}
