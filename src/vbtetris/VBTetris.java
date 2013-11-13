@@ -12,7 +12,7 @@ public class VBTetris extends JPanel {
 	// http://docs.oracle.com/javase/tutorial/uiswing/components/layeredpane.html
 	
 	// players
-	final static int NUM_PLAYERS = 4;
+	final static int NUM_PLAYERS = 2;
 	private VBTetrisPlayer players[];
 	
 	final static int PLAYER_GAP = 4;	// squares between each player
@@ -47,12 +47,12 @@ public class VBTetris extends JPanel {
 	
 	public VBTetris() {
 		
-		// set frame 
+		// set contentPane layout manager
 		setLayout( new BoxLayout( this, BoxLayout.X_AXIS ));
 		
 		// create and set up the layered pane
 		layeredPane = new JLayeredPane();
-		layeredPane.setPreferredSize(new Dimension(BOARD_WIDTH_PX+PANEL_WIDTH_PX, BOARD_HEIGHT_PX));
+		layeredPane.setPreferredSize(new Dimension(FRAME_WIDTH_PX, FRAME_HEIGHT_PX));
 		
 		// create array of players
 		players = new VBTetrisPlayer[NUM_PLAYERS];
@@ -72,10 +72,10 @@ public class VBTetris extends JPanel {
 		_pane = new VBTetrisPlayerPane(PANEL_WIDTH_PX, BOARD_HEIGHT, SQUARE_SIZE);
 		
 		// create pause screen panel
-		_pause = new VBTetrisPauseScreen(BOARD_WIDTH_PX+PANEL_WIDTH_PX, BOARD_HEIGHT_PX, PANEL_WIDTH_PX);
+		_pause = new VBTetrisPauseScreen(FRAME_WIDTH_PX, FRAME_HEIGHT_PX);
 		
 		// create options screen panel
-		_options = new VBTetrisOptionsScreen(BOARD_WIDTH_PX+PANEL_WIDTH_PX, BOARD_HEIGHT_PX, PANEL_WIDTH_PX);
+		_options = new VBTetrisOptionsScreen(FRAME_WIDTH_PX, FRAME_HEIGHT_PX);
 		
 		// add the game board pane
 		layeredPane.add(_board);
@@ -83,15 +83,15 @@ public class VBTetris extends JPanel {
 		
 		// add the player pane
 		layeredPane.add(_pane);
-		_pane.setBounds(BOARD_WIDTH_PX, 0, BOARD_WIDTH_PX+PANEL_WIDTH_PX, BOARD_HEIGHT_PX);
+		_pane.setBounds(BOARD_WIDTH_PX, 0, FRAME_WIDTH_PX, FRAME_HEIGHT_PX);
 		
 		// add the pause screen pane
 		layeredPane.add(_pause);
-		_pause.setBounds(0, 0, BOARD_WIDTH_PX+PANEL_WIDTH_PX, BOARD_HEIGHT_PX);
+		_pause.setBounds(0, 0, FRAME_WIDTH_PX, FRAME_HEIGHT_PX);
 		
-		// add the pause screen pane
+		// add the options screen pane
 		layeredPane.add(_options);
-		_options.setBounds(0, 0, BOARD_WIDTH_PX+PANEL_WIDTH_PX, BOARD_HEIGHT_PX);			
+		_options.setBounds(0, 0, FRAME_WIDTH_PX, FRAME_HEIGHT_PX);			
 		
 		// add the layeredPane to the content pane
 		add(layeredPane);
@@ -105,6 +105,7 @@ public class VBTetris extends JPanel {
 		frame.setResizable(false);
 		frame.setTitle("Virtual Boy Tetris");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setSize(new Dimension(FRAME_WIDTH_PX, FRAME_HEIGHT_PX));
 		frame.setLocationRelativeTo(null);
 
 		// create and set up the content pane
