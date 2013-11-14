@@ -29,10 +29,10 @@ public class VBTetrisPieces
     
     private static int[][][] blockCoordsTable;						// holds all possible block coords
     
-    private Tetrominoes pieceShape;									// piece shape
+    protected Tetrominoes pieceShape;									// piece shape
     private int owner;												// piece owner
    
-    private VBTetrisBlock blocks[];									// holds the blocks that make up the shape
+    protected VBTetrisBlock blocks[];									// holds the blocks that make up the shape
     
     public VBTetrisPieces()
     {
