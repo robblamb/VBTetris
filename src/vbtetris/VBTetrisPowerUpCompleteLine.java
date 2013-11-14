@@ -20,7 +20,7 @@ public class VBTetrisPowerUpCompleteLine extends VBTetrisPowerUp {
 	public void spread()
 	{
 		if (readyToFire) {
-			//_board.
+			int numToAddRight = _board.rowEmptyToRight(xPosition, yPosition);
 		}
 	}
 }
