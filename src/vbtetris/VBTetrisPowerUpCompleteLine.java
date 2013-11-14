@@ -18,6 +18,7 @@ public class VBTetrisPowerUpCompleteLine extends VBTetrisPowerUp {
 		readyToFire = true;
 		_board = gameToPowUp;
 		_player = playerWithPow;
+		myPiece.setOwner(_player.getcurPiece().getOwner());
 		_player.setcurPiece(myPiece);
 	}
 	
@@ -25,7 +26,7 @@ public class VBTetrisPowerUpCompleteLine extends VBTetrisPowerUp {
 	public void secondCommit()
 	{
 		if (readyToFire) {
-			int numToAddRight = _board.rowEmptyToRight(xPosition, yPosition);
+			int numToAddRight = _board.rowEmptyToRight(xPosition, yPosition, _player);
 			myPiece.expandLeft(numToAddRight);
 			_player.setcurPiece(myPiece);
 			_board.repaint();

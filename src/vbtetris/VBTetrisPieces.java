@@ -12,7 +12,7 @@ import java.lang.Math;
 public class VBTetrisPieces
 {	
 	public final static int NUM_BLOCKS = 9;             // size of each shape
-	public final static int NUM_SHAPES = 9;             // the number of shapes
+	public final static int NUM_SHAPES = 8;             // the number of shapes
 	
     enum Tetrominoes {
     	EMPTY,
@@ -23,7 +23,6 @@ public class VBTetrisPieces
     	SQUARE_SHAPE,
     	L_SHAPE,
     	MIRRORED_L_SHAPE,
-    	SINGLE,
     	//O_SHAPE
     };
     
@@ -112,18 +111,13 @@ public class VBTetrisPieces
             	{ 0, 0 },	{ 0, -1 },	{ 1, -1 }
             },
             
-            {  //Singleton
-            	{ 0, 0 },	{ 0, 0 },	{ 0, 0 },
-            	{ 0, 0 },	{ 0, 0 },	{ 0, 0 },
-            	{ 0, 0 },	{ 1, 0 },	{ 0, 0 }
-            	
-            	
+            
             	/*
             	//Firefly
             	{ 1, 1 },	{ 1, 1 },	{ 1, 1 },
             	{ 1, 1 },	{ 1, 1 },	{ 1, 1 },
             	{ 1, 1 },	{ 1, 1 },	{ 1, 1 }*/
-            }//,
+            //,
             
             //{	// O_SHAPE
             //	{ -1, 1 },	{ 0, 1 },	{ 1, 1 },

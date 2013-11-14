@@ -363,16 +363,16 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 		newPiece(player);
 	}
 	
-	public int rowEmptyToRight(int toTheRightOfMe, int atMyHeight)
+	public int rowEmptyToRight(int toTheRightOfMe, int atMyHeight, VBTetrisPlayer myPlayer)
 	{
 		if (toTheRightOfMe > BOARD_WIDTH || atMyHeight > BOARD_HEIGHT 
 				|| toTheRightOfMe < 0 || atMyHeight < 0) {
-			return -1;
+			return 0;
 		}
 		
 		int howManyToTheRight = 0;
 		
-		if (!isBoardBlock(toTheRightOfMe, atMyHeight)) {
+		if (!isBoardBlock(toTheRightOfMe, atMyHeight) && !isPlayerBlock(myPlayer, toTheRightOfMe, atMyHeight)) {
 			howManyToTheRight++;
 		}
 		

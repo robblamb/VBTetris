@@ -3,6 +3,11 @@ package vbtetris;
 public class VBTetrisPowerUpCompletePiece extends VBTetrisPieces {
 	private int[][] myBlockCoordsTable;
 	
+	public VBTetrisPowerUpCompletePiece()
+	{
+		super();
+	}
+	
 	@Override
 	public void setShape(Tetrominoes shape)
 	{
