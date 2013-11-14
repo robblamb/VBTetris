@@ -9,7 +9,7 @@ public class VBTetrisPauseScreen extends JPanel {
 	private final int FRAME_WIDTH_PX;
 	private final int FRAME_HEIGHT_PX;
 	
-	public VBTetrisPauseScreen(int w, int h, int p) {
+	public VBTetrisPauseScreen(int w, int h) {
 		setBackground(new Color(0, 0, 0, 0));
 		FRAME_WIDTH_PX = w;
 		FRAME_HEIGHT_PX = h;
