@@ -328,8 +328,10 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 			}
 		}
 		// *****************************************************
+		if (powUpOnBoard != null) {
+			powUpOnBoard.secondCommit();
+		}
 		
-		//powUpOnBoard.spread();
 		// find (and remove) complete rows
 		int numCompleteRows = checkCompleteRow(player.getMinY(), player.getMaxY());
 		
@@ -411,6 +413,7 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 					if (powUpOnBoard.didICollide(x, y)) {
 						powUpOnBoard.commitAction(this, player);
 						_board[(powUpOnBoard.getYPosition() * BOARD_WIDTH) + powUpOnBoard.getXPosition()].setEmpty(true);
+						powUpOnBoard = null;
 					}
 				}
 				return moveStatus.HIT_BOUNDARY;

@@ -13,7 +13,7 @@ public class VBTetrisPowerUpSelector {
 			int myChoice = (int)(4*Math.random());
 			switch ( myChoice ) {
 				case 0:
-					//something
+					powerToReturn = new VBTetrisPowerUpCompleteLine();
 				case 1:
 					//something
 				case 2:
