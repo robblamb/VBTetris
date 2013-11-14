@@ -329,7 +329,7 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 		}
 		// *****************************************************
 		
-		powUpOnBoard.spread();
+		//powUpOnBoard.spread();
 		// find (and remove) complete rows
 		int numCompleteRows = checkCompleteRow(player.getMinY(), player.getMaxY());
 		
@@ -359,6 +359,22 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 
 		// create a new piece
 		newPiece(player);
+	}
+	
+	public int rowEmptyToRight(int toTheRightOfMe, int atMyHeight)
+	{
+		if (toTheRightOfMe > BOARD_WIDTH || atMyHeight > BOARD_HEIGHT 
+				|| toTheRightOfMe < 0 || atMyHeight < 0) {
+			return -1;
+		}
+		
+		int howManyToTheRight = 0;
+		
+		if (!isBoardBlock(toTheRightOfMe, atMyHeight)) {
+			howManyToTheRight++;
+		}
+		
+		return howManyToTheRight;
 	}
 	
 	private void newPiece(VBTetrisPlayer player)
