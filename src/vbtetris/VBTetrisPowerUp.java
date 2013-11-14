@@ -1,8 +1,9 @@
 package vbtetris;
 
 public abstract class VBTetrisPowerUp {
-	private int xPosition, yPosition;
-	private VBTetrisGameBoard _board;
+	protected int xPosition, yPosition;
+	protected VBTetrisGameBoard _board;
+	protected VBTetrisPlayer _player;
 	
 	public VBTetrisPowerUp()
 	{
@@ -39,5 +40,5 @@ public abstract class VBTetrisPowerUp {
 		return false;
 	}
 	
-	public abstract void commitAction();
+	public abstract void commitAction(VBTetrisGameBoard gameToPowUp, VBTetrisPlayer playerWithPow);
 }

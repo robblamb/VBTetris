@@ -393,7 +393,7 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 			if (isBoardBlock( x, y )) {
 				if (powUpOnBoard != null) {
 					if (powUpOnBoard.didICollide(x, y)) {
-						powUpOnBoard.commitAction();
+						powUpOnBoard.commitAction(this, player);
 					}
 				}
 				return moveStatus.HIT_BOUNDARY;
