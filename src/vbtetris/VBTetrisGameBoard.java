@@ -134,7 +134,10 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 					xPos = (int)((BOARD_WIDTH-1)*Math.random());
 					yPos = (int)((BOARD_HEIGHT-1)*Math.random());
 				}
-				
+				powUpOnBoard.setXPosition(xPos);
+				powUpOnBoard.setYPosition(yPos);
+				_board[(yPos * BOARD_WIDTH) + xPos].setOwner(0);
+				_board[(yPos * BOARD_WIDTH) + xPos].setEmpty(false);
 			}
 		}
 	}
