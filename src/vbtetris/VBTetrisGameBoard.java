@@ -119,7 +119,7 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 	public void actionPerformed(ActionEvent e)
 	{ 
 		for (int i = 0; i < players.length; ++i) dropOneDown(players[i]);
-		
+		putPowerBlock();
 	}
 	
 	private void putPowerBlock() 
@@ -329,6 +329,7 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 		}
 		// *****************************************************
 		
+		powUpOnBoard.spread();
 		// find (and remove) complete rows
 		int numCompleteRows = checkCompleteRow(player.getMinY(), player.getMaxY());
 		
@@ -389,7 +390,14 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 			int y = newYPos - newPiece.getBlock(i).getY();
 			
 			if (x < 0 || x >= BOARD_WIDTH || y < 0 || y >= BOARD_HEIGHT) return moveStatus.HIT_BOUNDARY;
-			if (isBoardBlock( x, y )) return moveStatus.HIT_BOUNDARY;
+			if (isBoardBlock( x, y )) {
+				if (powUpOnBoard != null) {
+					if (powUpOnBoard.didICollide(x, y)) {
+						powUpOnBoard.commitAction();
+					}
+				}
+				return moveStatus.HIT_BOUNDARY;
+			}
 			if (isPlayerBlock( player, x, y )) return moveStatus.HIT_PIECE;
 		}
 		

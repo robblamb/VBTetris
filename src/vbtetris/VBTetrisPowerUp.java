@@ -1,11 +1,12 @@
 package vbtetris;
 
-public class VBTetrisPowerUp {
+public abstract class VBTetrisPowerUp {
 	private int xPosition, yPosition;
+	private VBTetrisGameBoard _board;
 	
 	public VBTetrisPowerUp()
 	{
-		// does nothing for now
+		_board = null;
 	}
 	
 	public void setXPosition(int xPos)
@@ -27,4 +28,16 @@ public class VBTetrisPowerUp {
 	{
 		return yPosition;
 	}
+	
+	public boolean didICollide(int xPos, int yPos) 
+	{
+		if (xPos == xPosition) {
+			if (yPos == yPosition) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public abstract void commitAction();
 }

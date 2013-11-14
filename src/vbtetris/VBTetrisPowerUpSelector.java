@@ -9,7 +9,7 @@ public class VBTetrisPowerUpSelector {
 	
 	public VBTetrisPowerUp chooseAPowerUp() {
 		if (99*Math.random() < 95) {
-			VBTetrisPowerUp powerToReturn = new VBTetrisPowerUp();
+			VBTetrisPowerUp powerToReturn = null;
 			int myChoice = (int)(4*Math.random());
 			switch ( myChoice ) {
 				case 0:
