@@ -29,6 +29,7 @@ public class VBTetrisPowerUpCompleteLine extends VBTetrisPowerUp {
 			myPiece.expandLeft(numToAddRight);
 			_player.setcurPiece(myPiece);
 			_board.repaint();
+			readyToFire = false;
 		}
 	}
 }

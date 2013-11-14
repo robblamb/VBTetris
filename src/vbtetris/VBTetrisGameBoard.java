@@ -414,6 +414,8 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 						powUpOnBoard.commitAction(this, player);
 						_board[(powUpOnBoard.getYPosition() * BOARD_WIDTH) + powUpOnBoard.getXPosition()].setEmpty(true);
 						powUpOnBoard = null;
+						repaint();
+						return moveStatus.HIT_PIECE;
 					}
 				}
 				return moveStatus.HIT_BOUNDARY;
