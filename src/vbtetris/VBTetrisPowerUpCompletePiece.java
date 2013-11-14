@@ -1,6 +1,8 @@
 package vbtetris;
 
 public class VBTetrisPowerUpCompletePiece extends VBTetrisPieces {
+	private int[][] myBlockCoordsTable;
+	
 	@Override
 	public void setShape(Tetrominoes shape)
 	{
@@ -9,7 +11,7 @@ public class VBTetrisPowerUpCompletePiece extends VBTetrisPieces {
 	
 	private void setsShape(Tetrominoes shape)
 	{
-		int[][] myBlockCoordsTable = new int[][] {         
+		myBlockCoordsTable = new int[][] {         
 	            //Singleton
 	            { 0, 0 },	{ 0, 0 },	{ 0, 0 },
 	            { 0, 0 },	{ 0, 0 },	{ 0, 0 },
@@ -31,5 +33,10 @@ public class VBTetrisPowerUpCompletePiece extends VBTetrisPieces {
 	public void setRandomShape()
 	{
 		setsShape(Tetrominoes.SQUARE_SHAPE);
+	}
+	
+	public void expandLeft(int numSquaresToExpand)
+	{
+		myBlockCoordsTable[7][0] = -numSquaresToExpand;
 	}
 }
