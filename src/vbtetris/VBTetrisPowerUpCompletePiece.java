@@ -42,6 +42,13 @@ public class VBTetrisPowerUpCompletePiece extends VBTetrisPieces {
 	
 	public void expandLeft(int numSquaresToExpand)
 	{
-		myBlockCoordsTable[7][0] = -numSquaresToExpand;
+		for (int i = 0; i < numSquaresToExpand; i++) {
+			myBlockCoordsTable[i][0] = -i;
+		}
+		
+		for (int i = 0; i < NUM_BLOCKS; ++i) {											
+	         blocks[i] = new VBTetrisBlock();
+	         blocks[i].setBlockCoords(myBlockCoordsTable[i]);				
+	     }
 	}
 }
