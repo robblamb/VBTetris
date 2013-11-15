@@ -6,6 +6,12 @@ public class VBTetrisPowerUpCompletePiece extends VBTetrisPieces {
 	public VBTetrisPowerUpCompletePiece()
 	{
 		super();
+		myBlockCoordsTable = new int[][] {         
+	            //Singleton
+	            { 0, 0 },	{ 0, 0 },	{ 0, 0 },
+	            { 0, 0 },	{ 0, 0 },	{ 0, 0 },
+	            { 0, 0 },	{ 0, 0 },	{ 0, 0 }
+	        };
 	}
 	
 	@Override
@@ -15,15 +21,7 @@ public class VBTetrisPowerUpCompletePiece extends VBTetrisPieces {
 	}
 	
 	private void setsShape(Tetrominoes shape)
-	{
-		myBlockCoordsTable = new int[][] {         
-	            //Singleton
-	            { 0, 0 },	{ 0, 0 },	{ 0, 0 },
-	            { 0, 0 },	{ 0, 0 },	{ 0, 0 },
-	            { 0, 0 },	{ 0, 0 },	{ 0, 0 }
-	        };
-	        
-	    	
+	{     	
 	     // fill the blocks array with 9 new blocks, each block gets a set of coords and an owner,
 	     // coords are based on the shape we want to create
 	     for (int i = 0; i < NUM_BLOCKS; ++i) {											// for each block
