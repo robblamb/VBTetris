@@ -1,6 +1,6 @@
 package vbtetris;
 
-
+// CSCI331 RL JUNIT
 import static org.junit.Assert.*;
 
 import org.junit.BeforeClass;
@@ -8,8 +8,10 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 public class VBTetrisTestLevel {
-	private static VBTetrisLevel level[]=
-			{new VBTetrisLevel_1(), new VBTetrisLevel_2()};
+	private static VBTetrisLevel level[]= {
+											new VBTetrisLevel_1(), 
+											new VBTetrisLevel_2()
+										 	};
 	@Ignore
 	@Test
 	public void playSound(){
