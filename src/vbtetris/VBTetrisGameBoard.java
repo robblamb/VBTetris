@@ -373,9 +373,11 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 		
 		int howManyToTheRight = 0;
 		
-		for (int i = toTheRightOfMe; i < BOARD_WIDTH; i++) {
-			if (!isBoardBlock(i, atMyHeight) && !isPlayerBlock(myPlayer, i, atMyHeight)) {
+		for (int i = toTheRightOfMe+1; i < BOARD_WIDTH; i++) {
+			if (!isBoardBlock(i, atMyHeight)) {
 				howManyToTheRight++;
+			} else {
+				break;
 			}
 		}
 		
