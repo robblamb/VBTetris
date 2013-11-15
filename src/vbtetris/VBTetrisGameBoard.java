@@ -312,7 +312,7 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 	private void storePiece(VBTetrisPlayer player)
 	{
 		if (powUpOnBoard != null && _power.getPowerUpOnGameBoard() == false) {
-			powUpOnBoard.secondCommit();
+			powUpOnBoard.secondCommit(player);
 			powUpOnBoard = null;
 		}
 		
@@ -373,8 +373,10 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 		
 		int howManyToTheRight = 0;
 		
-		if (!isBoardBlock(toTheRightOfMe, atMyHeight) && !isPlayerBlock(myPlayer, toTheRightOfMe, atMyHeight)) {
-			howManyToTheRight++;
+		for (int i = toTheRightOfMe; i < BOARD_WIDTH; i++) {
+			if (!isBoardBlock(i, atMyHeight) && !isPlayerBlock(myPlayer, i, atMyHeight)) {
+				howManyToTheRight++;
+			}
 		}
 		
 		return howManyToTheRight;
