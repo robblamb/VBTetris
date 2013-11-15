@@ -423,8 +423,9 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 						repaint();
 						return moveStatus.OK;
 					}
+				} else {
+					return moveStatus.HIT_BOUNDARY;
 				}
-				return moveStatus.HIT_BOUNDARY;
 			}
 			if (isPlayerBlock( player, x, y )) return moveStatus.HIT_PIECE;
 		}
