@@ -23,7 +23,7 @@ public class VBTetrisPowerUpCompleteLine extends VBTetrisPowerUp {
 	}
 	
 	@Override
-	public void secondCommit(VBTetrisPlayer currentPlayer)
+	public boolean secondCommit(VBTetrisPlayer currentPlayer)
 	{
 		if (readyToFire && _player.equals(currentPlayer)) {
 			int numToAddRight = _board.rowEmptyToRight(xPosition, yPosition, _player);
@@ -31,6 +31,8 @@ public class VBTetrisPowerUpCompleteLine extends VBTetrisPowerUp {
 			_player.setcurPiece(myPiece);
 			_board.repaint();
 			readyToFire = false;
+			return true;
 		}
+		return false;
 	}
 }

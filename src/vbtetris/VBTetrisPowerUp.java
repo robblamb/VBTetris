@@ -42,5 +42,5 @@ public abstract class VBTetrisPowerUp {
 	
 	public abstract void commitAction(VBTetrisGameBoard gameToPowUp, VBTetrisPlayer playerWithPow);
 	
-	public abstract void secondCommit(VBTetrisPlayer currentPlayer);
+	public abstract boolean secondCommit(VBTetrisPlayer currentPlayer);
 }
