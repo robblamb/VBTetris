@@ -18,6 +18,21 @@ import java.util.Arrays;
 import javax.imageio.ImageIO;
 import javax.sound.sampled.Clip;
 
+/**
+ * 
+ * @author Robert Lamb, Team Virtual Boy, CSCI 331, Fall 2013
+ * 
+ *  // CSCI331 RL SUBCLASS
+ *  This is a subclass of VBTetrisLevel, it implements all the functionality
+ *  This can be treated like any other Level
+ *  
+ *  This level has the planet made out of tetriminoes as the background
+ *  It uses star trek sounds taken from the internet 
+ *  The player colours are standard Color.color from java
+ *  
+ *  
+ *
+ */
 public class VBTetrisLevel_1 extends VBTetrisLevel{
 	 
 	 protected static final int numLineZap = 5;
@@ -71,7 +86,7 @@ public class VBTetrisLevel_1 extends VBTetrisLevel{
 			case(2): return Color.cyan;
 			case(3): return Color.orange;
 			case(4): return Color.blue;
-			default: return null;
+			default: return Color.white;
 		}
 	}
 
