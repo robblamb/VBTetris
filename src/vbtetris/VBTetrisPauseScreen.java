@@ -10,7 +10,8 @@ public class VBTetrisPauseScreen extends JPanel {
 	private final int FRAME_WIDTH_PX;
 	private final int FRAME_HEIGHT_PX;
 	
-	private JButton myButton;
+	private JButton btnQuit;
+	private JButton btnSubmitScore;
 	
 	public VBTetrisPauseScreen(int w, int h) {
 		
@@ -20,16 +21,31 @@ public class VBTetrisPauseScreen extends JPanel {
 		FRAME_WIDTH_PX = w;
 		FRAME_HEIGHT_PX = h;
 		
-		myButton = new JButton("test button");
-		myButton.setFocusable(false);
-		myButton.addMouseListener(new java.awt.event.MouseAdapter() {
+		// create quit game button
+		btnQuit = new JButton("Quit Game");
+		btnQuit.setFocusable(false);
+		btnQuit.addMouseListener(new java.awt.event.MouseAdapter() {
 		    public void mouseClicked(java.awt.event.MouseEvent e) {
-		        System.out.println("Button clicked");
+		    	 System.exit(0);
 		    }
 		});
-		myButton.setBounds(FRAME_WIDTH_PX/2-50, FRAME_HEIGHT_PX/2-50, 100, 100);
 		
-		add(myButton);
+		// create submit score button
+		btnSubmitScore = new JButton("Submit Score");
+		btnSubmitScore.setFocusable(false);
+		btnSubmitScore.addMouseListener(new java.awt.event.MouseAdapter() {
+		    public void mouseClicked(java.awt.event.MouseEvent e) {
+		    	System.out.println("Submit Score");
+		    }
+		});
+		
+		// position buttons
+		btnQuit.setBounds(FRAME_WIDTH_PX/2-60-75, FRAME_HEIGHT_PX/2-20, 120, 40);
+		btnSubmitScore.setBounds(FRAME_WIDTH_PX/2-60+75, FRAME_HEIGHT_PX/2-20, 120, 40);
+		
+		// add buttons to pause screen
+		add(btnQuit);
+		add(btnSubmitScore);
 	}
 	
 	public void paintComponent(Graphics g) {
@@ -39,6 +55,9 @@ public class VBTetrisPauseScreen extends JPanel {
 		g.setColor(color);
 		g.fillRect(0, 0, FRAME_WIDTH_PX, FRAME_HEIGHT_PX);
 		
+	}
+	
+	public void createButtons() {
 		
 	}
 }
