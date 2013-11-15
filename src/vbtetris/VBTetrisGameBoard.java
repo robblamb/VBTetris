@@ -129,7 +129,7 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 			if (powUpOnBoard != null) {
 				_power.setPowerUpOnGameBoard(true);
 				int xPos = (int)((BOARD_WIDTH-1)*Math.random());
-				int yPos = (int)((BOARD_HEIGHT-1)*Math.random());
+				int yPos = (int)((BOARD_HEIGHT-4)*Math.random());
 				while (isPlayerBlock(null, xPos, yPos) || isBoardBlock(xPos, yPos)) {
 					xPos = (int)((BOARD_WIDTH-1)*Math.random());
 					yPos = (int)((BOARD_HEIGHT-1)*Math.random());
@@ -311,7 +311,7 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 	// stores a piece on the board
 	private void storePiece(VBTetrisPlayer player)
 	{
-		if (powUpOnBoard != null) {
+		if (powUpOnBoard != null && _power.getPowerUpOnGameBoard() == false) {
 			powUpOnBoard.secondCommit();
 			powUpOnBoard = null;
 		}
@@ -410,7 +410,7 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 			
 			if (x < 0 || x >= BOARD_WIDTH || y < 0 || y >= BOARD_HEIGHT) return moveStatus.HIT_BOUNDARY;
 			if (isBoardBlock( x, y )) {
-				if (_power.getPowerUpOnGameBoard()) {
+				if (_power.getPowerUpOnGameBoard() && powUpOnBoard != null) {
 					if (powUpOnBoard.didICollide(x, y)) {
 						powUpOnBoard.commitAction(this, player);
 						_board[(powUpOnBoard.getYPosition() * BOARD_WIDTH) + powUpOnBoard.getXPosition()].setEmpty(true);
