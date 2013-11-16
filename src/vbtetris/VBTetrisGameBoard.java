@@ -132,7 +132,7 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 				int yPos = (int)((BOARD_HEIGHT-4)*Math.random());
 				while (isPlayerBlock(null, xPos, yPos) || isBoardBlock(xPos, yPos)) {
 					xPos = (int)((BOARD_WIDTH-1)*Math.random());
-					yPos = (int)((BOARD_HEIGHT-1)*Math.random());
+					yPos = (int)((BOARD_HEIGHT-4)*Math.random());
 				}
 				powUpOnBoard.setXPosition(xPos);
 				powUpOnBoard.setYPosition(yPos);

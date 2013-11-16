@@ -1,7 +1,5 @@
 package vbtetris;
 
-import vbtetris.VBTetrisPieces.Tetrominoes;
-
 public class VBTetrisPowerUpCompleteLine extends VBTetrisPowerUp {
 	private boolean readyToFire;
 	private VBTetrisPowerUpCompletePiece myPiece;
