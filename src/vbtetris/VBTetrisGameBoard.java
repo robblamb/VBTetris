@@ -485,8 +485,14 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 	{
 		// move all the rows above the target row down by 1
 		for (int k = activeRow; k < BOARD_HEIGHT - 1; ++k) {
-			for (int j = 0; j < BOARD_WIDTH; ++j)
+			for (int j = 0; j < BOARD_WIDTH; ++j) {
+				if (powUpOnBoard != null && _power.getPowerUpOnGameBoard() && powUpOnBoard.didICollide(j, k)) {
+					_board[(powUpOnBoard.getYPosition() * BOARD_WIDTH) + powUpOnBoard.getXPosition()].setEmpty(true);
+					powUpOnBoard = null;
+					_power.setPowerUpOnGameBoard(false);	
+				}
 				_board[(k * BOARD_WIDTH) + j] = getBlock(j, k + 1);
+			}
 		}
 		repaint();
 	}
