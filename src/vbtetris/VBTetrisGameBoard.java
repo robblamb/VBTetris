@@ -141,6 +141,7 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 				powUpOnBoard.setXPosition(xPos);
 				powUpOnBoard.setYPosition(yPos);
 				_board[(yPos * BOARD_WIDTH) + xPos].setEmpty(false);
+				_board[(yPos * BOARD_WIDTH) + xPos].setShape(Tetrominoes.SQUARE_SHAPE);
 			}
 		}
 	}
@@ -427,7 +428,7 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 				if (_power.getPowerUpOnGameBoard() && powUpOnBoard != null) {
 					if (powUpOnBoard.didICollide(x, y)) {
 						powUpOnBoard.commitAction(this, player);
-						_board[(powUpOnBoard.getYPosition() * BOARD_WIDTH) + powUpOnBoard.getXPosition()].setEmpty(true);
+						_board[(powUpOnBoard.getYPosition() * BOARD_WIDTH) + powUpOnBoard.getXPosition()] = new VBTetrisBlock();
 						_power.setPowerUpOnGameBoard(false);
 						repaint();
 						return moveStatus.OK;
