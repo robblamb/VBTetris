@@ -11,6 +11,8 @@ import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
 
+import java.util.Random;
+
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
@@ -34,6 +36,7 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 	private VBTetrisPieceMover _mover;
 	private VBTetrisPowerUpSelector _power;
 	private VBTetrisPowerUp powUpOnBoard;
+	Random random;
 	
 	// SHOULD BE IN GAME ENGINE CLASS
 	private boolean gameOver;
@@ -98,6 +101,7 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 		
 		_power = new VBTetrisPowerUpSelector();
 		powUpOnBoard = null;
+		random = new Random(17878931);
 	}
 	
 	private void stop()
@@ -128,11 +132,11 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 			powUpOnBoard = _power.chooseAPowerUp();
 			if (powUpOnBoard != null) {
 				_power.setPowerUpOnGameBoard(true);
-				int xPos = (int)((BOARD_WIDTH-1)*Math.random());
-				int yPos = (int)((BOARD_HEIGHT-4)*Math.random());
+				int xPos = random.nextInt(BOARD_WIDTH-1);
+				int yPos = random.nextInt(BOARD_HEIGHT-4);
 				while (isPlayerBlock(null, xPos, yPos) || isBoardBlock(xPos, yPos)) {
-					xPos = (int)((BOARD_WIDTH-1)*Math.random());
-					yPos = (int)((BOARD_HEIGHT-4)*Math.random());
+					xPos = random.nextInt(BOARD_WIDTH-1);
+					yPos = random.nextInt(BOARD_HEIGHT-4);
 				}
 				powUpOnBoard.setXPosition(xPos);
 				powUpOnBoard.setYPosition(yPos);
