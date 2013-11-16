@@ -88,6 +88,7 @@ public class VBTetris extends JPanel {
 		// add the pause screen pane
 		layeredPane.add(_pause);
 		_pause.setBounds(0, 0, FRAME_WIDTH_PX, FRAME_HEIGHT_PX);
+		_pause.setVisible(false);
 		
 		// add the options screen pane
 		layeredPane.add(_options);
@@ -95,6 +96,9 @@ public class VBTetris extends JPanel {
 		
 		// add the layeredPane to the content pane
 		add(layeredPane);
+		
+		// set the position of the _pause pane
+		layeredPane.setPosition(VBTetris._pause, 0);
 		
 	}
 	

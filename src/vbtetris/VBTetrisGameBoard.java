@@ -188,8 +188,14 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 	private void togglePause()
 	{
 		gamePaused = !gamePaused;	
-		if (gamePaused) timer.stop();
-		else timer.start();
+		if (gamePaused) {
+			timer.stop();
+			VBTetris._pause.setVisible(true);
+		}
+		else {
+			timer.start();
+			VBTetris._pause.setVisible(false);
+		}
 	}
 	
 	// ****************************************************************************************************************
@@ -529,11 +535,6 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 			if (e.getKeyCode() ==  KeyEvent.VK_SPACE) {
 				e.consume();
 				togglePause();
-				if (isGamePaused()) { VBTetris._pause.repaint(); }
-				else {
-					repaint();
-					VBTetris._pane.repaint();
-				}
 			} 
 	
 		}
