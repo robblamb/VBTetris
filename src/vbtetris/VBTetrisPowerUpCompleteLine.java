@@ -1,5 +1,7 @@
 package vbtetris;
 
+import vbtetris.VBTetrisPieces.Tetrominoes;
+
 public class VBTetrisPowerUpCompleteLine extends VBTetrisPowerUp {
 	private boolean readyToFire;
 	private VBTetrisPowerUpCompletePiece myPiece;
@@ -9,7 +11,7 @@ public class VBTetrisPowerUpCompleteLine extends VBTetrisPowerUp {
 		super();
 		readyToFire = false;
 		myPiece = new VBTetrisPowerUpCompletePiece();
-		myPiece.setRandomShape();//This is just abstracted to a private method that is not random
+		myPiece.setsShape();//This is just abstracted to a private method that is not random
 	}
 	
 	@Override

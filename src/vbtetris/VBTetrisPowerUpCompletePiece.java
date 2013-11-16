@@ -8,13 +8,7 @@ public class VBTetrisPowerUpCompletePiece extends VBTetrisPieces {
 		super();
 	}
 	
-	@Override
-	public void setShape(Tetrominoes shape)
-	{
-		setsShape(Tetrominoes.SQUARE_SHAPE);
-	}
-	
-	private void setsShape(Tetrominoes shape)
+	public void setsShape()
 	{     	
 		myBlockCoordsTable = new int[][] {         
 	            //Singleton
@@ -30,13 +24,7 @@ public class VBTetrisPowerUpCompletePiece extends VBTetrisPieces {
 	         blocks[i].setBlockCoords(myBlockCoordsTable[i]);				// setCoords, blockCoordsTable[shape][block]
 	     }
 	        
-	     pieceShape = shape;
-	}
-	
-	@Override
-	public void setRandomShape()
-	{
-		setsShape(Tetrominoes.SQUARE_SHAPE);
+	     pieceShape = Tetrominoes.SQUARE_SHAPE;
 	}
 	
 	public void expandLeft(int numSquaresToExpand)

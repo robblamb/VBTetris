@@ -136,7 +136,6 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 				}
 				powUpOnBoard.setXPosition(xPos);
 				powUpOnBoard.setYPosition(yPos);
-				_board[(yPos * BOARD_WIDTH) + xPos].setOwner(0);
 				_board[(yPos * BOARD_WIDTH) + xPos].setEmpty(false);
 			}
 		}
@@ -423,9 +422,8 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 						repaint();
 						return moveStatus.OK;
 					}
-				} else {
-					return moveStatus.HIT_BOUNDARY;
-				}
+				} 
+				return moveStatus.HIT_BOUNDARY;
 			}
 			if (isPlayerBlock( player, x, y )) return moveStatus.HIT_PIECE;
 		}
