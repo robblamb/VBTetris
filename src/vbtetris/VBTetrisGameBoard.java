@@ -120,15 +120,19 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 	}
 	
 	// drop down piece at the specified time interval
-	public void actionPerformed(ActionEvent e)
+	public synchronized void actionPerformed(ActionEvent e)
 	{ 
-		for (int i = 0; i < players.length; ++i) dropOneDown(players[i]);
-		putPowerBlock();
+		for (int i = 0; i < players.length; ++i) {
+			dropOneDown(players[i]);
+		}
+		putPowerBlock(false);
 	}
 	
-	private void putPowerBlock() 
+	private synchronized void putPowerBlock(boolean amI) 
 	{
-		if (_power.getPowerUpOnGameBoard() == false && powUpOnBoard == null) {
+		if ((_power.getPowerUpOnGameBoard() == false && powUpOnBoard == null) || amI) {
+			_power.setPowerUpOnGameBoard(false);
+			powUpOnBoard = null;
 			powUpOnBoard = _power.chooseAPowerUp();
 			if (powUpOnBoard != null) {
 				_power.setPowerUpOnGameBoard(true);
@@ -319,7 +323,7 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 	}
 
 	// stores a piece on the board
-	private void storePiece(VBTetrisPlayer player)
+	private synchronized void storePiece(VBTetrisPlayer player)
 	{
 		if (powUpOnBoard != null && _power.getPowerUpOnGameBoard() == false) {
 			if (powUpOnBoard.secondCommit(player)) {
@@ -417,7 +421,7 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 	}
 
 	// try to move a piece
-	public moveStatus tryMove(VBTetrisPlayer player, VBTetrisPieces newPiece, int newXPos, int newYPos)
+	public synchronized moveStatus tryMove(VBTetrisPlayer player, VBTetrisPieces newPiece, int newXPos, int newYPos)
 	{	
 		for (int i = 0; i < VBTetrisPieces.NUM_BLOCKS; ++i) {
 			int x = newXPos + newPiece.getBlock(i).getX();
@@ -483,7 +487,6 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 					removeRow(0);
 					++numKillLines;
 					break;
-					
 				}
 			}
 			++rowsChecked;
@@ -492,18 +495,16 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 	}
 	
 	// remove a row
-	private void removeRow(int activeRow)
+	private synchronized void removeRow(int activeRow)
 	{
-		if (powUpOnBoard != null && _power.getPowerUpOnGameBoard() && activeRow <= powUpOnBoard.getYPosition()) {
-				_board[(powUpOnBoard.getYPosition() * BOARD_WIDTH) + powUpOnBoard.getXPosition()] = new VBTetrisBlock();
-				powUpOnBoard = null;
-				_power.setPowerUpOnGameBoard(false);
+		if (powUpOnBoard != null && _power.getPowerUpOnGameBoard() ) {
+			_board[(powUpOnBoard.getYPosition() * BOARD_WIDTH) + powUpOnBoard.getXPosition()] = new VBTetrisBlock();
+			putPowerBlock(true);
 		}
 		
 		// move all the rows above the target row down by 1
 		for (int k = activeRow; k < BOARD_HEIGHT - 1; ++k) {
-			for (int j = 0; j < BOARD_WIDTH; ++j) {
-				
+			for (int j = 0; j < BOARD_WIDTH; ++j) {	
 				_board[(k * BOARD_WIDTH) + j] = getBlock(j, k + 1);
 			}
 		}
