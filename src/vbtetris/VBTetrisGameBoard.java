@@ -149,10 +149,10 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 			}
 		}
 	}
-	
+	// TODO check boundaries
 	// returns a block from a spot on the game board
 	private VBTetrisBlock getBlock(int x, int y)
-	{	
+	{	if (x>BOARD_WIDTH || y>BOARD_HEIGHT) return new VBTetrisBlock();
 		return _board[(y * BOARD_WIDTH) + x];	// (row_num * row_offset) + col
 	}
 	
@@ -173,10 +173,11 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 		}
 		return false;	// has no player block
 	}
-	
+	// TODO boundary check
 	private boolean isBoardBlock(int x, int y)
 	{
-		if (_board[(y * BOARD_WIDTH) + x].isEmpty() ) return false;
+		if (x<0 || y < 0 || x > BOARD_WIDTH || y > BOARD_HEIGHT) return false;
+		if ( _board[(y * BOARD_WIDTH) + x].isEmpty() ) return false;
 		return true;
 	}
 
@@ -493,7 +494,7 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 		}
         return numKillLines;
 	}
-	
+	// TODO look at remove a row
 	// remove a row
 	private synchronized void removeRow(int activeRow)
 	{
@@ -507,6 +508,9 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 			for (int j = 0; j < BOARD_WIDTH; ++j) {	
 				_board[(k * BOARD_WIDTH) + j] = getBlock(j, k + 1);
 			}
+		}
+		for (int i = BOARD_WIDTH*(BOARD_HEIGHT-1); i < BOARD_WIDTH*BOARD_HEIGHT; ++i){
+			_board[i]=new VBTetrisBlock();
 		}
 		repaint();
 	}

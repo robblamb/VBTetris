@@ -22,7 +22,7 @@ public class VBTetrisPieces
     	T_SHAPE,
     	SQUARE_SHAPE,
     	L_SHAPE,
-    	MIRRORED_L_SHAPE,
+    	MIRRORED_L_SHAPE
     	//O_SHAPE
     };
     
@@ -109,7 +109,7 @@ public class VBTetrisPieces
             	{ 0, 0 },	{ 0, 1 },	{ 0, 0 },
             	{ 0, 0 },	{ 0, 0 },	{ 0, 0 },
             	{ 0, 0 },	{ 0, -1 },	{ 1, -1 }
-            },
+            }
             
             
             	/*

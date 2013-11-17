@@ -15,6 +15,7 @@ public class VBTetrisBlock
     	shape = Tetrominoes.EMPTY;
     	isEmpty = true;
     	blockCoords = new int[2];								// create new blockCoords array
+    	owner = 0;    	
     }
     
     public void setShape(Tetrominoes shape) {this.shape = shape;}
