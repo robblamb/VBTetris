@@ -1,20 +1,25 @@
 package vbtetris;
 
-import java.util.Calendar;
-import java.util.Date;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class VBTetrisPowerUpStopEveryoneElse extends VBTetrisPowerUp {
-	private long goalTime;
-	private VBTetrisTimer myTime;
+	Timer timer;
+	
+	public VBTetrisPowerUpStopEveryoneElse()
+	{
+		super();
+	}
 	
 	@Override
 	public boolean commitAction(VBTetrisGameBoard gameToPowUp, VBTetrisPlayer playerWithPow, VBTetrisTimer boardTime)
 	{
-		goalTime = getTime() + 10000;
-		myTime = boardTime;
 		playerWithPow.setdropping(false);
-		readyToFire = true;
 		_player = playerWithPow;
+		activity = true;
+		timer = new Timer();
+		timer.schedule(new SetTask(), 10*1000);
+
 		
 		return true;
 	}
@@ -22,19 +27,34 @@ public class VBTetrisPowerUpStopEveryoneElse extends VBTetrisPowerUp {
 	public boolean secondCommit(VBTetrisPlayer currentPlayer)
 	{
 		if (readyToFire) {
-			if (goalTime <= getTime()) {
-				_player.setdropping(true);
-				readyToFire = false;
-				return true;
-			} else {
-				return false;
-			}
+			readyToFire = false;
+			return true;
 		}
 		return false;
 	}
 	
-	private long getTime() 
+	class SetTask extends TimerTask {
+		@Override
+		public void run() 
+		{
+			set();
+			timer.cancel();
+		}
+	}
+	
+	private void set()
 	{
-		return new Date().getTime();
+		_player.setdropping(true);
+		readyToFire = true;
+		activity = false;
+	}
+	
+	@Override
+	public boolean amIActive()
+	{
+		if (activity) {
+			_player.setdropping(false);
+		}
+		return activity;
 	}
 }

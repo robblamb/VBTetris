@@ -53,6 +53,7 @@ public abstract class VBTetrisPowerUp {
 	protected VBTetrisGameBoard _board;
 	protected VBTetrisPlayer _player;
 	protected VBTetrisTimer _time;
+	protected boolean activity;
 	
 	public VBTetrisPowerUp()
 	{
@@ -60,7 +61,7 @@ public abstract class VBTetrisPowerUp {
 		_player = null;
 		_time = null;
 		xPosition = yPosition = 0;
-		readyToFire = false;
+		readyToFire = activity = false;
 	}
 	
 	public void setXPosition(int xPos)
@@ -91,6 +92,11 @@ public abstract class VBTetrisPowerUp {
 			}
 		}
 		return false;
+	}
+	
+	public boolean amIActive()
+	{
+		return activity;
 	}
 	
 	public abstract boolean commitAction(VBTetrisGameBoard gameToPowUp, VBTetrisPlayer playerWithPow, VBTetrisTimer boardTime);

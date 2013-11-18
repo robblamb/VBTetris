@@ -427,7 +427,9 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 			stop();
 		}
 		
-		player.setdropping(true);
+		if (powUpOnBoard != null && !powUpOnBoard.amIActive()) {
+			player.setdropping(true);
+		}
 	}
 
 	// try to move a piece
