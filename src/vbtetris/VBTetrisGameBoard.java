@@ -123,7 +123,9 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 	public synchronized void actionPerformed(ActionEvent e)
 	{ 
 		for (int i = 0; i < players.length; ++i) {
-			dropOneDown(players[i]);
+			if (players[i].isdropping()) {
+				dropOneDown(players[i]);
+			}
 		}
 		putPowerBlock(false);
 	}

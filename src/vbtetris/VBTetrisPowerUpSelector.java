@@ -19,7 +19,7 @@ public class VBTetrisPowerUpSelector {
 				case 2:
 					powerToReturn = new VBTetrisPowerUpFireFly();
 				case 3:
-					//something
+					powerToReturn = new VBTetrisPowerUpStopEveryoneElse();
 			}
 			return powerToReturn;
 		}
