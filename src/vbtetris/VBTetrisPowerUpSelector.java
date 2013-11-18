@@ -15,9 +15,9 @@ public class VBTetrisPowerUpSelector {
 				case 0:
 					powerToReturn = new VBTetrisPowerUpCompleteLine();
 				case 1:
-					powerToReturn = new VBTetrisPowerUpSpeedUp();
+					//powerToReturn = new VBTetrisPowerUpSpeedUp();
 				case 2:
-					//something
+					powerToReturn = new VBTetrisPowerUpFireFly();
 				case 3:
 					//something
 			}
