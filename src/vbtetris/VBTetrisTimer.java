@@ -15,7 +15,9 @@ public class VBTetrisTimer extends Timer {
 	
 	// reduces speed by the given percent
 	public void speedupby(int percent){
-		this.setDelay((int)(this.getDelay()*  (double)( (100-percent)/100) )  );
+		double newSpeed = this.getDelay();
+		newSpeed = newSpeed*(100-percent)/100;
+		this.setDelay((int)newSpeed);
 	}
 
 }
