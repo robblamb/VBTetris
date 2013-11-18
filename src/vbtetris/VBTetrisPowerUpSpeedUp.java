@@ -1,19 +1,25 @@
 package vbtetris;
 
-import java.util.Calendar;
-import java.util.Date;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class VBTetrisPowerUpSpeedUp extends VBTetrisPowerUp {
-	private long goalTime;
 	private VBTetrisTimer myTime;
+	Timer timer;
+	
+	public VBTetrisPowerUpSpeedUp()
+	{
+		super();
+	}
 	
 	@Override
 	public boolean commitAction(VBTetrisGameBoard gameToPowUp, VBTetrisPlayer playerWithPow, VBTetrisTimer boardTime)
 	{
-		goalTime = getTime() + 10;
 		myTime = boardTime;
 		myTime.speedup();
-		readyToFire = true;
+		timer = new Timer();
+		timer.schedule(new SetTask(), 10*1000);
+
 		
 		return true;
 	}
@@ -21,19 +27,24 @@ public class VBTetrisPowerUpSpeedUp extends VBTetrisPowerUp {
 	public boolean secondCommit(VBTetrisPlayer currentPlayer)
 	{
 		if (readyToFire) {
-			if (goalTime <= getTime()) {
-				myTime.speedupby(-10);
-				readyToFire = false;
-				return true;
-			} else {
-				return false;
-			}
+			readyToFire = false;
+			return true;
 		}
 		return false;
 	}
 	
-	private long getTime() 
+	class SetTask extends TimerTask {
+		@Override
+		public void run() 
+		{
+			set();
+			timer.cancel();
+		}
+	}
+	
+	private void set()
 	{
-		return new Date().getTime();
+		myTime.speedupby(11);
+		readyToFire = true;
 	}
 }
