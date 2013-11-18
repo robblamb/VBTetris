@@ -18,7 +18,7 @@ public class VBTetrisPowerUpStopEveryoneElse extends VBTetrisPowerUp {
 		_player = playerWithPow;
 		activity = true;
 		timer = new Timer();
-		timer.schedule(new SetTask(), 10*1000);
+		timer.schedule(new MyTask(), 10*1000);
 
 		
 		return true;
@@ -33,7 +33,7 @@ public class VBTetrisPowerUpStopEveryoneElse extends VBTetrisPowerUp {
 		return false;
 	}
 	
-	class SetTask extends TimerTask {
+	class MyTask extends TimerTask {
 		@Override
 		public void run() 
 		{
