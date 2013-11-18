@@ -16,7 +16,7 @@ public class VBTetrisPowerUpSpeedUp extends VBTetrisPowerUp {
 	public boolean commitAction(VBTetrisGameBoard gameToPowUp, VBTetrisPlayer playerWithPow, VBTetrisTimer boardTime)
 	{
 		myTime = boardTime;
-		myTime.speedup();
+		myTime.speedupby(100);
 		timer = new Timer();
 		timer.schedule(new SetTask(), 10*1000);
 
@@ -44,7 +44,7 @@ public class VBTetrisPowerUpSpeedUp extends VBTetrisPowerUp {
 	
 	private void set()
 	{
-		myTime.speedupby(11);
+		myTime.slowDown(100);
 		readyToFire = true;
 	}
 }

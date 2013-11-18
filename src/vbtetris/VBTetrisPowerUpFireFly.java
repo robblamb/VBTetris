@@ -25,8 +25,12 @@ public class VBTetrisPowerUpFireFly extends VBTetrisPowerUp {
 	@Override
 	public boolean secondCommit(VBTetrisPlayer currentPlayer)
 	{
-		if (readyToFire) {
-			_player.setcurPiece(myPiece);
+		if (readyToFire && _player.equals(currentPlayer)) {
+			VBTetrisPieces newPiece = new VBTetrisPieces();
+			newPiece.setOwner(_player.getcurPiece().getOwner());
+			newPiece.setShape(_player.getNextPiece().getShape());
+			myPiece.setStatus(false);
+			_player.setNextPiece(newPiece);
 			readyToFire = false;
 			return true;
 		}
