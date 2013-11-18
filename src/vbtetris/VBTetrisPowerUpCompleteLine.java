@@ -1,7 +1,6 @@
 package vbtetris;
 
 public class VBTetrisPowerUpCompleteLine extends VBTetrisPowerUp {
-	private boolean readyToFire;
 	private VBTetrisPowerUpCompletePiece myPiece;
 	
 	public VBTetrisPowerUpCompleteLine()

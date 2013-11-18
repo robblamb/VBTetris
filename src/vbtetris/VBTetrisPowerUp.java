@@ -1,6 +1,8 @@
 package vbtetris;
 
 public abstract class VBTetrisPowerUp {
+	protected boolean readyToFire;
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;

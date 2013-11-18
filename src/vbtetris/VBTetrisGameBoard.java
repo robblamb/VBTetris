@@ -36,7 +36,7 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 	private VBTetrisPieceMover _mover;
 	private VBTetrisPowerUpSelector _power;
 	private VBTetrisPowerUp powUpOnBoard;
-	Random random;
+	private Random random;
 	
 	// SHOULD BE IN GAME ENGINE CLASS
 	private boolean gameOver;
