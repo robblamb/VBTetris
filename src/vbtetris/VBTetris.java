@@ -72,7 +72,7 @@ public class VBTetris extends JPanel {
 		_pane = new VBTetrisPlayerPane(PANEL_WIDTH_PX, BOARD_HEIGHT, SQUARE_SIZE);
 		
 		// create pause screen panel
-		_pause = new VBTetrisPauseScreen(FRAME_WIDTH_PX, FRAME_HEIGHT_PX);
+		_pause = new VBTetrisPauseScreen(FRAME_WIDTH_PX, FRAME_HEIGHT_PX, players);
 		
 		// create options screen panel
 		_options = new VBTetrisOptionsScreen(FRAME_WIDTH_PX, FRAME_HEIGHT_PX);
