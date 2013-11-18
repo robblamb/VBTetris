@@ -12,13 +12,14 @@ public class VBTetrisPowerUpCompleteLine extends VBTetrisPowerUp {
 	}
 	
 	@Override
-	public void commitAction(VBTetrisGameBoard gameToPowUp, VBTetrisPlayer playerWithPow)
+	public boolean commitAction(VBTetrisGameBoard gameToPowUp, VBTetrisPlayer playerWithPow, VBTetrisTimer boardTime)
 	{
 		readyToFire = true;
 		_board = gameToPowUp;
 		_player = playerWithPow;
 		myPiece.setOwner(_player.getcurPiece().getOwner());
 		_player.setcurPiece(myPiece);
+		return true;
 	}
 	
 	@Override

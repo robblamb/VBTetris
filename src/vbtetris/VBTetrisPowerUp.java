@@ -52,10 +52,15 @@ public abstract class VBTetrisPowerUp {
 	protected int xPosition, yPosition;
 	protected VBTetrisGameBoard _board;
 	protected VBTetrisPlayer _player;
+	protected VBTetrisTimer _time;
 	
 	public VBTetrisPowerUp()
 	{
 		_board = null;
+		_player = null;
+		_time = null;
+		xPosition = yPosition = 0;
+		readyToFire = false;
 	}
 	
 	public void setXPosition(int xPos)
@@ -88,7 +93,7 @@ public abstract class VBTetrisPowerUp {
 		return false;
 	}
 	
-	public abstract void commitAction(VBTetrisGameBoard gameToPowUp, VBTetrisPlayer playerWithPow);
+	public abstract boolean commitAction(VBTetrisGameBoard gameToPowUp, VBTetrisPlayer playerWithPow, VBTetrisTimer boardTime);
 	
 	public abstract boolean secondCommit(VBTetrisPlayer currentPlayer);
 }
