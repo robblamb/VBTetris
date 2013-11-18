@@ -131,6 +131,13 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 	private synchronized void putPowerBlock(boolean amI) 
 	{
 		if ((_power.getPowerUpOnGameBoard() == false && powUpOnBoard == null) || amI) {
+			
+			for (int i = 0; i < _board.length; ++i) {
+				if (_board[i].getOwner() == 0) {
+					_board[i].setEmpty(true);
+				}
+			}
+			
 			_power.setPowerUpOnGameBoard(false);
 			powUpOnBoard = null;
 			powUpOnBoard = _power.chooseAPowerUp();
