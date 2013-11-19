@@ -16,7 +16,7 @@ public class VBTetrisPlayerTest {
 		VBTetrisPlayer other = null;
 				
 		//Make tester point to a VBTetrisPlayer object
-		tester = new VBTetrisPlayer(VICTORY_SCORE);
+		tester = new VBTetrisPlayer(VICTORY_SCORE,1);
 				
 		//Ensure that false is returned since an initialized
 		//object cannot be equal to null
@@ -30,7 +30,7 @@ public class VBTetrisPlayerTest {
 		assertFalse("a non-VBTetrisPlayer is equal to a VBTetrisPlayer", tester.equals(notTP));
 		
 		//Make other point to a VBTetrisPieces object
-		other = new VBTetrisPlayer(VICTORY_SCORE);
+		other = new VBTetrisPlayer(VICTORY_SCORE,2);
 		
 		//Make a new empty VBTetrisPiece to give to other
 		VBTetrisPieces nNotTP = new VBTetrisPieces();

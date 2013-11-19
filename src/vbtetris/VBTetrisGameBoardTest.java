@@ -37,7 +37,7 @@ public class VBTetrisGameBoardTest
 		// create array of players
 		players = new VBTetrisPlayer[NUM_PLAYERS];
 		for (int i = 0; i < players.length; ++i) {
-			players[i] = new VBTetrisPlayer(VICTORY_SCORE);
+			players[i] = new VBTetrisPlayer(VICTORY_SCORE,i+1);
 			players[i].setcurPiece(new VBTetrisPieces());
 		}
 		
