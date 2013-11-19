@@ -14,10 +14,10 @@ public class VBTetrisPlayer {
 	private int score;						// players score
 	private int victoryScore;               // score required for player to be victorious
 	
-	VBTetrisPlayer(int victoryValue)
+	VBTetrisPlayer(int victoryValue, int playerNum)
 	{	
-		playerNum = ++numPlayers;			// assign player number (base 1 counting)
-		
+		this.playerNum = playerNum;
+        ++numPlayers;			// assign player number (base 1 counting)
 		victoryScore = victoryValue;
 		dropping = true;
 		numLinesRemoved = 0;

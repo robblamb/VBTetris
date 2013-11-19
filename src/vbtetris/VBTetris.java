@@ -1,10 +1,16 @@
 package vbtetris;
 
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.BoxLayout;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLayeredPane;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 
 public class VBTetris extends JPanel {
@@ -36,14 +42,15 @@ public class VBTetris extends JPanel {
 	// environment object
 	static VBTetrisEnvironment _gameEnvir;
 	
-	static JFrame frame;
+	private static JFrame frame;
 	static JComponent contentPane;
 	static JLayeredPane layeredPane;
 	
 	static VBTetrisGameBoard _board;
 	static VBTetrisPlayerPane _pane;
 	static VBTetrisPauseScreen _pause;
-	static VBTetrisOptionsScreen _options;
+	private static int numplayers;
+	private static int killLine;
 	
 	public VBTetris() {
 		
@@ -52,12 +59,12 @@ public class VBTetris extends JPanel {
 		
 		// create and set up the layered pane
 		layeredPane = new JLayeredPane();
-		layeredPane.setPreferredSize(new Dimension(FRAME_WIDTH_PX, FRAME_HEIGHT_PX));
+		layeredPane.setPreferredSize(new Dimension(FRAME_WIDTH_PX, FRAME_HEIGHT_PX));	
 		
 		// create array of players
 		players = new VBTetrisPlayer[NUM_PLAYERS];
 		for (int i = 0; i < players.length; ++i) {
-			players[i] = new VBTetrisPlayer(VICTORY_SCORE);
+			players[i] = new VBTetrisPlayer(VICTORY_SCORE,i+1);
 		}
 		
 		// create the game environment
@@ -72,11 +79,8 @@ public class VBTetris extends JPanel {
 		_pane = new VBTetrisPlayerPane(PANEL_WIDTH_PX, BOARD_HEIGHT, SQUARE_SIZE);
 		
 		// create pause screen panel
-		_pause = new VBTetrisPauseScreen(FRAME_WIDTH_PX, FRAME_HEIGHT_PX, players);
-		
-		// create options screen panel
-		_options = new VBTetrisOptionsScreen(FRAME_WIDTH_PX, FRAME_HEIGHT_PX);
-		
+		_pause = new VBTetrisPauseScreen(FRAME_WIDTH_PX, FRAME_HEIGHT_PX, players );
+
 		// add the game board pane
 		layeredPane.add(_board);
 		_board.setBounds(0, 0, BOARD_WIDTH_PX, BOARD_HEIGHT_PX);
@@ -90,10 +94,7 @@ public class VBTetris extends JPanel {
 		_pause.setBounds(0, 0, FRAME_WIDTH_PX, FRAME_HEIGHT_PX);
 		_pause.setVisible(false);
 		
-		// add the options screen pane
-		layeredPane.add(_options);
-		_options.setBounds(0, 0, FRAME_WIDTH_PX, FRAME_HEIGHT_PX);			
-		
+
 		// add the layeredPane to the content pane
 		add(layeredPane);
 		
@@ -101,11 +102,169 @@ public class VBTetris extends JPanel {
 		layeredPane.setPosition(VBTetris._pause, 0);
 		
 	}
+
+	public int getkillLine(){return killLine;}
+	public static void setkillLine(int newKill){ killLine=newKill;}
 	
+	public static void killgame(){
+		_board = null;
+		_gameEnvir = null;
+		frame.setVisible(false);
+		frame = null;
+	}
+	public int getplayers(){return numplayers;}
+	public static void setplayers( int nplayers){numplayers=nplayers;}
+
 	private static void createAndShowGUI() {
-		
+		// create the menu bar across top 
+				JMenuBar menubar = new JMenuBar();
+				// declare main menus
+				
+				// File:
+				//	Create the menu and selectable options
+				JMenu file = new JMenu ("File");
+				// menu items are selectable things
+				JMenuItem exMenuItem = new JMenuItem("Exit");
+				// what a hover over says
+				exMenuItem.setToolTipText("Exit Virtual Boy Tetris");
+
+				JMenuItem reset = new JMenuItem("Reset Game");
+				reset.setToolTipText("Restarts the game with the current Options");
+				
+				// create a new action listener to deal with the selection
+				exMenuItem.addActionListener(new ActionListener(){
+					@Override
+					public void actionPerformed(ActionEvent arg0) {
+						System.exit(0);
+					}
+				});
+				reset.addActionListener(new ActionListener(){
+					@Override
+					public void actionPerformed(ActionEvent e){
+						killgame();
+						javax.swing.SwingUtilities.invokeLater(new Runnable() {
+							public void run() {
+								createAndShowGUI();
+							}
+						});
+					}
+				});
+				
+				// add the created items to the new menu
+				// order matters here
+				file.add(reset);
+				file.addSeparator(); 
+				file.add(exMenuItem);
+				
+				
+				// 	Options:
+				JMenu options = new JMenu("Options");
+					// options: kill line
+					JMenu killLine = new JMenu("Kill Line");
+					killLine.setToolTipText("The kill line is the white line, have a "
+											+ "piece end up above it and the bottom of the "
+											+ "board is killed, along with the score!");	
+					// MenuItems can be selected
+					JMenuItem opkillhigh = new JMenuItem("High");
+					JMenuItem opkillmid = new JMenuItem("Middle");
+					JMenuItem opkillLow = new JMenuItem("Low (Hard)");
+					JMenuItem opkilloff = new JMenuItem("off");
+					
+					opkillhigh.addActionListener(new ActionListener(){
+						@Override
+						public void actionPerformed(ActionEvent arg0) {
+							setkillLine(18);
+						}
+					});
+					opkillmid.addActionListener(new ActionListener(){
+						@Override
+						public void actionPerformed(ActionEvent arg0) {
+							setkillLine(14);
+						}
+					});
+					opkillLow.addActionListener(new ActionListener(){
+						@Override
+						public void actionPerformed(ActionEvent arg0) {
+							setkillLine(9);
+						}
+					});
+					opkilloff.addActionListener(new ActionListener(){
+						@Override
+						public void actionPerformed(ActionEvent arg0) {
+							setkillLine(32);
+						}
+					});
+				
+					
+					// order matters when adding, but not creating
+					killLine.add(opkillhigh);
+					killLine.add(opkillmid);
+					killLine.add(opkillLow);
+					killLine.addSeparator();
+					killLine.add(opkilloff);
+				// the the sub-menu parts to main menu part
+				options.add(killLine);
+				
+				JMenu players = new JMenu("Players");
+					JMenuItem plrs1 = new JMenuItem("One   (1)");
+					JMenuItem plrs2 = new JMenuItem("Two   (2)");
+					JMenuItem plrs3 = new JMenuItem("Three (3)");
+					JMenuItem plrs4 = new JMenuItem("Four  (4)");
+					
+				
+					plrs1.addActionListener(new ActionListener(){
+						@Override
+						public void actionPerformed(ActionEvent arg0) {
+							setplayers(1);
+						}
+					});
+					plrs2.addActionListener(new ActionListener(){
+						@Override
+						public void actionPerformed(ActionEvent arg0) {
+							setplayers(2);
+						}
+					});
+					plrs3.addActionListener(new ActionListener(){
+						@Override
+						public void actionPerformed(ActionEvent arg0) {
+							setplayers(3);
+						}
+					});
+					plrs4.addActionListener(new ActionListener(){
+						@Override
+						public void actionPerformed(ActionEvent arg0) {
+							setplayers(4);
+						}
+					});
+					players.add(plrs1);
+					players.add(plrs2);
+					players.add(plrs3);
+					players.add(plrs4);
+				options.add(players);
+				
+					
+				
+				JMenu help = new JMenu("Help");
+				
+				JMenuItem about = new JMenuItem("About");
+				JMenuItem keys = new JMenuItem("Input Keys");
+				keys.setToolTipText("-A left-  -D right-  -W up-  -S down-");
+			
+				
+				help.add(about);
+				help.add(keys);
+				
+
+				menubar.add(file);
+				menubar.add(options);
+				menubar.add(help);
+				
+				
+	
+
 		// create and set up the window
-		JFrame frame = new JFrame();
+		frame = new JFrame();
+		frame.setJMenuBar(menubar);
 		frame.setResizable(false);
 		frame.setTitle("Virtual Boy Tetris");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -121,6 +280,7 @@ public class VBTetris extends JPanel {
 		frame.pack();
 		frame.setVisible(true);
 	}
+
 	
 	public static void main(String[] args) {
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
