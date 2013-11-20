@@ -26,7 +26,7 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 	private final int BOARD_WIDTH;
 	private final int BOARD_HEIGHT;
 	private final int SQUARE_SIZE;
-	private final int KILL_LINE;
+	private int KILL_LINE;
 	
 	public enum moveStatus { OK, HIT_BOUNDARY, HIT_PIECE }; 
 	
@@ -53,7 +53,7 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 	private BufferedImage boardBackground;
 	private VBTetrisKeyAdapter[] playAdapters;
 	private VBTetrisPauser myPause;
-	
+
 	public VBTetrisGameBoard(int w, int h, int s, int k, VBTetrisPlayer[] players)
 	{
 		BOARD_WIDTH = w;
@@ -103,7 +103,7 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 		powUpOnBoard = null;
 		random = new Random(17878931);
 	}
-	
+	public void setKill(int newKill){this.KILL_LINE = newKill;}
 	private void stop()
 	{
 		gameOver = true;
@@ -204,7 +204,7 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 	}
 
 	// toggle pause state
-	private void togglePause()
+	public void togglePause()
 	{
 		gamePaused = !gamePaused;	
 		if (gamePaused) {

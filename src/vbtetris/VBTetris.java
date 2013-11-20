@@ -18,11 +18,11 @@ public class VBTetris extends JPanel {
 	// http://docs.oracle.com/javase/tutorial/uiswing/components/layeredpane.html
 	
 	// players
-	final static int NUM_PLAYERS = 2;
-	private VBTetrisPlayer players[];
-	
+	static int NUM_PLAYERS = 2;
+	private static VBTetrisPlayer players[];
+
 	final static int PLAYER_GAP = 4;	// squares between each player
-	final static int KILL_LINE = 18;	// squares before kill line
+	static int KILL_LINE = 18;	// squares before kill line
 	final static int VICTORY_SCORE = 20000;	// points needed to win 
 	
 	// board dimensions in terms of squares / blocks
@@ -50,7 +50,7 @@ public class VBTetris extends JPanel {
 	static VBTetrisPlayerPane _pane;
 	static VBTetrisPauseScreen _pause;
 	private static int numplayers;
-	private static int killLine;
+	//private static int killLine;
 	
 	public VBTetris() {
 		
@@ -60,13 +60,12 @@ public class VBTetris extends JPanel {
 		// create and set up the layered pane
 		layeredPane = new JLayeredPane();
 		layeredPane.setPreferredSize(new Dimension(FRAME_WIDTH_PX, FRAME_HEIGHT_PX));	
-		
 		// create array of players
 		players = new VBTetrisPlayer[NUM_PLAYERS];
 		for (int i = 0; i < players.length; ++i) {
 			players[i] = new VBTetrisPlayer(VICTORY_SCORE,i+1);
 		}
-		
+
 		// create the game environment
 		_gameEnvir = new VBTetrisEnvironment();
 		_gameEnvir.init();
@@ -102,18 +101,20 @@ public class VBTetris extends JPanel {
 		layeredPane.setPosition(VBTetris._pause, 0);
 		
 	}
-
-	public int getkillLine(){return killLine;}
-	public static void setkillLine(int newKill){ killLine=newKill;}
+	public static void setPlayersNum(int newNum){NUM_PLAYERS=newNum;}
+	public int getkillLine(){return KILL_LINE;}
+	public static void setkillLine(int newKill){ KILL_LINE=newKill;}
 	
 	public static void killgame(){
 		_board = null;
+		for (int i = 0; i < players.length; ++i){
+			players[i]=null;
+		}
 		_gameEnvir = null;
 		frame.setVisible(false);
 		frame = null;
 	}
 	public int getplayers(){return numplayers;}
-	public static void setplayers( int nplayers){numplayers=nplayers;}
 
 	private static void createAndShowGUI() {
 		// create the menu bar across top 
@@ -131,11 +132,20 @@ public class VBTetris extends JPanel {
 				JMenuItem reset = new JMenuItem("Reset Game");
 				reset.setToolTipText("Restarts the game with the current Options");
 				
+				JMenuItem pause = new JMenuItem("Pause/Unpause");
+				pause.setToolTipText("ShortCut: Spacebar");
+				
 				// create a new action listener to deal with the selection
 				exMenuItem.addActionListener(new ActionListener(){
 					@Override
 					public void actionPerformed(ActionEvent arg0) {
 						System.exit(0);
+					}
+				});
+				pause.addActionListener(new ActionListener(){
+					@Override
+					public void actionPerformed(ActionEvent arg0) {
+						_board.togglePause();
 					}
 				});
 				reset.addActionListener(new ActionListener(){
@@ -153,6 +163,7 @@ public class VBTetris extends JPanel {
 				// add the created items to the new menu
 				// order matters here
 				file.add(reset);
+				file.add(pause);
 				file.addSeparator(); 
 				file.add(exMenuItem);
 				
@@ -165,38 +176,51 @@ public class VBTetris extends JPanel {
 											+ "piece end up above it and the bottom of the "
 											+ "board is killed, along with the score!");	
 					// MenuItems can be selected
+					JMenuItem opkillveryhigh = new JMenuItem("Very High");
 					JMenuItem opkillhigh = new JMenuItem("High");
 					JMenuItem opkillmid = new JMenuItem("Middle");
 					JMenuItem opkillLow = new JMenuItem("Low (Hard)");
 					JMenuItem opkilloff = new JMenuItem("off");
 					
+					opkillveryhigh.addActionListener(new ActionListener(){
+						@Override
+						public void actionPerformed(ActionEvent arg0) {
+							setkillLine(22); // sets kill line in frame
+							_board.setKill(22); // sets kill line in game (no reset needed)
+						}
+					});
 					opkillhigh.addActionListener(new ActionListener(){
 						@Override
 						public void actionPerformed(ActionEvent arg0) {
-							setkillLine(18);
+							setkillLine(18); // sets kill line in frame
+							_board.setKill(18); // sets kill line in game (no reset needed)
 						}
 					});
 					opkillmid.addActionListener(new ActionListener(){
 						@Override
 						public void actionPerformed(ActionEvent arg0) {
 							setkillLine(14);
+							_board.setKill(14);
 						}
 					});
 					opkillLow.addActionListener(new ActionListener(){
 						@Override
 						public void actionPerformed(ActionEvent arg0) {
 							setkillLine(9);
+							_board.setKill(9);
 						}
 					});
 					opkilloff.addActionListener(new ActionListener(){
 						@Override
 						public void actionPerformed(ActionEvent arg0) {
-							setkillLine(32);
+							setkillLine(BOARD_HEIGHT+10);
+							_board.setKill(BOARD_HEIGHT+10);
 						}
 					});
 				
 					
 					// order matters when adding, but not creating
+					killLine.add(opkillveryhigh);
 					killLine.add(opkillhigh);
 					killLine.add(opkillmid);
 					killLine.add(opkillLow);
@@ -215,52 +239,42 @@ public class VBTetris extends JPanel {
 					plrs1.addActionListener(new ActionListener(){
 						@Override
 						public void actionPerformed(ActionEvent arg0) {
-							setplayers(1);
+							setPlayersNum(1);
 						}
 					});
 					plrs2.addActionListener(new ActionListener(){
 						@Override
 						public void actionPerformed(ActionEvent arg0) {
-							setplayers(2);
+							setPlayersNum(2);
 						}
 					});
 					plrs3.addActionListener(new ActionListener(){
 						@Override
 						public void actionPerformed(ActionEvent arg0) {
-							setplayers(3);
+							setPlayersNum(3);
 						}
 					});
 					plrs4.addActionListener(new ActionListener(){
 						@Override
 						public void actionPerformed(ActionEvent arg0) {
-							setplayers(4);
+							setPlayersNum(4);
 						}
 					});
 					players.add(plrs1);
 					players.add(plrs2);
 					players.add(plrs3);
 					players.add(plrs4);
+					players.setVisible(false); // need to fix before making true
 				options.add(players);
-				
-					
-				
 				JMenu help = new JMenu("Help");
-				
 				JMenuItem about = new JMenuItem("About");
 				JMenuItem keys = new JMenuItem("Input Keys");
-				keys.setToolTipText("-A left-  -D right-  -W up-  -S down-");
-			
-				
+				keys.setVisible(false);
 				help.add(about);
-				help.add(keys);
-				
-
+				help.add(keys);	
 				menubar.add(file);
 				menubar.add(options);
 				menubar.add(help);
-				
-				
-	
 
 		// create and set up the window
 		frame = new JFrame();
