@@ -1,12 +1,14 @@
 package vbtetris;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 import javax.imageio.ImageIO;
-import javax.swing.JButton;
 import javax.swing.JPanel;
 
 import org.imgscalr.Scalr;
@@ -17,16 +19,16 @@ public class VBTetrisPauseScreen extends JPanel {
 	private final int FRAME_HEIGHT_PX;
 	private final VBTetrisPlayer[] players;
 	
-	private BufferedImage imgKey;
-	
-	private JButton btnQuit;
-	private JButton btnSubmitScore;
-	
 	private int paneSize;
 	private int paneBuff;
 	
+	private BufferedImage imgKey;
+	private double lineNum;
+	
+	// TEMP
+	ArrayList playerKeys = new ArrayList();
+	
 	public VBTetrisPauseScreen(int w, int h, VBTetrisPlayer[] players) {
-		
 		setLayout(null);
 		setBackground(new Color(0, 0, 0, 0));
 		
@@ -34,84 +36,152 @@ public class VBTetrisPauseScreen extends JPanel {
 		FRAME_HEIGHT_PX = h;
 		this.players = players;
 		
-		createKeyImage();
+		// TEMP
+		playerKeys.add("A");
+		playerKeys.add("W");
+		playerKeys.add("S");
+		playerKeys.add("D");
+		playerKeys.add("\u2190");
+		playerKeys.add("\u2191");
+		playerKeys.add("\u2193");
+		playerKeys.add("\u2192");
+		playerKeys.add("");
+		playerKeys.add("");
+		playerKeys.add("");
+		playerKeys.add("");
+		playerKeys.add("");
+		playerKeys.add("");
+		playerKeys.add("");
+		playerKeys.add("");
 		
-		// create quit game button
-		btnQuit = new JButton("Quit Game");
-		btnQuit.setFocusable(false);
-		btnQuit.addMouseListener(new java.awt.event.MouseAdapter() {
-		    public void mouseClicked(java.awt.event.MouseEvent e) {
-		    	 System.exit(0);
-		    }
-		});
-		
-		// create submit score button
-		btnSubmitScore = new JButton("Submit Score");
-		btnSubmitScore.setFocusable(false);
-		btnSubmitScore.addMouseListener(new java.awt.event.MouseAdapter() {
-		    public void mouseClicked(java.awt.event.MouseEvent e) {
-		    	System.out.println("Submit Score");
-		    }
-		});
-		
-		// position buttons
-		btnQuit.setBounds(FRAME_WIDTH_PX/2-60-75, FRAME_HEIGHT_PX-120, 120, 40);
-		btnSubmitScore.setBounds(FRAME_WIDTH_PX/2-60+75, FRAME_HEIGHT_PX-120, 120, 40);
-		
-		// add buttons to pause screen
-		add(btnQuit);
-		add(btnSubmitScore);
+		// set pane size, pane buffer, key image width
+		paneSize = FRAME_WIDTH_PX / players.length;
+		paneBuff = (int) (paneSize * 0.1);
+				
+		// get and size the key image
+		try {
+			imgKey = ImageIO.read(getClass().getResourceAsStream("../VBTetrisImage/key.png"));
+			imgKey = createKeyImage(imgKey, paneSize, paneBuff);
+		} catch (IOException e) {
+			// create an image
+		}
+
 	}
 	
 	public void paintComponent(Graphics g) {
-		
 		super.paintComponent(g);
 		
+		int fontSize;
+		
+		// i would rather these be percentages
+		int yPosStatusText = 30;
+		int heightStatusText = 60;
+		int yPosKeys = 200;
+		int yPosStatsPane = 300;
+	    	    
 		// draw pause screen background
-		Color color = new Color(0, 0, 0, 220); 
-		g.setColor(color);
+		g.setColor(new Color(0, 0, 0, 180));
 		g.fillRect(0, 0, FRAME_WIDTH_PX, FRAME_HEIGHT_PX);
 		
-		int imgWidth = imgKey.getWidth();
-		int imgHeight = imgKey.getHeight();
-		int xPos = paneBuff;
-		int yPos = 200;
+		// set the font for the game status
+		g.setFont(new Font("Times New Roman", Font.BOLD + Font.ITALIC, VBTetrisFontUtils.adjustFontSize(36)));
 		
-		// draw controls for each player
-		for (int i = 1; i <= players.length; ++i) {
-			for (int j = 0; j < 3; ++j) {
-				g.drawImage(imgKey, xPos, yPos, this);
-				xPos += imgWidth;
-				if (j == 0) {
-					g.drawImage(imgKey, xPos, yPos-imgHeight-1, this);
-				}
-			}
-			xPos = paneBuff + (paneSize * i);
-		}
+		// draw game status box
+		g.setColor(Color.BLACK);
+		g.fillRect(-1, yPosStatusText, FRAME_WIDTH_PX+2, heightStatusText);
+		g.setColor(Color.WHITE);
+		g.drawRect(-1, yPosStatusText, FRAME_WIDTH_PX+2, heightStatusText);
 		
+		// print the game status
+		g.setColor(Color.WHITE);
+		VBTetrisFontUtils.drawCenteredString("GAME PAUSED", 0, 0, this.getWidth(), heightStatusText*2, g);
+		
+		// set the font for the player stats
+	    if (players.length < 3) {
+	    	fontSize = VBTetrisFontUtils.adjustFontSize(24);
+	    } else {
+	    	fontSize = VBTetrisFontUtils.adjustFontSize(28);
+	    	fontSize = (int)Math.round(fontSize / (1 + ((players.length-2)/(double)players.length)) );
+	    }
+	    g.setFont(new Font("Times New Roman", Font.BOLD, fontSize));
+	    
+	    drawControls(playerKeys, paneBuff, yPosKeys, fontSize, g);	// draw the stats pane
+	    drawStats(fontSize, paneBuff, yPosStatsPane, g);	// print the stats
+	    
 	}
 	
-	// get and size key image
-	public void createKeyImage() {
-		
-		// http://stackoverflow.com/questions/4248104/applying-a-tint-to-an-image-in-java
-		
-		int numPlayers = players.length;
-		int keyWidth;
-		
-		// get the key image
-		try {
-			imgKey = ImageIO.read(getClass().getResourceAsStream("../VBTetrisImage/key.png"));
-		} catch (IOException e) {
-			// do nothing
-		}
-		
-		// set pane size, pane buffer, key image width
-		paneSize = FRAME_WIDTH_PX / numPlayers;
-		paneBuff = (int) (paneSize * 0.1);
-		keyWidth = (int) ((paneSize-(paneBuff*2)) / 3);
-		
-		// scale image
-		imgKey = Scalr.resize(imgKey, Mode.FIT_TO_WIDTH, keyWidth);
+	private BufferedImage createKeyImage(BufferedImage img, int paneWidth, int buffer) {
+		int keyWidth = (int) ((paneWidth-(buffer*2)) / 3);
+		return Scalr.resize(img, Mode.FIT_TO_WIDTH, keyWidth);
 	}
+	
+	// draw key controls for each player
+	private void drawControls(ArrayList keys, int x, int y, int fontSize, Graphics g) {
+		int imgWidth = imgKey.getWidth();
+		int imgHeight = imgKey.getHeight();
+		
+		// TEMP
+		Iterator<String> itr = keys.iterator();
+		
+		for (int i = 1; i <= players.length; ++i) {
+			for (int j = 0; j < 3; ++j) {
+				drawKey(itr.next(), x, y, imgWidth, imgHeight, fontSize, g);
+				x += imgWidth;
+				if (j == 0) {
+					drawKey(itr.next(), x, y-imgHeight-1, imgWidth, imgHeight, fontSize, g);
+				}
+			}
+			x = paneBuff + (paneSize * i);
+		}
+	}
+	
+	private void drawKey(String c, int x, int y, int imgWidth, int imgHeight, int fontSize, Graphics g) {
+		g.drawImage(imgKey, x, y, this);
+		g.setColor(Color.BLACK);
+		VBTetrisFontUtils.drawCenteredString(c, x, y, imgWidth, imgHeight, g);
+	}
+	
+	private void drawStats(int fontSize, int xPos, int yPos, Graphics g) {
+		
+		// print stats for each player
+		for (int i = 1; i <= players.length; ++i) {
+			VBTetrisPlayer player = players[i-1];
+			lineNum = 0.5;	// first line will start here
+			
+			// draw stats panel
+			g.setColor(Color.BLACK);
+			g.fillRoundRect(xPos, yPos, paneSize-(paneBuff*2), 315, 10, 10);
+			g.setColor(VBTetris._gameEnvir.getPieceColor(players[i-1].getPlayerID()));
+			g.drawRoundRect(xPos, yPos, paneSize-(paneBuff*2), 315, 10, 10);
+			
+			// print stats
+			// stats should be stored in player class for easy retrieval
+			// i think rob is having each player hold own colour, will change later
+			printStat("Current Score", player.getScore(), xPos, yPos, fontSize, player.getPlayerID(), g);
+			printStat("Most Points", 0, xPos, yPos, fontSize, player.getPlayerID(), g);
+			printStat("Lines Cleared", 0, xPos, yPos, fontSize, player.getPlayerID(), g);
+			printStat("Pieces Spawned", 0, xPos, yPos, fontSize, player.getPlayerID(), g);
+			
+			// update colour and text position for next player
+			g.setColor(VBTetris._gameEnvir.getPieceColor(players[i-1].getPlayerID()));
+			xPos = paneBuff + (paneSize * i);
+		}
+	}
+	
+	// print stat
+	private void printStat(String statName, int stat, int xPos, int yPos, int fontSize, int playerID, Graphics g) {
+		// where the stats start (in relation to the panel)
+		int lineHeight = fontSize + 5;
+		int fontOffsetX = 20;
+		int fontOffsetY = lineHeight;
+		
+		g.setColor(VBTetris._gameEnvir.getPieceColor(playerID));
+		g.drawString(statName, xPos+fontOffsetX, yPos+fontOffsetY + (int)(lineHeight*lineNum++));
+		
+		g.setColor(Color.WHITE);
+		g.drawString(String.valueOf(stat), xPos+fontOffsetX, yPos+fontOffsetY + (int)(lineHeight*(lineNum++)));
+		
+		lineNum+=0.5;
+	}
+	
 }
