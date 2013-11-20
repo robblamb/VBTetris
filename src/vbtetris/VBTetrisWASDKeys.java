@@ -8,7 +8,7 @@ public class VBTetrisWASDKeys extends VBTetrisKeyAdapter {
 		super(player, mover);
 	}
 	@Override
-	public void keyPressed(KeyEvent e)	{
+	public synchronized void keyPressed(KeyEvent e)	{
 		int keycode = e.getKeyCode();
 		switch (keycode)
 		{

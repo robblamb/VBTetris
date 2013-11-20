@@ -11,6 +11,11 @@ import java.awt.image.BufferedImage;
  * @see Glossary for VBTetris for any term clarifications.
  *
  */
+
+enum VBColours { 
+	PLAYER1, PLAYER2, PLAYER3, PLAYER4, EMPTY, POWERUP1, POWERUP2, POWERUP3, POWERUP4
+}
+
 public class VBTetrisEnvironment {
 
 	private static final int numLevels = 2;
@@ -101,8 +106,35 @@ public class VBTetrisEnvironment {
 	 * @return a Color for the current level
 	 * 
 	 */
+	public Color getPieceColour(VBColours clr){
+		return _level.getPieceColour(clr);
+	}
+	private Color getVBColour(int i){
+		VBColours clr = VBColours.EMPTY;
+		switch(i){
+		case 0: clr = VBColours.EMPTY;
+		break;
+		case 1: clr = VBColours.PLAYER1;
+		break;
+		case 2: clr = VBColours.PLAYER2;
+		break;
+		case 3: clr = VBColours.PLAYER3;
+		break;
+		case 4: clr = VBColours.PLAYER4;
+		break;
+		case 5: clr = VBColours.POWERUP1;
+		break;
+		case 6: clr = VBColours.POWERUP2;
+		break;
+		case 7: clr = VBColours.POWERUP3;
+		break;
+		case 8: clr = VBColours.POWERUP4;
+		break;
+		}
+		return _level.getPieceColour(clr);
+	}
     public Color getPieceColor(int i){
-       return _level.getPieceColour(i);
+       return getVBColour(i);
     }
 	  /**
 	   * 

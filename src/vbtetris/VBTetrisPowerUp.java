@@ -54,6 +54,7 @@ public abstract class VBTetrisPowerUp {
 	protected VBTetrisPlayer _player;
 	protected VBTetrisTimer _time;
 	protected boolean activity;
+	protected VBColours colour;
 	
 	public VBTetrisPowerUp()
 	{
@@ -63,7 +64,7 @@ public abstract class VBTetrisPowerUp {
 		xPosition = yPosition = 0;
 		readyToFire = activity = false;
 	}
-	
+	public VBColours getColour(){return colour;}
 	public void setXPosition(int xPos)
 	{
 		xPosition = xPos;

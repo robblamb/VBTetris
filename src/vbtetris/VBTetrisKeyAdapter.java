@@ -11,16 +11,16 @@ public class VBTetrisKeyAdapter extends KeyAdapter {
 		this.player = player;
 		this.mover = mover;
 	}
-	public void moveLeft(){
+	public synchronized void moveLeft(){
 		mover.moveLeft(player);
 	}
-	public void moveRight(){
+	public synchronized void moveRight(){
 		mover.moveRight(player);
 	}
-	public void moveDown(){
+	public synchronized void moveDown(){
 		mover.moveDown(player);
 	}
-	public void rotate(){
+	public synchronized void rotate(){
 		mover.rotate(player);
 	}
 	

@@ -90,7 +90,7 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 		// create the mover that is an interface for pieces to move on the board
 		_mover = new VBTetrisPieceMover(this);
 		myPause = new VBTetrisPauser();
-		addKeyListener(myPause);
+		 addKeyListener(myPause);
 		
 		playAdapters = new VBTetrisKeyAdapter[players.length];
 		playAdapters[0] = new VBTetrisWASDKeys(players[0], _mover);
@@ -153,6 +153,7 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 				}
 				powUpOnBoard.setXPosition(xPos);
 				powUpOnBoard.setYPosition(yPos);
+//				 TODO Should we set the owner here
 				_board[(yPos * BOARD_WIDTH) + xPos].setEmpty(false);
 				_board[(yPos * BOARD_WIDTH) + xPos].setShape(Tetrominoes.SQUARE_SHAPE);
 			}
@@ -317,7 +318,7 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 		return true;
 	}
 
-	public void dropOneDown(VBTetrisPlayer player)
+	public synchronized void dropOneDown(VBTetrisPlayer player)
 	{	
 		// if the piece hits the boundary (in this case the bottom) store the piece in the game board
 		// we can check HIT_BOUNDARY and know we hit the bottom because we only move the piece down

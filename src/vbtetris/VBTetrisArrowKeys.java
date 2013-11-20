@@ -9,7 +9,7 @@ public class VBTetrisArrowKeys extends VBTetrisKeyAdapter{
 	}
 	
 	@Override
-	public void keyPressed(KeyEvent e)	{
+	public synchronized void keyPressed(KeyEvent e)	{
 		int keycode = e.getKeyCode();
 		switch (keycode) {
 			case KeyEvent.VK_LEFT:

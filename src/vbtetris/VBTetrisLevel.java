@@ -34,18 +34,19 @@ public abstract class VBTetrisLevel {
 	 * @return Colour(Color) of players piece given by playerNum for this level
 	 */
 	 public abstract Color getPieceColour(int playerNum);
+	 public abstract Color getPieceColour(VBColours colour);
 	 /**
 	  * 
 	  * @return A buffered Image of the background of the level
 	  */
 	 public abstract BufferedImage getLevelImage();
-	 /**
-	  * 
-	  * @param lines>0 indicates the number of lines scored
-	  * @return an audio clip of the sound to be played
-	  */
-	 public abstract AudioClip getLineSound(int lines);
-	 public abstract AudioClip getLineSoundRandom();
+	/**
+	 * Plays the warning sound of kill line hit
+	 */
 	 public abstract void playkillLineSound();
+	 /**
+	  *  
+	  * @param numLinesScored designates sound to play: 0 kill 2 good 3 great 4 amazing. All others default sound 
+	  */
 	 public abstract void playLineSound(int numLinesScored);
 }

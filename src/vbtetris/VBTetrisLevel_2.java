@@ -88,15 +88,29 @@ public class VBTetrisLevel_2 extends VBTetrisLevel {
 			default: return null;
 		}
 	}
-	@Override
-	public AudioClip getLineSound(int lines) {
-		if (lines>=1 && lines<=numLineZap){return this.lineZap[lines];}
-		else return null;
-	}
+	
+	private int p1red = 30, p1grn = 30, p1blu=30;
+	private int p2red = 30, p2grn = 30, p2blu=30;
+	private int p3red = 30, p3grn = 30, p3blu=30;
+	private int p4red = 30, p4grn = 30, p4blu=30;
 
 	@Override
-	public AudioClip getLineSoundRandom() {
-		return lineZap[(int) (1 + (int)(Math.random() * numLineZap))];
+	public Color getPieceColour(VBColours colour) {
+		switch(colour){
+		
+		case PLAYER1: return Color.red;
+		case PLAYER2: return Color.cyan;
+		case PLAYER3: return Color.orange;
+		case PLAYER4: return Color.blue;
+		case EMPTY: return Color.black;
+		case POWERUP1: 
+			p1red = (p1red + 50)% 255;
+			return new Color(p1red,p1grn,p1blu);
+		case POWERUP2:
+			p2blu = (p2blu + 30)% 255;
+			return new Color(p2red,p2grn,p2blu);
+		default: return Color.white;
+		}
 	}
 	@Override
 	public BufferedImage getLevelImage() {
