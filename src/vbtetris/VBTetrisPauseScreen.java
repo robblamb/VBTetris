@@ -26,7 +26,7 @@ public class VBTetrisPauseScreen extends JPanel {
 	private double lineNum;
 	
 	// TEMP
-	ArrayList playerKeys = new ArrayList();
+	ArrayList<String> playerKeys = new ArrayList<String>();
 	
 	public VBTetrisPauseScreen(int w, int h, VBTetrisPlayer[] players) {
 		setLayout(null);
@@ -116,7 +116,7 @@ public class VBTetrisPauseScreen extends JPanel {
 	}
 	
 	// draw key controls for each player
-	private void drawControls(ArrayList keys, int x, int y, int fontSize, Graphics g) {
+	private void drawControls(ArrayList<String> keys, int x, int y, int fontSize, Graphics g) {
 		int imgWidth = imgKey.getWidth();
 		int imgHeight = imgKey.getHeight();
 		
@@ -158,9 +158,9 @@ public class VBTetrisPauseScreen extends JPanel {
 			// stats should be stored in player class for easy retrieval
 			// i think rob is having each player hold own colour, will change later
 			printStat("Current Score", player.getScore(), xPos, yPos, fontSize, player.getPlayerID(), g);
-			printStat("Most Points", 0, xPos, yPos, fontSize, player.getPlayerID(), g);
-			printStat("Lines Cleared", 0, xPos, yPos, fontSize, player.getPlayerID(), g);
-			printStat("Pieces Spawned", 0, xPos, yPos, fontSize, player.getPlayerID(), g);
+			printStat("Most Points", player.getMostPoints(), xPos, yPos, fontSize, player.getPlayerID(), g);
+			printStat("Lines Cleared", player.getnumLinesRemoved(), xPos, yPos, fontSize, player.getPlayerID(), g);
+			printStat("Pieces Spawned", player.getPiecesSpawned(), xPos, yPos, fontSize, player.getPlayerID(), g);
 			
 			// update colour and text position for next player
 			g.setColor(VBTetris._gameEnvir.getPieceColor(players[i-1].getPlayerID()));

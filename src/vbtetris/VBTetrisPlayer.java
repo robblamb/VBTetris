@@ -1,5 +1,7 @@
 package vbtetris;
 
+import java.awt.Color;
+
 public class VBTetrisPlayer {
 	
 	static int numPlayers = 0;				// total number of players
@@ -12,7 +14,10 @@ public class VBTetrisPlayer {
 	private VBTetrisPieces nextPiece; 		// next piece
 	private int xPos, yPos;					// current position of players piece
 	private int score;						// players score
+	private int piecesSpawned;				// number of pieces spawned
+	private int mostPoints;					// most points scored at once
 	private int victoryScore;               // score required for player to be victorious
+	private Color playerColour;				// player colour
 	
 	VBTetrisPlayer(int victoryValue, int playerNum)
 	{	
@@ -23,12 +28,17 @@ public class VBTetrisPlayer {
 		numLinesRemoved = 0;
 		xPos = yPos = 0;
 		score = 0;
+		piecesSpawned = 0;
+		mostPoints = 0;
+		playerColour = VBTetris._gameEnvir.getPieceColor(playerNum);
 	}
 	public void reset(){
 		dropping = true;
 		numLinesRemoved = 0;
 		xPos = yPos = 0;
 		score = 0;
+		piecesSpawned = 0;
+		mostPoints = 0;
 		curPiece=nextPiece=null;
 		
 	}
@@ -40,7 +50,17 @@ public class VBTetrisPlayer {
 				+ numLinesRemoved + ", curPiece=" + curPiece + ", nextPiece=" + nextPiece + ", xPos=" + xPos
 				+ ", yPos=" + yPos + ", score=" + score + "]";
 	}
-
+	
+	public int getMostPoints() {return mostPoints;}
+	
+	public void setMostPoints(int points) {mostPoints = points;}
+	
+	public int getPiecesSpawned() {return piecesSpawned;}
+	
+	public void setPiecesSpawned() {piecesSpawned++;}
+	
+	public Color getPlayerColour() {return playerColour;}
+	
 	public int getPlayerID() {return playerNum;}
 	
 	public int getStartPos() {return startPos;}

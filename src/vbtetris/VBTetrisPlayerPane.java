@@ -39,7 +39,7 @@ public class VBTetrisPlayerPane extends JPanel
 			int currBottom = areaSize*i + areaSize;
 			
 			// draw player pane
-			g.setColor(VBTetris._gameEnvir.getPieceColor((VBTetris._board.getPlayers()[i].getcurPiece().getOwner())));
+			g.setColor(VBTetris._board.getPlayers()[i].getPlayerColour());
 			g.fillRect(0, currTop, PANEL_WIDTH, areaSize);
 			
 			// draw score box

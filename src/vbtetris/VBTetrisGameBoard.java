@@ -386,14 +386,23 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 		int multiple = numCompleteRows - numKillLines;
 		
 		// modify player score
-		if (multiple > 0) player.addtoscore(1000*multiple*multiple+15);
-		else player.addtoscore(-1000*multiple*multiple+15);
+		//if (multiple > 0) player.addtoscore(1000*multiple*multiple+15);
+		//else player.addtoscore(-1000*multiple*multiple+15);
+		
+		// modify player score
+		int pointsAchieved = 1000*multiple*multiple+15;
+		if (multiple >= 0) {
+			player.addtoscore(pointsAchieved);
+			// update player most points achieved
+			if (pointsAchieved > player.getMostPoints()) {player.setMostPoints(pointsAchieved);}
+		} else {
+			player.addtoscore(-pointsAchieved);
+		}
 
 		// TODO get victory conditions
 		// check for a victorious player
 		if (_winCond.isLose(player.getScore()) || _winCond.isWinScore(player.getScore()) )
-		{
-				
+		{	
 			stop();
 			return;
 		}
@@ -403,6 +412,7 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 
 		// create a new piece
 		newPiece(player);
+		player.setPiecesSpawned();
 	}
 	public int rowEmptyToRight(int toTheRightOfMe, int atMyHeight, VBTetrisPlayer myPlayer)
 	{

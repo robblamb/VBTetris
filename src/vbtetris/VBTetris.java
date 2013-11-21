@@ -57,6 +57,10 @@ public class VBTetris extends JPanel {
 		// set contentPane layout manager
 		setLayout( new BoxLayout( this, BoxLayout.X_AXIS ));
 		
+		// create the game environment
+		_gameEnvir = new VBTetrisEnvironment();
+		_gameEnvir.init();
+		
 		// create and set up the layered pane
 		layeredPane = new JLayeredPane();
 		layeredPane.setPreferredSize(new Dimension(FRAME_WIDTH_PX, FRAME_HEIGHT_PX));	
@@ -65,10 +69,6 @@ public class VBTetris extends JPanel {
 		for (int i = 0; i < players.length; ++i) {
 			players[i] = new VBTetrisPlayer(VICTORY_SCORE,i+1);
 		}
-
-		// create the game environment
-		_gameEnvir = new VBTetrisEnvironment();
-		_gameEnvir.init();
 		
 		// create the game board
 		_board = new VBTetrisGameBoard(BOARD_WIDTH, BOARD_HEIGHT, SQUARE_SIZE, KILL_LINE, players);
