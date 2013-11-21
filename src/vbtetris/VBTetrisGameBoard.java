@@ -30,6 +30,9 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 	
 	public enum moveStatus { OK, HIT_BOUNDARY, HIT_PIECE }; 
 	
+
+	private VBTetrisWinConditions _winCond;
+
 	// SHOULD BE IN GAME ENGINE CLASS?
 	private VBTetrisTimer timer;    // timer triggers and action every msToUpdate milliseconds
 	private int msToUpdate = 400;	// game speed in milliseconds
@@ -61,6 +64,7 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 		SQUARE_SIZE = s;
 		KILL_LINE = k;
 		
+        _winCond = new VBTetrisWinConditions();
 		this.players = players;
 		
 		// give board the keyboard input
@@ -104,6 +108,16 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 		random = new Random(17878931);
 	}
 	public void setKill(int newKill){this.KILL_LINE = newKill;}
+	
+	// TODO restart if okay to do so
+	private void start(){
+		gameOver = false;
+		for (int i = 0; i < players.length; i++) {
+			addKeyListener(playAdapters[i]);
+		}
+		addKeyListener(myPause);
+		timer.start();
+	}
 	private void stop()
 	{
 		gameOver = true;
@@ -159,7 +173,6 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 			}
 		}
 	}
-	// TODO check boundaries
 	// returns a block from a spot on the game board
 	private VBTetrisBlock getBlock(int x, int y)
 	{	if (x>BOARD_WIDTH || y>BOARD_HEIGHT) return new VBTetrisBlock();
@@ -203,7 +216,7 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 		
 		timer.start();
 	}
-
+// TODO set start up screen
 	// toggle pause state
 	public void togglePause()
 	{
@@ -376,9 +389,11 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 		if (multiple > 0) player.addtoscore(1000*multiple*multiple+15);
 		else player.addtoscore(-1000*multiple*multiple+15);
 
-		
+		// TODO get victory conditions
 		// check for a victorious player
-		if (player.amIVictorious()) {
+		if (_winCond.isLose(player.getScore()) || _winCond.isWinScore(player.getScore()) )
+		{
+				
 			stop();
 			return;
 		}
@@ -389,7 +404,6 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 		// create a new piece
 		newPiece(player);
 	}
-	
 	public int rowEmptyToRight(int toTheRightOfMe, int atMyHeight, VBTetrisPlayer myPlayer)
 	{
 		if (toTheRightOfMe > BOARD_WIDTH || atMyHeight > BOARD_HEIGHT 

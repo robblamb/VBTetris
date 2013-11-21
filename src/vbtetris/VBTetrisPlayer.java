@@ -24,6 +24,14 @@ public class VBTetrisPlayer {
 		xPos = yPos = 0;
 		score = 0;
 	}
+	public void reset(){
+		dropping = true;
+		numLinesRemoved = 0;
+		xPos = yPos = 0;
+		score = 0;
+		curPiece=nextPiece=null;
+		
+	}
 	
 	@Override
 	public String toString() {

@@ -16,8 +16,8 @@ public class VBTetrisTestTimer implements ActionListener {
 			@Override
 			public void actionPerformed(ActionEvent e){
 				//timer.stop();
-				//timer.speedupby(10);
-				timer.slowDown();
+				timer.speedupby(10);
+				//timer.slowDown();
 			}
 		};
 		Timer newt = new Timer(400*6,al);

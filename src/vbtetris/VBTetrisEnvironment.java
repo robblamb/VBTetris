@@ -6,7 +6,8 @@ import java.awt.image.BufferedImage;
 /**
  * 
  * @author Robert Lamb, Team Virtual Boy, CSCI 331 Fall 13
- * @author // CSCI331 RL
+ * @author // CSCI331 RL Creator
+ * @author // CSCI331 RL Information Expert
  * 
  * @see Glossary for VBTetris for any term clarifications.
  *

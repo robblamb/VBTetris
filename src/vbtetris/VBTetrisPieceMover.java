@@ -5,25 +5,25 @@ public class VBTetrisPieceMover {
 	public VBTetrisPieceMover(VBTetrisGameBoard board) {
 		this._board = board;
 	}
-	public void moveLeft(VBTetrisPlayer _player){
+	public synchronized void moveLeft(VBTetrisPlayer _player){
 		if(_board.isGameOver()||_board.isGamePaused()){
 			return;
 		}
 		_board.tryMove(_player,_player.getcurPiece(), _player.getxPos() - 1,_player.getyPos());
 	}
-	public void moveRight(VBTetrisPlayer _player){
+	public synchronized void moveRight(VBTetrisPlayer _player){
 		if(_board.isGameOver()||_board.isGamePaused()){
 			return;
 		}
 		_board.tryMove(_player,_player.getcurPiece(), _player.getxPos() + 1,_player.getyPos());
 	}
-	public void moveDown(VBTetrisPlayer _player){
+	public synchronized void moveDown(VBTetrisPlayer _player){
 		if(_board.isGameOver()||_board.isGamePaused()){
 			return;
 		}
 		_board.dropOneDown(_player);
 	}
-	public void rotate(VBTetrisPlayer _player){
+	public synchronized void rotate(VBTetrisPlayer _player){
 		if(_board.isGameOver()||_board.isGamePaused()){
 			return;
 		}

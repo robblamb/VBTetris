@@ -292,6 +292,7 @@ public class VBTetris extends JPanel {
 
 		// show the window
 		frame.pack();
+		_board.togglePause();
 		frame.setVisible(true);
 	}
 

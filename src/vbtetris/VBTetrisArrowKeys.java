@@ -2,7 +2,7 @@ package vbtetris;
 
 import java.awt.event.KeyEvent;
 
-public class VBTetrisArrowKeys extends VBTetrisKeyAdapter{
+public class  VBTetrisArrowKeys extends VBTetrisKeyAdapter{
 
 	public VBTetrisArrowKeys(VBTetrisPlayer player, VBTetrisPieceMover mover) {
 		super(player, mover);
