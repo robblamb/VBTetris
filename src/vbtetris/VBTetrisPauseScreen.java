@@ -71,17 +71,28 @@ public class VBTetrisPauseScreen extends JPanel {
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		
-		int fontSize;
-		
-		// i would rather these be percentages
-		int yPosStatusText = 30;
-		int heightStatusText = 60;
-		int yPosKeys = 200;
-		int yPosStatsPane = 300;
-	    	    
 		// draw pause screen background
 		g.setColor(new Color(0, 0, 0, 180));
 		g.fillRect(0, 0, FRAME_WIDTH_PX, FRAME_HEIGHT_PX);
+		
+		if (VBTetris._board.isGameOver() != true) {
+			drawStatus("GAME PAUSED", 30, g);	// draw status bar
+			drawControls(playerKeys, paneBuff, 200, g);	// draw stats pane
+			drawStats(paneBuff, 300, g);	// print stats
+		} else {
+			drawStatus("GAME OVER", 30, g);
+		}
+			
+	}
+	
+	private BufferedImage createKeyImage(BufferedImage img, int paneWidth, int buffer) {
+		int keyWidth = (int) ((paneWidth-(buffer*2)) / 3);
+		return Scalr.resize(img, Mode.FIT_TO_WIDTH, keyWidth);
+	}
+	
+	private void drawStatus(String status, int yPosStatusText, Graphics g) {
+
+		int heightStatusText = 60;
 		
 		// set the font for the game status
 		g.setFont(new Font("Times New Roman", Font.BOLD + Font.ITALIC, VBTetrisFontUtils.adjustFontSize(36)));
@@ -94,29 +105,11 @@ public class VBTetrisPauseScreen extends JPanel {
 		
 		// print the game status
 		g.setColor(Color.WHITE);
-		VBTetrisFontUtils.drawCenteredString("GAME PAUSED", 0, 0, this.getWidth(), heightStatusText*2, g);
-		
-		// set the font for the player stats
-	    if (players.length < 3) {
-	    	fontSize = VBTetrisFontUtils.adjustFontSize(24);
-	    } else {
-	    	fontSize = VBTetrisFontUtils.adjustFontSize(28);
-	    	fontSize = (int)Math.round(fontSize / (1 + ((players.length-2)/(double)players.length)) );
-	    }
-	    g.setFont(new Font("Times New Roman", Font.BOLD, fontSize));
-	    
-	    drawControls(playerKeys, paneBuff, yPosKeys, fontSize, g);	// draw the stats pane
-	    drawStats(fontSize, paneBuff, yPosStatsPane, g);	// print the stats
-	    
-	}
-	
-	private BufferedImage createKeyImage(BufferedImage img, int paneWidth, int buffer) {
-		int keyWidth = (int) ((paneWidth-(buffer*2)) / 3);
-		return Scalr.resize(img, Mode.FIT_TO_WIDTH, keyWidth);
+		VBTetrisFontUtils.drawCenteredString(status, 0, yPosStatusText, this.getWidth(), heightStatusText, g);
 	}
 	
 	// draw key controls for each player
-	private void drawControls(ArrayList<String> keys, int x, int y, int fontSize, Graphics g) {
+	private void drawControls(ArrayList<String> keys, int x, int y, Graphics g) {
 		int imgWidth = imgKey.getWidth();
 		int imgHeight = imgKey.getHeight();
 		
@@ -125,23 +118,34 @@ public class VBTetrisPauseScreen extends JPanel {
 		
 		for (int i = 1; i <= players.length; ++i) {
 			for (int j = 0; j < 3; ++j) {
-				drawKey(itr.next(), x, y, imgWidth, imgHeight, fontSize, g);
+				drawKey(itr.next(), x, y, imgWidth, imgHeight, g);
 				x += imgWidth;
 				if (j == 0) {
-					drawKey(itr.next(), x, y-imgHeight-1, imgWidth, imgHeight, fontSize, g);
+					drawKey(itr.next(), x, y-imgHeight-1, imgWidth, imgHeight, g);
 				}
 			}
 			x = paneBuff + (paneSize * i);
 		}
 	}
 	
-	private void drawKey(String c, int x, int y, int imgWidth, int imgHeight, int fontSize, Graphics g) {
+	private void drawKey(String c, int x, int y, int imgWidth, int imgHeight, Graphics g) {
 		g.drawImage(imgKey, x, y, this);
 		g.setColor(Color.BLACK);
 		VBTetrisFontUtils.drawCenteredString(c, x, y, imgWidth, imgHeight, g);
 	}
 	
-	private void drawStats(int fontSize, int xPos, int yPos, Graphics g) {
+	private void drawStats(int xPos, int yPos, Graphics g) {
+		
+		int fontSize;
+		
+		// set the font for the player stats
+		if (players.length < 3) {
+			fontSize = VBTetrisFontUtils.adjustFontSize(24);
+		} else {
+			fontSize = VBTetrisFontUtils.adjustFontSize(28);
+			fontSize = (int)Math.round(fontSize / (1 + ((players.length-2)/(double)players.length)) );
+		}
+		g.setFont(new Font("Times New Roman", Font.BOLD, fontSize));
 		
 		// print stats for each player
 		for (int i = 1; i <= players.length; ++i) {

@@ -386,10 +386,6 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 		int multiple = numCompleteRows - numKillLines;
 		
 		// modify player score
-		//if (multiple > 0) player.addtoscore(1000*multiple*multiple+15);
-		//else player.addtoscore(-1000*multiple*multiple+15);
-		
-		// modify player score
 		int pointsAchieved = 1000*multiple*multiple+15;
 		if (multiple >= 0) {
 			player.addtoscore(pointsAchieved);
@@ -404,6 +400,7 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 		if (_winCond.isLose(player.getScore()) || _winCond.isWinScore(player.getScore()) )
 		{	
 			stop();
+			togglePause();
 			return;
 		}
 
