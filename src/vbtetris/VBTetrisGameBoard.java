@@ -141,12 +141,12 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 				dropOneDown(players[i]);
 			}
 		}
-		putPowerBlock(false);
+		putPowerBlock();
 	}
 	
-	private synchronized void putPowerBlock(boolean amI) 
+	private synchronized void putPowerBlock() 
 	{
-		if ((_power.getPowerUpOnGameBoard() == false && powUpOnBoard == null) || amI) {
+		if ((_power.getPowerUpOnGameBoard() == false && powUpOnBoard == null)) {
 			
 			for (int i = 0; i < _board.length; i++) {
 				if (_board[i].getOwner() == 0) {
@@ -199,7 +199,7 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 	// TODO boundary check
 	private boolean isBoardBlock(int x, int y)
 	{
-		if (x<0 || y < 0 || x > BOARD_WIDTH || y > BOARD_HEIGHT) return false;
+		//if (x<0 || y < 0 || x > BOARD_WIDTH || y > BOARD_HEIGHT) return false;
 		if ( _board[(y * BOARD_WIDTH) + x].isEmpty() ) return false;
 		return true;
 	}
@@ -466,7 +466,7 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 				if (_power.getPowerUpOnGameBoard() && powUpOnBoard != null) {
 					if (powUpOnBoard.didICollide(x, y)) {
 						if (powUpOnBoard.commitAction(this, player, timer)) {
-							_board[(powUpOnBoard.getYPosition() * BOARD_WIDTH) + powUpOnBoard.getXPosition()] = new VBTetrisBlock();
+							_board[(powUpOnBoard.getYPosition() * BOARD_WIDTH) + powUpOnBoard.getXPosition()].setEmpty(true);
 							_power.setPowerUpOnGameBoard(false);
 							repaint();
 							return moveStatus.OK;
@@ -533,8 +533,10 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 	private synchronized void removeRow(int activeRow)
 	{
 		if (powUpOnBoard != null && _power.getPowerUpOnGameBoard() ) {
-			_board[(powUpOnBoard.getYPosition() * BOARD_WIDTH) + powUpOnBoard.getXPosition()] = new VBTetrisBlock();
-			putPowerBlock(true);
+			_board[(powUpOnBoard.getYPosition() * BOARD_WIDTH) + powUpOnBoard.getXPosition()].setEmpty(true);
+			powUpOnBoard = null;
+			_power.setPowerUpOnGameBoard(false);
+			//putPowerBlock();
 		}
 		
 		// move all the rows above the target row down by 1
