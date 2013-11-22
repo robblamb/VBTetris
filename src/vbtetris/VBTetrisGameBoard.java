@@ -105,7 +105,8 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 		
 		_power = new VBTetrisPowerUpSelector();
 		powUpOnBoard = null;
-		random = new Random(17878931);
+		int seed = (int)(Math.random()*100000000);
+		random = new Random(seed);
 	}
 	public void setKill(int newKill){this.KILL_LINE = newKill;}
 	

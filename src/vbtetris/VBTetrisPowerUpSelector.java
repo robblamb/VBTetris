@@ -8,11 +8,12 @@ public class VBTetrisPowerUpSelector {
 	
 	public VBTetrisPowerUpSelector() {
 		powerUpOnGameBoard = false;
-		random = new Random(53532532);
+		int seed = (int)(Math.random()*100000000);
+		random = new Random(seed);
 	}
 	
 	public VBTetrisPowerUp chooseAPowerUp() {
-		if (random.nextInt(100) < 95) {
+		if (random.nextInt(100) < 15) {
 			VBTetrisPowerUp powerToReturn = null;
 			int myChoice = random.nextInt(4);
 			switch ( myChoice ) {
