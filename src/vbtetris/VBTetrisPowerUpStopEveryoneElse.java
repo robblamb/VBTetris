@@ -48,6 +48,7 @@ public class VBTetrisPowerUpStopEveryoneElse extends VBTetrisPowerUp {
 		_player.setdropping(true);
 		readyToFire = true;
 		activity = false;
+		myName = "";
 	}
 	
 	@Override
