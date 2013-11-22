@@ -9,6 +9,7 @@ public class VBTetrisPowerUpStopEveryoneElse extends VBTetrisPowerUp {
 	public VBTetrisPowerUpStopEveryoneElse()
 	{
 		super();
+		myName = "Stop";
 	}
 	
 	@Override

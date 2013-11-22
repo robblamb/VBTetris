@@ -10,6 +10,7 @@ public class VBTetrisPowerUpSpeedUp extends VBTetrisPowerUp {
 	public VBTetrisPowerUpSpeedUp()
 	{
 		super();
+		myName = "Quicken";
 	}
 	
 	@Override

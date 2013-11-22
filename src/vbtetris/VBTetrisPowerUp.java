@@ -55,6 +55,7 @@ public abstract class VBTetrisPowerUp {
 	protected VBTetrisTimer _time;
 	protected boolean activity;
 	protected VBColours colour;
+	protected String myName;
 	
 	public VBTetrisPowerUp()
 	{
@@ -63,6 +64,7 @@ public abstract class VBTetrisPowerUp {
 		_time = null;
 		xPosition = yPosition = 0;
 		readyToFire = activity = false;
+		myName = "";
 	}
 	public VBColours getColour(){return colour;}
 	public void setXPosition(int xPos)
@@ -103,4 +105,13 @@ public abstract class VBTetrisPowerUp {
 	public abstract boolean commitAction(VBTetrisGameBoard gameToPowUp, VBTetrisPlayer playerWithPow, VBTetrisTimer boardTime);
 	
 	public abstract boolean secondCommit(VBTetrisPlayer currentPlayer);
+	
+	public String getName(VBTetrisPlayer currentPlayer)
+	{
+		if (_player == null || _player.equals(currentPlayer)) {
+			return myName;
+		} else {
+			return "";
+		}
+	}
 }

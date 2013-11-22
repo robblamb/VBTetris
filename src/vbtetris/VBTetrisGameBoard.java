@@ -128,6 +128,14 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 		timer.stop();
 	}
 	
+	public String getPowUpName(VBTetrisPlayer currentPlayer) 
+	{
+		if (powUpOnBoard != null) {
+			return powUpOnBoard.getName(currentPlayer);
+		}
+		return "";
+	}
+	
 	public VBTetrisPlayer[] getPlayers()
 	{
 		return players;

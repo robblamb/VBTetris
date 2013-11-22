@@ -9,6 +9,7 @@ public class VBTetrisPowerUpFireFly extends VBTetrisPowerUp {
 		readyToFire = false;
 		myPiece = new VBTetrisPowerUpFireFlyPiece();
 		myPiece.setsShape();//This is just abstracted to a private method that is not random
+		myName = "Firefly";
 	}
 	
 	@Override

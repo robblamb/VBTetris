@@ -9,6 +9,7 @@ public class VBTetrisPowerUpCompleteLine extends VBTetrisPowerUp {
 		readyToFire = false;
 		myPiece = new VBTetrisPowerUpCompletePiece();
 		myPiece.setsShape();//This is just abstracted to a private method that is not random
+		myName = "Extend";
 	}
 	
 	@Override
