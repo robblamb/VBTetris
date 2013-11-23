@@ -106,6 +106,7 @@ public class VBTetris extends JPanel {
 	public static void setkillLine(int newKill){ KILL_LINE=newKill;}
 	
 	public static void killgame(){
+		_board.stop();
 		_board = null;
 		for (int i = 0; i < players.length; ++i){
 			players[i]=null;

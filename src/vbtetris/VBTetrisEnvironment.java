@@ -41,8 +41,14 @@ public class VBTetrisEnvironment {
 	 * prepares an instance for use
 	 * 
 	 */
-	public void init() { curLevel=1; setLevel();}
-
+	public void init() { 
+		curLevel=1; 
+		setLevel();
+		playMusic();
+	}
+	
+	public void playMusic(){_level.startBackgroundSound();}
+	public void stopMusic(){_level.stopBackgroundSound();}
 	/**
 	 * @param none
 	 * @return none

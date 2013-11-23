@@ -39,7 +39,7 @@ public class VBTetrisLevel_1 extends VBTetrisLevel{
 	 protected AudioClip lineZap[];
 	 private String myBackground; 
 	 protected Clip clip;
-	 
+	 protected Clip backClip;
 	 
 	 public VBTetrisLevel_1() {
 		 super();
@@ -71,6 +71,38 @@ public class VBTetrisLevel_1 extends VBTetrisLevel{
 	   	clip.setFramePosition(0); // rewind to the beginning
 	    clip.start();     // Start playing
 
+	}
+	@Override
+	public void startBackgroundSound() {
+		URL url = getClass().getResource("../VBTetrisSound/100_Phonography_Am04.wav");
+		setBackClip(url);
+		if(!backClip.isRunning()) {
+			backClip.setFramePosition(0);
+			backClip.start();
+			backClip.loop(backClip.LOOP_CONTINUOUSLY);
+		}
+	}
+	 private void setBackClip(URL url){
+		 try {
+		        // Set up an audio input stream piped from the sound file.
+		        AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(url);
+		        // Get a clip resource.
+		        backClip = AudioSystem.getClip();
+		        // Open audio clip and load samples from the audio input stream.
+		        backClip.open(audioInputStream);
+		    } catch (UnsupportedAudioFileException e) {
+		        e.printStackTrace();
+		    } catch (IOException e) {
+		        e.printStackTrace();
+		    } catch (LineUnavailableException e) {
+		        e.printStackTrace();
+		    }
+	 }
+	@Override
+	public void stopBackgroundSound() {
+		if(backClip.equals(null)) return;
+		backClip.stop();
+		
 	}
 	@Override
 	public void playkillLineSound() {
@@ -164,6 +196,7 @@ public class VBTetrisLevel_1 extends VBTetrisLevel{
 		default: return Color.white;
 		}
 	}
+
 
 }
 

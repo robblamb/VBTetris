@@ -4,6 +4,7 @@ This document is a glossary for terms, methods, objects, and any other possible 
 The authors are Team Virtual Boy, from CSCI 331, Fall 2013, for Dr. J Beeston
 Authors: Matthew Cormons, Robert Lamb, Eli Reale
 
+
 Background: 
 	Static images that sit behind the game board
 	may be dynamically changing but cannot create

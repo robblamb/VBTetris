@@ -39,19 +39,19 @@ public class VBTetrisLevel_2 extends VBTetrisLevel {
 	 private AudioClip lineZap[];
 	 private String myBackground; 
 	 private Clip clip;
+	 private Clip backClip;
 	 public VBTetrisLevel_2() {
 		 super();
 		 myBackground = "../VBTetrisImage/SHODAN-BG.png";
 	}
-
-	 private void setClip(URL url){
+	 private void setClip(URL url, Clip c){
 		 try {
 		        // Set up an audio input stream piped from the sound file.
 		        AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(url);
 		        // Get a clip resource.
-		        clip = AudioSystem.getClip();
+		        c = AudioSystem.getClip();
 		        // Open audio clip and load samples from the audio input stream.
-		        clip.open(audioInputStream);
+		        c.open(audioInputStream);
 		    } catch (UnsupportedAudioFileException e) {
 		        e.printStackTrace();
 		    } catch (IOException e) {
@@ -61,10 +61,25 @@ public class VBTetrisLevel_2 extends VBTetrisLevel {
 		    }
 	 }
 	@Override
+	public void startBackgroundSound() {
+		URL url = getClass().getResource("../VBTetrisSound/100_Phonography_Am04.wav");
+		setClip(url,backClip);
+		if(!backClip.isRunning()) {
+			backClip.setFramePosition(0);
+			backClip.start();
+		}
+	}
+	@Override
+	public void stopBackgroundSound() {
+		if(backClip.equals(null)) return;
+		backClip.stop();
+			
+	}
+	@Override
 	public void playLineSound(int numLinesScored) {
 		// Code here borrowed from a comment on stackoverflow.com
 		URL url = getClass().getResource("../VBTetrisSound/zap"+numLinesScored+".wav");
-  	    setClip(url);//this method will load the sound
+  	    setClip(url,clip);//this method will load the sound
 	    if (clip.isRunning())
 		 	 clip.stop();   // Stop the player if it is still running
 	   	clip.setFramePosition(0); // rewind to the beginning

@@ -129,8 +129,9 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 		addKeyListener(myPause);
 		timer.start();
 	}
-	private void stop()
+	public void stop()
 	{
+		VBTetris._gameEnvir.stopMusic();
 		clock.stop();
 		gameOver = true;
 		for (int i = 0; i < players.length; i++) {
