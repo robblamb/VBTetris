@@ -40,6 +40,7 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 	private VBTetrisPowerUpSelector _power;
 	private VBTetrisPowerUp powUpOnBoard;
 	private Random random;
+	protected static VBTetrisClock clock;
 	
 	// SHOULD BE IN GAME ENGINE CLASS
 	private boolean gameOver;
@@ -113,11 +114,14 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 		powUpOnBoard = null;
 		int seed = (int)(Math.random()*100000000);
 		random = new Random(seed);
+		
+		clock = new VBTetrisClock();
 	}
 	public void setKill(int newKill){this.KILL_LINE = newKill;}
 	
 	// TODO restart if okay to do so
 	private void start(){
+		clock.start();
 		gameOver = false;
 		for (int i = 0; i < players.length; i++) {
 			addKeyListener(playAdapters[i]);
@@ -127,6 +131,7 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 	}
 	private void stop()
 	{
+		clock.stop();
 		gameOver = true;
 		for (int i = 0; i < players.length; i++) {
 			removeKeyListener(playAdapters[i]);
@@ -237,10 +242,12 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 	{
 		gamePaused = !gamePaused;	
 		if (gamePaused) {
+			clock.stop();
 			timer.stop();
 			VBTetris._pause.setVisible(true);
 		}
 		else {
+			clock.start();
 			timer.start();
 			VBTetris._pause.setVisible(false);
 		}
@@ -602,5 +609,19 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 	
 		}
 	}
+	
+	// does not take a tie into account
+	public int findWinner() {
+		int currWinnerID = players[0].getPlayerID();
+		int highestScore = players[0].getScore();
+		for (int i = 1; i < players.length; ++i) {
+			if (highestScore < players[i].getScore()) {
+				highestScore = players[i].getScore();
+				currWinnerID = players[i].getPlayerID();
+			}
+		}
+		return currWinnerID;
+	}
+
 
 }

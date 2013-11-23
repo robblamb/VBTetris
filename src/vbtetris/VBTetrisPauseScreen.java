@@ -19,6 +19,9 @@ public class VBTetrisPauseScreen extends JPanel {
 	private final int FRAME_HEIGHT_PX;
 	private final VBTetrisPlayer[] players;
 	
+	private int winnerID;
+	private double winnerScore;
+	
 	private int paneSize;
 	private int paneBuff;
 	
@@ -35,6 +38,9 @@ public class VBTetrisPauseScreen extends JPanel {
 		FRAME_WIDTH_PX = w;
 		FRAME_HEIGHT_PX = h;
 		this.players = players;
+		
+		winnerID = 0;
+		winnerScore = 0;
 		
 		// TEMP
 		playerKeys.add("A");
@@ -80,7 +86,10 @@ public class VBTetrisPauseScreen extends JPanel {
 			drawControls(playerKeys, paneBuff, 200, g);	// draw stats pane
 			drawStats(paneBuff, 300, g);	// print stats
 		} else {
-			drawStatus("GAME OVER", 30, g);
+			// find the winner and pass to draw status 
+			winnerID = VBTetris._board.findWinner();
+			drawStatus("PLAYER " + winnerID + " WINS!", 30, g);
+			drawHighScore(paneBuff, 150, g);
 		}
 			
 	}
@@ -106,6 +115,80 @@ public class VBTetrisPauseScreen extends JPanel {
 		// print the game status
 		g.setColor(Color.WHITE);
 		VBTetrisFontUtils.drawCenteredString(status, 0, yPosStatusText, this.getWidth(), heightStatusText, g);
+	}
+	
+	private void drawHighScore(int xPos, int yPos, Graphics g) {
+		
+		double minutesPlayed = VBTetrisGameBoard.clock.minutes();
+		
+		// connect to server
+		// get high scores from server
+		// display high scores
+		// send score to server
+		
+		// draw high score panel
+		g.setColor(Color.BLACK);
+		g.fillRoundRect((FRAME_WIDTH_PX/2)-210, yPos, 420, FRAME_HEIGHT_PX-57-yPos, 10, 10);
+		g.setColor(Color.YELLOW);
+		g.drawRoundRect((FRAME_WIDTH_PX/2)-210, yPos, 420, FRAME_HEIGHT_PX-57-yPos, 10, 10);
+		
+		// print scores
+		int fontSize;
+		
+		// set the font for the high scores title
+		fontSize = VBTetrisFontUtils.adjustFontSize(28);
+		g.setFont(new Font("Courier", Font.PLAIN, fontSize));
+		
+		VBTetrisFontUtils.drawCenteredString("High Scores", (FRAME_WIDTH_PX/2)-210, yPos/2, 420, yPos + 90, g);
+		
+		
+		
+		// TEMP HIGH SCORES
+		String[][] highScores = new String[10][2];
+		for (int i = 0; i < 10; i++) {
+			highScores[i][0] = "Elijah";
+			highScores[i][1] = "200";
+		}
+		
+		// set the font for the high scores
+		fontSize = VBTetrisFontUtils.adjustFontSize(18);
+		g.setFont(new Font("Courier", Font.PLAIN, fontSize));
+		
+		// ----------------------------------------------------
+		// winnerScore (calculate ppm)
+		winnerScore = players[winnerID-1].getScore();
+		winnerScore = winnerScore / minutesPlayed;
+		winnerScore = Math.round(winnerScore * 100.0) / 100.0;
+		// ----------------------------------------------------
+		
+		// print each score
+		boolean inserted = false;
+		int lineHeight = fontSize + 5;
+		lineNum = 90 / 2 / lineHeight;
+		for (int i = 0; i < 10; ++i) {
+			
+			// ----------------------------------------------------
+			String name = highScores[i][0];
+			double score = Double.parseDouble(highScores[i][1]);
+			// ----------------------------------------------------
+			
+			// check if the current winners score is higher than the highscore being printed
+			if (winnerScore > score && inserted == false) {
+				g.setColor(players[winnerID-1].getPlayerColour());
+				VBTetrisFontUtils.drawCenteredString(formatHighScoreEntry(i, "Player " + winnerID, winnerScore),
+						(FRAME_WIDTH_PX/2)-210, yPos/2, 420, yPos + 175 + (int)(lineHeight*(lineNum++)), g);
+				i++;
+				lineNum+=1.3;
+				inserted = true;
+			}	
+			
+			// print each high score returned from the server
+			g.setColor(Color.WHITE);
+			VBTetrisFontUtils.drawCenteredString(formatHighScoreEntry(i, name, score),
+					(FRAME_WIDTH_PX/2)-210, yPos/2, 420, yPos + 175 + (int)(lineHeight*(lineNum++)), g);
+			
+			lineNum+=1.3;
+		}
 	}
 	
 	// draw key controls for each player
@@ -159,12 +242,10 @@ public class VBTetrisPauseScreen extends JPanel {
 			g.drawRoundRect(xPos, yPos, paneSize-(paneBuff*2), 315, 10, 10);
 			
 			// print stats
-			// stats should be stored in player class for easy retrieval
-			// i think rob is having each player hold own colour, will change later
-			printStat("Current Score", player.getScore(), xPos, yPos, fontSize, player.getPlayerID(), g);
-			printStat("Most Points", player.getMostPoints(), xPos, yPos, fontSize, player.getPlayerID(), g);
-			printStat("Lines Cleared", player.getnumLinesRemoved(), xPos, yPos, fontSize, player.getPlayerID(), g);
-			printStat("Pieces Spawned", player.getPiecesSpawned(), xPos, yPos, fontSize, player.getPlayerID(), g);
+			printStat("Current Score", player.getScore(), xPos, yPos, fontSize, player.getPlayerColour(), g);
+			printStat("Most Points", player.getMostPoints(), xPos, yPos, fontSize, player.getPlayerColour(), g);
+			printStat("Lines Cleared", player.getnumLinesRemoved(), xPos, yPos, fontSize, player.getPlayerColour(), g);
+			printStat("Pieces Spawned", player.getPiecesSpawned(), xPos, yPos, fontSize, player.getPlayerColour(), g);
 			
 			// update colour and text position for next player
 			g.setColor(VBTetris._gameEnvir.getPieceColor(players[i-1].getPlayerID()));
@@ -173,19 +254,35 @@ public class VBTetrisPauseScreen extends JPanel {
 	}
 	
 	// print stat
-	private void printStat(String statName, int stat, int xPos, int yPos, int fontSize, int playerID, Graphics g) {
+	private void printStat(String statName, int stat, int xPos, int yPos, int fontSize, Color colour, Graphics g) {
 		// where the stats start (in relation to the panel)
 		int lineHeight = fontSize + 5;
 		int fontOffsetX = 20;
 		int fontOffsetY = lineHeight;
 		
-		g.setColor(VBTetris._gameEnvir.getPieceColor(playerID));
+		g.setColor(colour);
 		g.drawString(statName, xPos+fontOffsetX, yPos+fontOffsetY + (int)(lineHeight*lineNum++));
 		
 		g.setColor(Color.WHITE);
 		g.drawString(String.valueOf(stat), xPos+fontOffsetX, yPos+fontOffsetY + (int)(lineHeight*(lineNum++)));
 		
 		lineNum+=0.5;
+	}
+	
+	public String formatHighScoreEntry(int i, String name, double score) {
+		String strRank = String.valueOf(i+1) + ". ";
+		String strName = name + " ";
+		String strDots = "";
+		String strScore = score + " ";
+		
+		int entryLength = strRank.length() + strName.length() + strScore.length() + 3;
+		
+		for (int j = entryLength; j < 29; j++) {
+			strDots += ".";
+		}
+		strDots += " ";
+		
+		return strRank + strName + strDots + strScore + "ppm";
 	}
 	
 }
