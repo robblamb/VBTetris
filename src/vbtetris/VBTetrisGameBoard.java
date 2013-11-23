@@ -10,7 +10,6 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
-
 import java.util.Random;
 
 import javax.swing.JPanel;
@@ -36,6 +35,9 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 	// SHOULD BE IN GAME ENGINE CLASS?
 	private VBTetrisTimer timer;    // timer triggers and action every msToUpdate milliseconds
 	private int msToUpdate = 400;	// game speed in milliseconds
+	private int numUpdates = 40;    // number of times to update before speeding up
+	private int curUpdates = 0;
+	
 	private VBTetrisPieceMover _mover;
 	private VBTetrisPowerUpSelector _power;
 	private VBTetrisPowerUp powUpOnBoard;
@@ -119,16 +121,6 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 	}
 	public void setKill(int newKill){this.KILL_LINE = newKill;}
 	
-	// TODO restart if okay to do so
-	private void start(){
-		clock.start();
-		gameOver = false;
-		for (int i = 0; i < players.length; i++) {
-			addKeyListener(playAdapters[i]);
-		}
-		addKeyListener(myPause);
-		timer.start();
-	}
 	public void stop()
 	{
 		VBTetris._gameEnvir.stopMusic();
@@ -157,6 +149,9 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 	// drop down piece at the specified time interval
 	public synchronized void actionPerformed(ActionEvent e)
 	{ 
+		if ((++curUpdates)%numUpdates==0){
+			timer.speedup();
+		}
 		for (int i = 0; i < players.length; ++i) {
 			if (players[i].isdropping()) {
 				dropOneDown(players[i]);
@@ -188,7 +183,6 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 				}
 				powUpOnBoard.setXPosition(xPos);
 				powUpOnBoard.setYPosition(yPos);
-//				 TODO Should we set the owner here
 				_board[(yPos * BOARD_WIDTH) + xPos].setEmpty(false);
 				_board[(yPos * BOARD_WIDTH) + xPos].setShape(Tetrominoes.SQUARE_SHAPE);
 			}
@@ -217,7 +211,6 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 		}
 		return false;	// has no player block
 	}
-	// TODO boundary check
 	private boolean isBoardBlock(int x, int y)
 	{
 		//if (x<0 || y < 0 || x > BOARD_WIDTH || y > BOARD_HEIGHT) return false;
@@ -237,7 +230,6 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 		
 		timer.start();
 	}
-// TODO set start up screen
 	// toggle pause state
 	public void togglePause()
 	{
@@ -418,7 +410,6 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 			player.addtoscore(-pointsAchieved);
 		}
 
-		// TODO get victory conditions
 		// check for a victorious player
 		if (_winCond.isLose(player.getScore()) || _winCond.isWinScore(player.getScore()) )
 		{	
@@ -470,6 +461,8 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 		// game is over if a new piece cant spawn
 		if (tryMove(player, player.getcurPiece(), player.getxPos(),player.getyPos()) != moveStatus.OK) {
 			stop();
+			togglePause();
+			return;
 		}
 		
 		if (powUpOnBoard != null && !powUpOnBoard.amIActive()) {
@@ -551,7 +544,6 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 		}
         return numKillLines;
 	}
-	// TODO look at remove a row
 	// remove a row
 	private synchronized void removeRow(int activeRow)
 	{

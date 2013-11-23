@@ -1,6 +1,7 @@
 package vbtetris;
 
 import java.awt.image.BufferedImage;
+
 import org.imgscalr.Scalr;
 import org.imgscalr.Scalr.Mode;
 

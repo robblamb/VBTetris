@@ -35,12 +35,7 @@ import javax.sound.sampled.Clip;
  */
 public class VBTetrisLevel_1 extends VBTetrisLevel{
 	 
-	 protected static final int numLineZap = 5;
-	 protected AudioClip lineZap[];
-	 private String myBackground; 
-	 protected Clip clip;
-	 protected Clip backClip;
-	 
+
 	 public VBTetrisLevel_1() {
 		 super();
 		 myBackground = "../VBTetrisImage/world2-bg.png";
@@ -136,7 +131,7 @@ public class VBTetrisLevel_1 extends VBTetrisLevel{
 
 	@Override
 	public String toString() {
-		return "VBTetrisLevel_1 [lineZap=" + Arrays.toString(lineZap)
+		return "VBTetrisLevel_1 [lineZap=" 
 				+ ", myBackground=" + myBackground + ", hashCode()="
 				+ hashCode() + "]";
 	}

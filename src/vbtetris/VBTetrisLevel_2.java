@@ -35,12 +35,7 @@ import javax.sound.sampled.Clip;
  */
 public class VBTetrisLevel_2 extends VBTetrisLevel {
 	 
-	 private static final int numLineZap = 5;
-	 private AudioClip lineZap[];
-	 private String myBackground; 
-	 private Clip clip;
-	 private Clip backClip;
-	 public VBTetrisLevel_2() {
+	VBTetrisLevel_2() {
 		 super();
 		 myBackground = "../VBTetrisImage/SHODAN-BG.png";
 	}
@@ -160,9 +155,6 @@ public class VBTetrisLevel_2 extends VBTetrisLevel {
 			return false;
 		}
 		VBTetrisLevel_2 other = (VBTetrisLevel_2) obj;
-		if (!Arrays.equals(lineZap, other.lineZap)) {
-			return false;
-		}
 		if (myBackground == null) {
 			if (other.myBackground != null) {
 				return false;

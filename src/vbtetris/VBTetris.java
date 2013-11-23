@@ -102,6 +102,7 @@ public class VBTetris extends JPanel {
 		
 	}
 	public static void setPlayersNum(int newNum){NUM_PLAYERS=newNum;}
+
 	public int getkillLine(){return KILL_LINE;}
 	public static void setkillLine(int newKill){ KILL_LINE=newKill;}
 	
@@ -182,7 +183,21 @@ public class VBTetris extends JPanel {
 					JMenuItem opkillmid = new JMenuItem("Middle");
 					JMenuItem opkillLow = new JMenuItem("Low (Hard)");
 					JMenuItem opkilloff = new JMenuItem("off");
-					
+					/*
+					 * 
+					 *
+					// CSCI331 RL OVERRIDING
+					 * 
+					 * Here is an interesting override.  We need an action listener
+					 * to watch the menu bar at the top of the screen, and we need one
+					 * for every click-able option.  The only method that an action 
+					 * listener has to implement from the interface superclass is
+					 * the actionPerformed method.  
+					 * 
+					 * When an action listener is created, we will override 
+					 * the method and dynamically bind it at runtime.
+					 * 
+					 */
 					opkillveryhigh.addActionListener(new ActionListener(){
 						@Override
 						public void actionPerformed(ActionEvent arg0) {

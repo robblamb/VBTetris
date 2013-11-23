@@ -4,6 +4,8 @@ import java.applet.AudioClip;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 
+import javax.sound.sampled.Clip;
+
 /**
  * // CSCI331 RL SUPERCLASS
  * 
@@ -33,6 +35,11 @@ import java.awt.image.BufferedImage;
  *
  */
 public abstract class VBTetrisLevel {
+
+	 protected String myBackground; 
+	 protected Clip clip;
+	 protected Clip backClip;
+	 
 	/**
 	 * Get Piece Colour returns the colour of the player given by playerNum
 	 * @param playerNum
