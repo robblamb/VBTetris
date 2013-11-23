@@ -214,6 +214,7 @@ public class VBTetrisPauseScreen extends JPanel {
 	private void drawKey(String c, int x, int y, int imgWidth, int imgHeight, Graphics g) {
 		g.drawImage(imgKey, x, y, this);
 		g.setColor(Color.BLACK);
+		g.setFont(new Font("Times New Roman", Font.BOLD, VBTetrisFontUtils.adjustFontSize(26)));
 		VBTetrisFontUtils.drawCenteredString(c, x, y, imgWidth, imgHeight, g);
 	}
 	
