@@ -57,12 +57,17 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 	private VBTetrisKeyAdapter[] playAdapters;
 	private VBTetrisPauser myPause;
 
+	private int startPositions[];
+	
 	public VBTetrisGameBoard(int w, int h, int s, int k, VBTetrisPlayer[] players)
 	{
 		BOARD_WIDTH = w;
 		BOARD_HEIGHT = h;
 		SQUARE_SIZE = s;
 		KILL_LINE = k;
+		
+		int startpossize = (int) (w/(players.length +1));
+		
 		
         _winCond = new VBTetrisWinConditions();
 		this.players = players;
@@ -73,7 +78,8 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 		// set spawn point for each player and create a new piece
 		for (int i = 0; i < players.length; ++i) {
 			// set start position
-			players[i].setStartPos(BOARD_WIDTH);
+			//players[i].setStartPos(BOARD_WIDTH);
+			players[i].setInitialPos(startpossize*(i+1));
 			// create a new current piece
 			players[i].setcurPiece(new VBTetrisPieces());
 			// create a new next piece
