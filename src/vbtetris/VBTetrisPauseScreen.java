@@ -28,6 +28,8 @@ public class VBTetrisPauseScreen extends JPanel {
 	private BufferedImage imgKey;
 	private double lineNum;
 	
+	private VBTetrisClient client;
+	
 	// TEMP
 	ArrayList<String> playerKeys = new ArrayList<String>();
 	
@@ -41,6 +43,8 @@ public class VBTetrisPauseScreen extends JPanel {
 		
 		winnerID = 0;
 		winnerScore = 0;
+		
+		client = new VBTetrisClient(); 
 		
 		// TEMP
 		playerKeys.add("A");
@@ -121,11 +125,6 @@ public class VBTetrisPauseScreen extends JPanel {
 		
 		double minutesPlayed = VBTetrisGameBoard.clock.minutes();
 		
-		// connect to server
-		// get high scores from server
-		// display high scores
-		// send score to server
-		
 		// draw high score panel
 		g.setColor(Color.BLACK);
 		g.fillRoundRect((FRAME_WIDTH_PX/2)-210, yPos, 420, FRAME_HEIGHT_PX-57-yPos, 10, 10);
@@ -140,16 +139,7 @@ public class VBTetrisPauseScreen extends JPanel {
 		g.setFont(new Font("Courier", Font.PLAIN, fontSize));
 		
 		VBTetrisFontUtils.drawCenteredString("High Scores", (FRAME_WIDTH_PX/2)-210, yPos/2, 420, yPos + 90, g);
-		
-		
-		
-		// TEMP HIGH SCORES
-		String[][] highScores = new String[10][2];
-		for (int i = 0; i < 10; i++) {
-			highScores[i][0] = "Elijah";
-			highScores[i][1] = "200";
-		}
-		
+		 
 		// set the font for the high scores
 		fontSize = VBTetrisFontUtils.adjustFontSize(18);
 		g.setFont(new Font("Courier", Font.PLAIN, fontSize));
@@ -161,34 +151,59 @@ public class VBTetrisPauseScreen extends JPanel {
 		winnerScore = Math.round(winnerScore * 100.0) / 100.0;
 		// ----------------------------------------------------
 		
+		// connect to high score server
+		client.connect("localhost", 25888, "localhost");
+		
+		ArrayList<String> highscores = new ArrayList<String>();
+		highscores = client.getHighScores(); // returns an ArrayList of highscore entires
+		client.putHighScore("Player " + winnerID, String.valueOf(winnerScore));
+		client.disconnect();
+		
 		// print each score
 		boolean inserted = false;
 		int lineHeight = fontSize + 5;
 		lineNum = 90 / 2 / lineHeight;
-		for (int i = 0; i < 10; ++i) {
+		
+		int counter = 1;
+		int listSize = highscores.size();
+		for (Iterator<String> iter = highscores.iterator(); iter.hasNext();){
+			//counter++;
 			
 			// ----------------------------------------------------
-			String name = highScores[i][0];
-			double score = Double.parseDouble(highScores[i][1]);
+			//  PARSE EACH HIGH SCORE ENTRY FROM THE ARRAYLIST
+			String[] highScores = (iter.next()).split(":");
+			String name = highScores[0];
+			double score = Double.parseDouble(highScores[1]);
 			// ----------------------------------------------------
 			
 			// check if the current winners score is higher than the highscore being printed
 			if (winnerScore > score && inserted == false) {
 				g.setColor(players[winnerID-1].getPlayerColour());
-				VBTetrisFontUtils.drawCenteredString(formatHighScoreEntry(i, "Player " + winnerID, winnerScore),
+				VBTetrisFontUtils.drawCenteredString(formatHighScoreEntry(counter, "Player " + winnerID, winnerScore),
 						(FRAME_WIDTH_PX/2)-210, yPos/2, 420, yPos + 175 + (int)(lineHeight*(lineNum++)), g);
-				i++;
+				counter++;
 				lineNum+=1.3;
 				inserted = true;
 			}	
 			
 			// print each high score returned from the server
 			g.setColor(Color.WHITE);
-			VBTetrisFontUtils.drawCenteredString(formatHighScoreEntry(i, name, score),
+			VBTetrisFontUtils.drawCenteredString(formatHighScoreEntry(counter, name, score),
 					(FRAME_WIDTH_PX/2)-210, yPos/2, 420, yPos + 175 + (int)(lineHeight*(lineNum++)), g);
-			
+			counter++;
 			lineNum+=1.3;
+			
+			if (counter == 11) break; // only display top 10 scores
 		}
+		
+		// if the list is not full and the winners score has not been printed,
+		// print the winners high score at the end of the list 
+		if (listSize < 10 && inserted == false) {
+			g.setColor(players[winnerID-1].getPlayerColour());
+			VBTetrisFontUtils.drawCenteredString(formatHighScoreEntry(counter, "Player " + winnerID, winnerScore),
+					(FRAME_WIDTH_PX/2)-210, yPos/2, 420, yPos + 175 + (int)(lineHeight*(lineNum++)), g);
+		}
+			
 	}
 	
 	// draw key controls for each player
@@ -271,7 +286,7 @@ public class VBTetrisPauseScreen extends JPanel {
 	}
 	
 	public String formatHighScoreEntry(int i, String name, double score) {
-		String strRank = String.valueOf(i+1) + ". ";
+		String strRank = String.valueOf(i) + ". ";
 		String strName = name + " ";
 		String strDots = "";
 		String strScore = score + " ";
