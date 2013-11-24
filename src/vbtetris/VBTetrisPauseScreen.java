@@ -167,7 +167,6 @@ public class VBTetrisPauseScreen extends JPanel {
 		int counter = 1;
 		int listSize = highscores.size();
 		for (Iterator<String> iter = highscores.iterator(); iter.hasNext();){
-			//counter++;
 			
 			// ----------------------------------------------------
 			//  PARSE EACH HIGH SCORE ENTRY FROM THE ARRAYLIST
@@ -186,12 +185,14 @@ public class VBTetrisPauseScreen extends JPanel {
 				inserted = true;
 			}	
 			
-			// print each high score returned from the server
-			g.setColor(Color.WHITE);
-			VBTetrisFontUtils.drawCenteredString(formatHighScoreEntry(counter, name, score),
-					(FRAME_WIDTH_PX/2)-210, yPos/2, 420, yPos + 175 + (int)(lineHeight*(lineNum++)), g);
-			counter++;
-			lineNum+=1.3;
+			if (counter < 11) {
+				// print each high score returned from the server
+				g.setColor(Color.WHITE);
+				VBTetrisFontUtils.drawCenteredString(formatHighScoreEntry(counter, name, score),
+						(FRAME_WIDTH_PX/2)-210, yPos/2, 420, yPos + 175 + (int)(lineHeight*(lineNum++)), g);
+				counter++;
+				lineNum+=1.3;
+			}
 			
 			if (counter == 11) break; // only display top 10 scores
 		}
