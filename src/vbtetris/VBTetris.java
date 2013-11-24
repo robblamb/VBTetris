@@ -281,7 +281,27 @@ public class VBTetris extends JPanel {
 					players.add(plrs3);
 					players.add(plrs4);
 					players.setVisible(false); // need to fix before making true
+					
+				JMenu sound = new JMenu("Sound");
+				JMenuItem sound_on = new JMenuItem("unmute");
+				JMenuItem sound_off = new JMenuItem("mute");
+				sound_on.addActionListener(new ActionListener(){
+					@Override
+					public void actionPerformed(ActionEvent art0){
+						_gameEnvir.unmute();
+					}
+				});
+				sound_off.addActionListener(new ActionListener(){
+					@Override
+					public void actionPerformed(ActionEvent art0){
+						_gameEnvir.mute();
+					}
+				});
+				sound.add(sound_off); sound.add(sound_on);
+				options.add(sound);
 				options.add(players);
+				
+				
 				JMenu help = new JMenu("Help");
 				JMenuItem about = new JMenuItem("About");
 				JMenuItem keys = new JMenuItem("Input Keys");

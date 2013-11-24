@@ -35,7 +35,7 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 	// SHOULD BE IN GAME ENGINE CLASS?
 	private VBTetrisTimer timer;    // timer triggers and action every msToUpdate milliseconds
 	private int msToUpdate = 400;	// game speed in milliseconds
-	private int numUpdates = 40;    // number of times to update before speeding up
+	private int numUpdates = 50;    // number of times to update before speeding up
 	private int curUpdates = 0;
 	
 	private VBTetrisPieceMover _mover;
@@ -150,7 +150,8 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 	public synchronized void actionPerformed(ActionEvent e)
 	{ 
 		if ((++curUpdates)%numUpdates==0){
-			timer.speedup();
+			timer.speedupby(5);
+			numUpdates*=2;
 		}
 		for (int i = 0; i < players.length; ++i) {
 			if (players[i].isdropping()) {

@@ -23,7 +23,8 @@ public class VBTetrisEnvironment {
 
 	private int curLevel=0;
 	private VBTetrisLevel _level;
-
+	private boolean MUTE;
+	
 	/**
 	 * @param none
 	 * @return none
@@ -32,13 +33,14 @@ public class VBTetrisEnvironment {
 	 */
 	VBTetrisEnvironment(){
 		curLevel = 1; //sets current level
+		MUTE = false;
 	}
 	
 	/**
 	 * @param none
 	 * @return none
 	 * 
-	 * prepares an instance for use
+	 * prepares an instance for use and starts music
 	 * 
 	 */
 	public void init() { 
@@ -46,9 +48,38 @@ public class VBTetrisEnvironment {
 		setLevel();
 		playMusic();
 	}
-	
-	public void playMusic(){_level.startBackgroundSound();}
+	/**
+	 * if the environment is not muted the current levels background
+	 * music will play
+	 */
+	public void playMusic(){if(!MUTE)_level.startBackgroundSound();}
+	/**
+	 * stops the current levels background music
+	 */
 	public void stopMusic(){_level.stopBackgroundSound();}
+	/**
+	 *  stops all sounds and prevents further sounds
+	 */
+	public void mute(){ 
+		if (!MUTE) {
+			MUTE=true; 
+			stopMusic();
+		}
+	}
+	/**
+	 * starts background music and allows sounds
+	 */
+	public void unmute(){
+		if(MUTE){
+			MUTE=false; 
+			playMusic();
+		}
+	}
+	/**
+	 * 
+	 * @return true if the environment is muted
+	 */
+	public boolean isMute(){return MUTE;}
 	/**
 	 * @param none
 	 * @return none
@@ -56,7 +87,7 @@ public class VBTetrisEnvironment {
 	 * plays the sound, if any, for the kill line
 	 */
 	public void playkillLineSound(){
-		_level.playkillLineSound();
+		if(!MUTE)_level.playkillLineSound();
 	}
 	/**
 	 * `
@@ -64,7 +95,7 @@ public class VBTetrisEnvironment {
 	 * 
 	 */
 	public void playLineSound(int lines){
-		_level.playLineSound(lines);
+		if(!MUTE)_level.playLineSound(lines);
 	}
 	/**
 	 * 
