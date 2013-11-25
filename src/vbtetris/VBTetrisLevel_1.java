@@ -1,6 +1,5 @@
 package vbtetris;
 
-import java.applet.Applet;
 import java.io.IOException;
 import java.net.URL;
 
@@ -9,14 +8,9 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
-import java.applet.AudioClip;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.util.Arrays;
-
 import javax.imageio.ImageIO;
-import javax.sound.sampled.Clip;
 
 /**
  * 
@@ -74,7 +68,7 @@ public class VBTetrisLevel_1 extends VBTetrisLevel{
 		if(!backClip.isRunning()) {
 			backClip.setFramePosition(0);
 			backClip.start();
-			backClip.loop(backClip.LOOP_CONTINUOUSLY);
+			backClip.loop(Clip.LOOP_CONTINUOUSLY);
 		}
 	}
 	 private void setBackClip(URL url){
@@ -166,6 +160,13 @@ public class VBTetrisLevel_1 extends VBTetrisLevel{
 		}
 		return true;
 	}
+	// CSCI331 LAB5
+	// here is a not-quite functional usage of the topics of lab 5
+	// I have had some bugs and issues getting these  to work properly
+	// but the idea here is to dynamically get the colours for the power up 
+	// pieces.  Then we could change the colours constantly while playing
+	// so the power ups could flash and be easier to spot/differentiate
+	
 	private int p1red = 0, p1grn = 0, p1blu=0;
 	private int p2red = 0, p2grn = 0, p2blu=0;
 	private int p3red = 0, p3grn = 0, p3blu=0;

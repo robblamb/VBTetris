@@ -1,1 +1,67 @@
-As per instuctions, 4 Risks and solutions that I found and solved will be discussed here
+// CSCI331 RL RISKS
+
+1) Risk: getting sounds, images, and colours for the game.
+
+A risk for the game is using all the different fx items like sounds, colours, and images.
+Having the direct user of these, like the gameboards background or a pieces colour, have 
+the images and colours could have been used; however, what if we wanted to expand to different
+levels, or add new players, or have different sounds?  Then each sub-item would have to keep track
+of the level to play the appropriate sound, or display the correct image.  To get around this
+high level of coupling, I created an enviroment class to be the central source of all of these things.
+Then only one object need know which level it is, and give the correct fx things. Now all the fx items 
+are available at any time, and are abastracted away so that general methods are called like
+getBackgroundImage() and the return is based off of current level. The environment also uses 
+the level class, and since it knows about the levels, the Creator pattern applied perfectly 
+for assigning the environment class duties.  Please see the environment class for a more detailed 
+explanation of the use of the creator pattern.
+
+2) Risk: getting multiple inputs for different users to change pieces on the game board.
+
+To get multiple pieces to move on the board required a little bit of thinking and planning.  For the first
+iteration of the game I used multiple dedicated threads to achieve the desired results.  In this iteration
+I used a different method (and am not so convinced it was better).  Instead of using dedicated threads, I 
+used the single JPanel, the game board, and added the key listeners to it. This did both positive and 
+negative things for the program.  The detriment is that a player cannot hold down a key and see the result
+multiple times because any other key press will cancel the first.  As in, if I held the down key the piece
+would move quickly to the bottom until the other player pressed any key. After that the down key must be 
+pressed again to see the piece move down from keyboard interaction.  The benifit of the way I did it here was
+that I reduced the coupling of some of the classes.  I used an in-betweener class, PieceMover, that interacts
+with the board on behalf of the players.  That way the key adapters don't move things on the board directly, 
+and neither do the players.  The creation of the PieceMover was following the suggestions of the Controller
+Pattern.  PieceMover does little on its own, but has expert knowledge of both the game board, and the player.
+So it can pass messages between them.  In addition, the use of the extra classes for message passing is going
+to allow for an easier time when implementing networked game play, since the board interactions are already
+abstracted away by the PieceMover class.
+
+
+3) Risk: getting game options for the game
+
+The original plan for the options menu was to have it open upon game creation.  To this end I was going to create
+a game data class from the options menu, and create the game from it.  Instead of solving the problem that way,
+which would have changed the status of many of the variables of the VBTetris class, I used a common option 
+in most games, a menu bar.  The bar at the top of the screen has become a standard for most GUI's.  When one sees
+the "File" button, one knows what to expect there.  So to solve both the risk of being able to change game 
+options while providing an intuitive way to do so collided into the creation of the meunubar.  This did come with some
+issues involving the calling of some of the methods of the VBTetris class. Since there is only once instance of the
+VBTetris class, we are using some of it in a static way.  This we justified by having one and only one VBTetris object.
+This follows the Singleton pattern for VBTetris, and allowed me to use the static parts of the class without 
+worries.  The risk was to get options for the user, which I did accomplish, but as mentioned I had to use
+static things.  This broke encapsulation of the VBTetris class a little by using its static variables in a direct way.
+
+4) Risk: changing the speeds of game play
+
+The game should increase in difficulty as time progresses or at certain score/lines intervals.  The method used 
+is a Timer. Timers are used by ActionListeners (which the gameboard is) to perform actions on an interval.  So
+every 400 ms the timer activates, and triggers a method in the gameboard.  The game board method moves all
+the pieces down one space.  For this style of multiplayer, i decided that increasing the speed should be a timed
+event.  I created a subclass of the Timer class to facilitate all of this.  It is still a timer, so it works well
+for the game board action listener; in addition, the VBTimer has methods for increasing and decreasing the intevals
+of activiating actions.  So every so many firing of the action, I decrease the timer interval and therefore increase 
+the speed of the players pieces moving towards the bottom.  This posed another problem I soon discovered.  I was 
+using a fixed number of firings to increase the speed. For example: 20 firings, each one waited 400 ms to start, 
+meaning after 8000 ms (8s) the speed increased by 10 percent, BUT, after the next 20 firings (7200ms or 7.2 s) the 
+speed increased again.  Since I wasn't compensating that each decrease in the timed inteval made more firings in 
+a fixed period.  To give the players a fair and longer game I finally found the solution.  Decrease the interval
+by a little amount, 5% does nicely, and double the number of firings till the next speed change. This risk seemed
+the fastest and most straight forward when I started to tackle it, but as I have explained the solution took
+some insight and experimentation.    

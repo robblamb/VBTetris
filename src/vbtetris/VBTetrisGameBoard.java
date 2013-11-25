@@ -470,7 +470,18 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 			player.setdropping(true);
 		}
 	}
-
+	// CSCI331 COLLISION
+	/**
+	 * Although we used the collisions using an array instead of coordinates, 
+	 * this is the point in the code where collisions are detected.  Not only
+	 * are they detected here, but the return indicates the type of collision.
+	 * 
+	 * @param player is the player trying to move a piece
+	 * @param newPiece is the piece that the player will have after the move
+	 * @param newXPos is the desired x coordinate 
+	 * @param newYPos is the desired y coordinate
+	 * @return
+	 */
 	// try to move a piece
 	public synchronized moveStatus tryMove(VBTetrisPlayer player, VBTetrisPieces newPiece, int newXPos, int newYPos)
 	{	

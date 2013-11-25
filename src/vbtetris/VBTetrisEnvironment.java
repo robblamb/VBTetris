@@ -1,18 +1,44 @@
 package vbtetris;
 
+// CSCI331 RL INTERFACE
+/**
+ * The environment class creates an interface for the other modules to use. It provides
+ * the sounds, colours, and images that all pieces, players, and boards need to use.  I have
+ * provided several different methods, some of which do the same things with different inputs,
+ * to facilitate this need.  Since I also added some javadoc style of comments, when using
+ * an instance of environment, the methods parameters and returns are shown.  The names that
+ * I have given to the parameters also helps with understanding the results without having to
+ * know what the inner workings are.  
+ * For example, a user knows that invoking the getLevelImage method returns the image for the current
+ * level, but, they would never know that the environment actually passes the message along to a private
+ * variable instance, and returns the results.
+ * 
+ */
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 /**
  * 
  * @author Robert Lamb, Team Virtual Boy, CSCI 331 Fall 13
- * @author // CSCI331 RL Creator
- * @author // CSCI331 RL Information Expert
+ * @author // CSCI331 RL PATTERN CREATOR
  * 
+ * Pattern:
+ * Name: Creator
+ * Problem: which class should have the responsibility to create levels
+ * Solution: The class with knowledge of levels, uses levels, and aggregates
+ * 	levels should create them. Since the environment has expert knowledge of
+ * 	levels, it is an excellent candidate.  Since using the environment interface
+ *  to interact with levels reduces coupling to the other modules, it suggests using
+ *  the environment as the creator.  Most of all, the environment has as a private
+ *  variable (aggregates) a level, and it is the only class to do so, the choice
+ *  for the environment to be the creator is best option.
+ *  
+ * This pattern fits perfectly with this part of my code.  It reduces coupling, 
+ * retains high cohesion, and gives the responsibilities to a logical recipient.
+ *   * 
  * @see Glossary for VBTetris for any term clarifications.
  *
  */
-
 enum VBColours { 
 	PLAYER1, PLAYER2, PLAYER3, PLAYER4, EMPTY, POWERUP1, POWERUP2, POWERUP3, POWERUP4
 }
@@ -21,13 +47,31 @@ public class VBTetrisEnvironment {
 
 	private static final int numLevels = 2;
 
+
+	
+	// CSCI331 RL ENCAPSULATION
+	/**
+	 * here curLevel indicates the current level the environment should be using.
+	 * This number is used to generate levels, and although the generation method
+	 * watches for non-valid numbers, the value should always be >=1 and never
+	 * higher than numLevels. By keeping this variable private, I can control the
+	 * values that it can get assigned; furthermore, this particular variable has 
+	 * no public setter method.  For an outside object/program to change the value
+	 * it must used the levelUp() method, furthering encapsulation.  The value of
+	 * curLevel, however, can be public knowledge, thus a getter is there.
+	 * 
+	 * In general, any instance variable that a class uses should be private. That way 
+	 * the only changes can be made through getter and setter methods.  Any possible illegal
+	 * values will be impossible (as long as the getters and setters do proper checking).
+	 * 
+	 */
 	private int curLevel=0;
 	private VBTetrisLevel _level;
 	private boolean MUTE;
 	
 	/**
 	 * @param none
-	 * @return none
+	 * @return a new instance of VBTetrisEnvironment that needs to have init() run before use
 	 * 
 	 * a new instance must have init() run before use
 	 */
@@ -99,7 +143,8 @@ public class VBTetrisEnvironment {
 	}
 	/**
 	 * 
-	 * @return current level base 1 counting
+	 * @return current level base 1 counting, always >=1
+	 *  
 	 */
 	public int getCurrentLevel(){return curLevel;};
 	/**
@@ -108,6 +153,18 @@ public class VBTetrisEnvironment {
 	 * @param _level is rewritten
 	 */
 	private void setLevel(){
+		// CSCI331 RL DYNAMICBINDING
+		/**
+		 *  The current level for the environment is some level instance of VBTetrisLevel
+		 *  It is unknown until the method levelBuilder returns the level, which level will
+		 *  be created. Thus _level is statically bound to the class VBTetrisLevel but it 
+		 *  will also be dynamically cast to some subclass of VBTetrisLevel (since abstract)
+		 *  
+		 *  This also means that any time the private variable _level is used, it is being
+		 *  used in a dynamic/ polymorhpic way.  The system will have to wait until a 
+		 *  method is invoked, then goto that subclasses method to find the proper block of
+		 *  code to run.
+		 */
 		_level = levelBuilder(curLevel);
 	}
 	/**
@@ -119,6 +176,19 @@ public class VBTetrisEnvironment {
 			setLevel();
 		}
 	}
+	// CSCI331 RL STATICBINDING
+	/**
+	 * The method getMaxLevel is a static method that returns
+	 * a static integer.  Since the integer is static, it is a class
+	 * variable and exists at all times.  This means at compile time the
+	 * value is known, and is available (through the getter). The system
+	 * can do this because of the keyword static.
+	 */
+	/**
+	 * 
+	 * @return the number of levels (base 1 counting)
+	 */
+	public static int getMaxLevel() {return numLevels;}
 	/**
 	 * 
 	 * @param i is the level number
@@ -147,6 +217,11 @@ public class VBTetrisEnvironment {
 	public Color getPieceColour(VBColours clr){
 		return _level.getPieceColour(clr);
 	}
+	/**
+	 * 
+	 * @param i indicates with number to use, each colour has a number
+	 * @return a Color for the current level and given number
+	 */
 	private Color getVBColour(int i){
 		VBColours clr = VBColours.EMPTY;
 		switch(i){
@@ -171,8 +246,15 @@ public class VBTetrisEnvironment {
 		}
 		return _level.getPieceColour(clr);
 	}
-    public Color getPieceColor(int i){
-       return getVBColour(i);
+	/**
+	 * 
+	 * @param numColour indicates the assigned number for the colour for the level
+	 * @return a Color for the current level
+	 * @future this will be replaced by the method using the Colours enum type
+	 * 
+	 */
+    public Color getPieceColor(int numColour){
+       return getVBColour(numColour);
     }
 	  /**
 	   * 

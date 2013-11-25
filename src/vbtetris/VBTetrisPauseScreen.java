@@ -150,7 +150,7 @@ public class VBTetrisPauseScreen extends JPanel {
 		winnerScore = winnerScore / minutesPlayed;
 		winnerScore = Math.round(winnerScore * 100.0) / 100.0;
 		// ----------------------------------------------------
-		
+		// CSCI331 COMMUNICATION
 		// connect to high score server
 		client.connect("localhost", 25888, "localhost");
 		
