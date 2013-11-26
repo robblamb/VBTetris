@@ -102,7 +102,7 @@ public class VBTetrisLevel_1 extends VBTetrisLevel{
 	@Override
 	public Color getPieceColour(int playerNum) {
 		switch(playerNum) {
-			case(0): return Color.black;		// just so we can count from 1
+			case(0): return Color.pink;		// just so we can count from 1
 			case(1): return Color.red;
 			case(2): return Color.cyan;
 			case(3): return Color.orange;
@@ -179,7 +179,7 @@ public class VBTetrisLevel_1 extends VBTetrisLevel{
 		case PLAYER2: return Color.cyan;
 		case PLAYER3: return Color.orange;
 		case PLAYER4: return Color.blue;
-		case EMPTY: return Color.black;
+		case EMPTY: return Color.pink;
 		case POWERUP1: 
 			p1red = (p1red + 50)% 256;
 			return new Color(p1red,p1grn,p1blu);

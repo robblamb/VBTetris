@@ -231,6 +231,11 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 		
 		timer.start();
 	}
+	public boolean getGamePaused()
+	{
+		return gamePaused;
+	}
+	
 	// toggle pause state
 	public void togglePause()
 	{
@@ -244,6 +249,7 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 			clock.start();
 			timer.start();
 			VBTetris._pause.setVisible(false);
+			VBTetris._pause.setAmIRule(false);
 		}
 	}
 	

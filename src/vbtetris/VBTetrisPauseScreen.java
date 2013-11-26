@@ -30,6 +30,8 @@ public class VBTetrisPauseScreen extends JPanel {
 	
 	private VBTetrisClient client;
 	
+	private boolean amIRule;
+	
 	// TEMP
 	ArrayList<String> playerKeys = new ArrayList<String>();
 	
@@ -76,6 +78,20 @@ public class VBTetrisPauseScreen extends JPanel {
 			// create an image
 		}
 
+		amIRule = true;
+	}
+	
+	public void paintRules()
+	{
+		amIRule = true;
+		setVisible(true);
+		repaint();
+		//amIRule = false;
+	}
+	
+	public void setAmIRule(boolean valToSet)
+	{
+		amIRule = valToSet;
 	}
 	
 	public void paintComponent(Graphics g) {
@@ -88,7 +104,11 @@ public class VBTetrisPauseScreen extends JPanel {
 		if (VBTetris._board.isGameOver() != true) {
 			drawStatus("GAME PAUSED", 30, g);	// draw status bar
 			drawControls(playerKeys, paneBuff, 200, g);	// draw stats pane
-			drawStats(paneBuff, 300, g);	// print stats
+			if (amIRule) {
+				drawRules(g);
+			} else {
+				drawStats(paneBuff, 300, g);	// print stats
+			}
 		} else {
 			// find the winner and pass to draw status 
 			winnerID = VBTetris._board.findWinner();
@@ -302,4 +322,36 @@ public class VBTetrisPauseScreen extends JPanel {
 		return strRank + strName + strDots + strScore + "ppm";
 	}
 	
+	private void drawRules(Graphics g) {
+		
+		int xPos = paneBuff;
+		int yPos = 260;
+		int fontSize = 16;
+		int lineHeight = fontSize + 5;
+		int fontOffsetX = 20;
+		int fontOffsetY = lineHeight;
+		
+		g.setFont(new Font("Times New Roman", Font.BOLD, fontSize));
+		
+			lineNum = 0.5;	// first line will start here
+						
+		g.setColor(Color.WHITE);
+		g.drawString("Controls", xPos+fontOffsetX, yPos+fontOffsetY + (int)(lineHeight*(lineNum++)));
+		g.drawString("  -Use the Controls Listed Above For Players 1 and 2 respectively", xPos+fontOffsetX, yPos+fontOffsetY + (int)(lineHeight*(lineNum++)));
+		g.drawString("  -W/Up arrow rotates respective piece", xPos+fontOffsetX, yPos+fontOffsetY + (int)(lineHeight*(lineNum++)));
+		g.drawString("  -A/Left arrow moves respective piece left", xPos+fontOffsetX, yPos+fontOffsetY + (int)(lineHeight*(lineNum++)));
+		g.drawString("  -D/Right arrow moves respective piece right", xPos+fontOffsetX, yPos+fontOffsetY + (int)(lineHeight*(lineNum++)));
+		g.drawString("  -S/Down arrow moves respective piece down more quickly", xPos+fontOffsetX, yPos+fontOffsetY + (int)(lineHeight*(lineNum++)));
+		g.drawString("  -Press the spacebar to pause the game", xPos+fontOffsetX, yPos+fontOffsetY + (int)(lineHeight*(lineNum++)));
+		g.drawString("  -Collide with randomly appearing pink power ups to gain that", xPos+fontOffsetX, yPos+fontOffsetY + (int)(lineHeight*(lineNum++)));
+		g.drawString("    powerup.  Watch out though, power ups disappear when a row is", xPos+fontOffsetX, yPos+fontOffsetY + (int)(lineHeight*(lineNum++)));
+		g.drawString("    removed.", xPos+fontOffsetX, yPos+fontOffsetY + (int)(lineHeight*(lineNum++)));
+		g.drawString("Power Ups", xPos+fontOffsetX, yPos+fontOffsetY + (int)(lineHeight*(lineNum++)));				
+		g.drawString("  -Stop stops your piece's descent", xPos+fontOffsetX, yPos+fontOffsetY + (int)(lineHeight*(lineNum++)));
+		g.drawString("  -Extend gives access to a single piece that can extend 8 spaces to the", xPos+fontOffsetX, yPos+fontOffsetY + (int)(lineHeight*(lineNum++)));
+		g.drawString("     right", xPos+fontOffsetX, yPos+fontOffsetY + (int)(lineHeight*(lineNum++)));
+		g.drawString("  -Quicken accelerates every piece's descent", xPos+fontOffsetX, yPos+fontOffsetY + (int)(lineHeight*(lineNum++)));
+		g.drawString("  -Firefly gives access to a piece whose rotate makes the piece jump", xPos+fontOffsetX, yPos+fontOffsetY + (int)(lineHeight*(lineNum++)));
+			
+	}
 }

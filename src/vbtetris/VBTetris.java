@@ -304,6 +304,15 @@ public class VBTetris extends JPanel {
 				
 				JMenu help = new JMenu("Help");
 				JMenuItem about = new JMenuItem("About");
+				about.addActionListener(new ActionListener(){
+					@Override
+					public void actionPerformed(ActionEvent arg0) {
+						_pause.paintRules();
+						if (!_board.getGamePaused()) {
+							_board.togglePause();
+						}
+					}
+				});
 				JMenuItem keys = new JMenuItem("Input Keys");
 				keys.setVisible(false);
 				help.add(about);
