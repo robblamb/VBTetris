@@ -83,10 +83,12 @@ public class VBTetrisPauseScreen extends JPanel {
 	
 	public void paintRules()
 	{
-		amIRule = true;
-		setVisible(true);
-		repaint();
-		//amIRule = false;
+		if (!amIRule) {
+			amIRule = true;
+			setVisible(true);
+			repaint();
+			//amIRule = false;
+		}
 	}
 	
 	public void setAmIRule(boolean valToSet)
