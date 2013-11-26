@@ -346,6 +346,7 @@ public class VBTetrisPauseScreen extends JPanel {
 		g.drawString("  -Collide with randomly appearing pink power ups to gain that", xPos+fontOffsetX, yPos+fontOffsetY + (int)(lineHeight*(lineNum++)));
 		g.drawString("    powerup.  Watch out though, power ups disappear when a row is", xPos+fontOffsetX, yPos+fontOffsetY + (int)(lineHeight*(lineNum++)));
 		g.drawString("    removed.", xPos+fontOffsetX, yPos+fontOffsetY + (int)(lineHeight*(lineNum++)));
+		g.drawString("   -Watch out.  The pieces drop faster as the game progresses.", xPos+fontOffsetX, yPos+fontOffsetY + (int)(lineHeight*(lineNum++)));
 		g.drawString("Power Ups", xPos+fontOffsetX, yPos+fontOffsetY + (int)(lineHeight*(lineNum++)));				
 		g.drawString("  -Stop stops your piece's descent", xPos+fontOffsetX, yPos+fontOffsetY + (int)(lineHeight*(lineNum++)));
 		g.drawString("  -Extend gives access to a single piece that can extend 8 spaces to the", xPos+fontOffsetX, yPos+fontOffsetY + (int)(lineHeight*(lineNum++)));
