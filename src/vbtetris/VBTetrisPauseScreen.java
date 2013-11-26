@@ -326,7 +326,7 @@ public class VBTetrisPauseScreen extends JPanel {
 		
 		int xPos = paneBuff;
 		int yPos = 260;
-		int fontSize = 16;
+		int fontSize = 13;
 		int lineHeight = fontSize + 5;
 		int fontOffsetX = 20;
 		int fontOffsetY = lineHeight;
@@ -347,10 +347,13 @@ public class VBTetrisPauseScreen extends JPanel {
 		g.drawString("    powerup.  Watch out though, power ups disappear when a row is", xPos+fontOffsetX, yPos+fontOffsetY + (int)(lineHeight*(lineNum++)));
 		g.drawString("    removed.", xPos+fontOffsetX, yPos+fontOffsetY + (int)(lineHeight*(lineNum++)));
 		g.drawString("   -Watch out.  The pieces drop faster as the game progresses.", xPos+fontOffsetX, yPos+fontOffsetY + (int)(lineHeight*(lineNum++)));
+		g.drawString("    -Watch out. If your piece stops above the white line a row is removed", xPos+fontOffsetX, yPos+fontOffsetY + (int)(lineHeight*(lineNum++)));
+		g.drawString("     and points deducted from your score. ", xPos+fontOffsetX, yPos+fontOffsetY + (int)(lineHeight*(lineNum++)));
+		g.drawString("    -Score 20000 to win, -5000 to lose.", xPos+fontOffsetX, yPos+fontOffsetY + (int)(lineHeight*(lineNum++)));
+		g.drawString("    -Points added for getting piece to bottom and removing rows.", xPos+fontOffsetX, yPos+fontOffsetY + (int)(lineHeight*(lineNum++)));
 		g.drawString("Power Ups", xPos+fontOffsetX, yPos+fontOffsetY + (int)(lineHeight*(lineNum++)));				
 		g.drawString("  -Stop stops your piece's descent", xPos+fontOffsetX, yPos+fontOffsetY + (int)(lineHeight*(lineNum++)));
-		g.drawString("  -Extend gives access to a single piece that can extend 8 spaces to the", xPos+fontOffsetX, yPos+fontOffsetY + (int)(lineHeight*(lineNum++)));
-		g.drawString("     right", xPos+fontOffsetX, yPos+fontOffsetY + (int)(lineHeight*(lineNum++)));
+		g.drawString("  -Extend gives access to a single piece that can extend 8 spaces to the right", xPos+fontOffsetX, yPos+fontOffsetY + (int)(lineHeight*(lineNum++)));
 		g.drawString("  -Quicken accelerates every piece's descent", xPos+fontOffsetX, yPos+fontOffsetY + (int)(lineHeight*(lineNum++)));
 		g.drawString("  -Firefly gives access to a piece whose rotate makes the piece jump", xPos+fontOffsetX, yPos+fontOffsetY + (int)(lineHeight*(lineNum++)));
 			
