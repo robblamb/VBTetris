@@ -60,4 +60,3 @@ if counter%4 == 1 move the piece 1 space up, if counter%4 == 2 move the piece 1 
 counter%4 == 3 move the piece 1 space down.  This implementation, since it closely mimics common game play 
 situations, allowed tryMove to work as designed.  Thus, FireFly was able to work as expected with out causing an
 out of bounds error related crash.   
-     
