@@ -91,9 +91,47 @@ Timer(RL):
 	key presses alone.
 	The timer will be updated (sped up) when a new level is reached, or a certain event takes place (like a score going
 	above a preset level or the number of lines scored hits a preset level).
+
+Singleton Tetrominoe (MC):
+	A tetrominoe which consists of one and only one block.
 	
+Special Power (MC):
+	An ability possessed by a tetrominoes that is not possessed by regular tetrominoes.
+
+FireFly Tetrominoe (MC):
+	A FireFly piece is a singleton tetrominoe which is provided to the user after colliding with the FireFly
+	power up.  It has the special power that, during every 4 rotations, the piece moves right 1 space,
+	up 1 space, left 1 space, and down 1 space for the 4 respective rotations.  This enables this piece
+	to move around objects and is the only piece that can move upwards 1 space.
+	
+Extend Tetrominoe (MC):
+	The extend piece is a singleton tetrominoe that is provided after colliding with the Extend
+	power up.  It has the special power that, just before it becomes locked to the board, the 
+	tetrominoe can add up to 8 singleton tetrominoes to its right side depending on how much empty
+	board space exists to the right of the original player controlled tetrominoe.
+	
+Stop (MC):
+	This is a power up that stops the player who collects it's piece from conducting the scheduled downward
+	which all other pieces are subject to.  This power up lasts 10 seconds.
+
+Quicken (MC):
+	This is a power up that shortens the interval between every scheduled downward drop that all tetrominoes
+	are subjected to.  It affects all players once collected and lasts for 10 seconds.
+	
+Lock (MC):
+	A tetrominoe becomes locked to the board when it runs into either the bottom of the board or another block
+	that has become locked.  Locking consists of copying the tetrominoe to the board and giving the player
+	who was controlling it a new tetrominoe as long as the game has not ended.  It is on locking that all
+	line removals and scoring is done.  It is also on locking that the Extend tetrominoe extends itself as 
+	described in Extend Tetrominoe (MC). 
 
 RULES:
 	RL: The kill line is to be used to add a different level of complexity to the game and give new winning
 		conditions.  Every time the kill line is hit by a player, that player will have their score reduced.
 		Reducing the score may cause a player to lose the game.
+	MC: At no point in time shall there be more than one power up, whether available to be collected or
+		currently being used, on the game board. 
+	MC: After every removal of a row all power ups that have not been collected and that are on the board
+		will be removed from the board.
+	MC: Power ups shall be placed on the board approximately 15% of the times that the power up selector is
+		called.
