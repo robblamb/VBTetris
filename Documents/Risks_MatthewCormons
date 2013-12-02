@@ -22,11 +22,12 @@ and overcame this risk.
 When I was implementing several of the power ups I found that said power ups required multiple stages
 to complete.  However, I needed to implement several power ups with the possibility of including even more
 in the future.  Thus, any solutions I came up with would have to be able to handle any type and number of power 
-ups. For this reason, I determined it would be easiest to create an abstract base class for all of my power ups.
+ups. For this reason, I determined it would be easiest to create an abstract base class that all of my power ups
+would be derived from.
 Furthermore, I was able to determine that any power up I wanted to encode could be completed in 2 stages.  Thus,
 for each of these stages I created an abstract method in the power up base class I was creating.  From there, I 
-simply had to override the two abstract methods for every power up I wanted to include in the program.  Thus, I 
-was able to carry out multiple part actions for a single power up.
+simply had to create a subclass that overrides the two abstract methods for every power up I wanted to include in 
+the program.  Thus, I was able to carry out multiple part actions for a single power up.
 
 3) Timing for time based power ups
 
@@ -37,8 +38,8 @@ repetitively getting the current time and taking the difference of this current 
 the goal of stopping and executing the body of code aforementioned when the difference got to be a certain size.  
 Unfortunately, this did not work at all.  Thus, in order to overcome this risk, I decided to use the java.util.Timer 
 library.  From this, I was able to implement a subclass extending TimerTask in each class that required a timer to
-be used.  In each of these subclasses, in the run method I implemented a method to carry out the necessary
-tasks for completing the use of the given power up as well as timer.cancel() in order to get rid of the timer.  
+be used.  In each of these subclasses, for the run method I implemented a method to carry out the necessary
+tasks for completing the use of the given power up as well as timer.cancel() in order to end the timer.  
 Then, in the body of the first action to be caused by a power up I simply created a new timer that was set to
 execute the timer task run method after a certain period of time.  Thus, I was able to take care of this risk.
 
