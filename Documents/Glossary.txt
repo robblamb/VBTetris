@@ -135,4 +135,3 @@ RULES:
 		will be removed from the board.
 	MC: Power ups shall be placed on the board approximately 15% of the times that the power up selector is
 		called.
-sss
