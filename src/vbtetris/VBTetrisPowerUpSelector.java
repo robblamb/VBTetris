@@ -2,6 +2,11 @@ package vbtetris;
 
 import java.util.Random;
 
+/**
+ * @author MatthewCormons
+ * Last edited: December 2, 2013
+ */
+
 //CSCI331 MC PATTERN
 /**
  * Name: Polymorphism
@@ -32,16 +37,16 @@ public class VBTetrisPowerUpSelector {
 	private Random random;
 	
 	public VBTetrisPowerUpSelector() {
-		powerUpOnGameBoard = false;
-		int seed = (int)(Math.random()*100000000);
-		random = new Random(seed);
+		powerUpOnGameBoard = false;//Set false since there is no power up on the board
+		int seed = (int)(Math.random()*100000000);//Get seed
+		random = new Random(seed);//Seed the random number generator
 	}
 	
 	public VBTetrisPowerUp chooseAPowerUp() {
-		if (random.nextInt(100) < 15) {
+		if (random.nextInt(100) < 15) {//If random number picked is < 15 pick a new power up
 			VBTetrisPowerUp powerToReturn = null;
-			int myChoice = random.nextInt(4);
-			switch ( myChoice ) {
+			int myChoice = random.nextInt(4);//Randomly choose a power up's number
+			switch ( myChoice ) {//Return the power up selected
 				case 0:
 					//CSCI331 MC DYNAMICBINDING
 					/**

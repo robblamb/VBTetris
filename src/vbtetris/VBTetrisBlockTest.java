@@ -4,7 +4,10 @@ import static org.junit.Assert.*;
 import vbtetris.VBTetrisPieces.Tetrominoes;
 
 import org.junit.Test;
-
+/**
+ * @author MatthewCormons
+ * Edited December 2, 2013
+ */
 public class VBTetrisBlockTest {
 
 	@Test

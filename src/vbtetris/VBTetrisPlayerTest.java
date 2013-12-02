@@ -5,7 +5,10 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 import vbtetris.VBTetrisPieces.Tetrominoes;
-
+/**
+ * @author MatthewCormons
+ * Edited December 2, 2013
+ */
 public class VBTetrisPlayerTest {
 
 	final static int VICTORY_SCORE = 20000;

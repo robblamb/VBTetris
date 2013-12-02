@@ -2,7 +2,10 @@ package vbtetris;
 
 import java.util.Arrays;
 import java.lang.Math;
-
+/**
+ * @author MatthewCormons
+ * Edited December 2, 2013
+ */
 /*
  * 
  * each new VBTetrisPieces holds coords for each of the 9 blocks (int blockCoords[][])
