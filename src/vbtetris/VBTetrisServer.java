@@ -96,6 +96,16 @@ public class VBTetrisServer {
 			
 			// highscores
 			String fileHighScore;
+			
+			/** CSCI331 ER DYNAMICBINDING
+			 * 
+			 * I have created an ArrayList of String, but if I stick a non-String object in there
+			 * instead, the compiler is not able to check whether downcasting is valid at compile-time.
+			 * (This is because of dynamic binding.)
+			 * 
+			 * Incorrect downcasting will show up only at runtime, in the form of a ClassCastException.
+			 * 
+			 */
 			ArrayList<String> highscores = new ArrayList<String>();	// list of high scores, name:score format
 
 			// create the high score file if it doesn't already exist

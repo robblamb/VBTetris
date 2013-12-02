@@ -283,6 +283,12 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 	}
 	
 	// ****************************************************************************************************************
+	/** CSCI331 ER OVERRIDING
+	 * 
+	 * Overriding the paintComponent method allows us to perform custom painting! WooHoo! 
+	 * This method will be executed by the painting subsystem whenever your component needs to be rendered.
+	 * 
+	 */
 	// paints the background and the falling and fallen pieces
 	@Override
 	public void paintComponent(Graphics g)
