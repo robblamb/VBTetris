@@ -21,4 +21,4 @@ had the default ownership of 0.  Thus, I solved this problem and overcame this r
 When I was implementing several of the power ups I found that said power ups required multiple stages
 to complete.  However, I needed to implement several power ups with the possibility of including even more
 in the future.  Thus, any solutions I came up with would have to be able to handle any type and number of power 
-ups. For this reason,     
+ups. For this reason,     sss
