@@ -3,7 +3,22 @@ package vbtetris;
 import java.util.Timer;
 import java.util.TimerTask;
 
+
+
 public class VBTetrisPowerUpSpeedUp extends VBTetrisPowerUp {
+	//CSCI331 MC STATICBINDING
+	/**
+	 * Static methods are resolved at compile time.  Java discourages 
+	 * dynamic binding for member variables.  
+	 * 
+	 * Class information (i.e. methods and variables defined in the class 
+	 * definition) is what is used to determine what variables and methods
+	 * can be accessed in static binding.  This is also when overloading
+	 * of methods occurs.  Thus, the system will allow one to access
+	 * said methods and variables.
+	 * 
+	 * @author MatthewCormons
+	 */
 	private VBTetrisTimer myTime;
 	Timer timer;
 	
@@ -25,6 +40,7 @@ public class VBTetrisPowerUpSpeedUp extends VBTetrisPowerUp {
 		return true;
 	}
 	
+	//CSCI331 MC OVERRIDING
 	public boolean secondCommit(VBTetrisPlayer currentPlayer)
 	{
 		if (readyToFire) {
