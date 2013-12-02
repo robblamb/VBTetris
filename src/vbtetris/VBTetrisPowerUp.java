@@ -1,5 +1,28 @@
 package vbtetris;
 
+/**
+ * @author MatthewCormons
+ * Last edited: December 2, 2013
+ */
+
+//CSCI331 MC Interface
+/**
+ * This class is very easy to use.  Many of the classes are simply setters
+ * and getters (e.g. getXPosition, setYPosition, amIActive, getName, etc.).  
+ * 
+ * To use this class one simply has to call the appropriate method
+ * with the appropriate arguments supplied.  At no point in time does
+ * the user ever need to know what is happening.  All they need to know is 
+ * when they want the first action to occur, when they want the second action
+ * (if any) to occur, or when they want to check for a collision with this
+ * power up piece and to call the correct method.  At most, the most extra
+ * knowledge the user would need is about which action happens first and
+ * which action happens second for a given piece or that one must check for activity
+ * using amIActive before moving any pieces.
+ * 
+ * @author MatthewCormons
+ */
+
 //CSCI331 MC SUPERCLASS
 
 /**
@@ -34,6 +57,8 @@ package vbtetris;
  *
  */
 
+//A power up object is never wanted; only its structure is wanted to format the child 
+//classes which are instantiated
 public abstract class VBTetrisPowerUp {
 	protected boolean readyToFire; //This variable is used to determine whether the 
 									//power up is ready to be used yet by the subclasses.
@@ -135,38 +160,44 @@ public abstract class VBTetrisPowerUp {
 	
 	public void setYPosition(int yPos)
 	{
-		yPosition = yPos;
+		yPosition = yPos; //setter for yPosition
 	}
 	
 	public int getXPosition()
 	{
-		return xPosition;
+		return xPosition; //getter for xPosition
 	}
 	
 	public int getYPosition()
 	{
-		return yPosition;
+		return yPosition; //getter for yPosition
 	}
 	
 	public boolean didICollide(int xPos, int yPos) 
 	{
 		if (xPos == xPosition) {
 			if (yPos == yPosition) {
-				return true;
-			}
+				return true; //if xPosition and yPosition are equal
+			}				//to the xPos and yPos passed in return
+							//true; a collision has occurred
 		}
-		return false;
+		return false;//else return false; a collision has not occurred
 	}
 	
 	public boolean amIActive()
 	{
-		return activity;
+		return activity;//return the value of activity 
 	}
 	
+	//This is the method causing the first action to be committed; it is overridden by a child class
 	public abstract boolean commitAction(VBTetrisGameBoard gameToPowUp, VBTetrisPlayer playerWithPow, VBTetrisTimer boardTime);
 	
+	//This is the method causing the second action to be committed; it is overridden by a child class
 	public abstract boolean secondCommit(VBTetrisPlayer currentPlayer);
 	
+	//Return the name of the power up if currentPlayer == the player
+	//holding the power up or no player is assigned to hold the 
+	//power up yet
 	public String getName(VBTetrisPlayer currentPlayer)
 	{
 		if (_player == null || _player.equals(currentPlayer)) {

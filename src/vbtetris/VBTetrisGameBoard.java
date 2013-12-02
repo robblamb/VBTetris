@@ -121,26 +121,34 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 	}
 	public void setKill(int newKill){this.KILL_LINE = newKill;}
 	
+	//*************************************************************************
+	/**
+	 * @author MatthewCormons
+	 * Last edited: December 2, 2013
+	 */
+	
+	//End the game
 	public void stop()
 	{
-		VBTetris._gameEnvir.stopMusic();
-		clock.stop();
-		gameOver = true;
+		VBTetris._gameEnvir.stopMusic(); //stop music
+		clock.stop();//stop the game clock
+		gameOver = true; //make the game over
 		for (int i = 0; i < players.length; i++) {
-			removeKeyListener(playAdapters[i]);
+			removeKeyListener(playAdapters[i]);//remove all player's key listeners
 		}
-		removeKeyListener(myPause);
-		timer.stop();
+		removeKeyListener(myPause);//remove pause key listener
+		timer.stop();//stop drop piece timer
 	}
 	
+	//Get power up name
 	public String getPowUpName(VBTetrisPlayer currentPlayer) 
 	{
-		if (powUpOnBoard != null) {
-			return powUpOnBoard.getName(currentPlayer);
+		if (powUpOnBoard != null) {//If there is a power up on the board
+			return powUpOnBoard.getName(currentPlayer); //return its name
 		}
-		return "";
+		return ""; //else return the empty string
 	}
-	
+	//*******************************************************************************
 	public VBTetrisPlayer[] getPlayers()
 	{
 		return players;
@@ -161,10 +169,21 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 		putPowerBlock();
 	}
 	
+	//*****************************************************************************
+	/**
+	 * @author MatthewCormons
+	 * Last updated: December 2, 2013
+	 */
+	
 	private synchronized void putPowerBlock() 
 	{
 		if ((_power.getPowerUpOnGameBoard() == false && powUpOnBoard == null)) {
+			//If there is no power up on the board and the power up
+			//is not active (i.e. no power up being used by a player)
+			//do the following
+			//else do nothing
 			
+			//Make all squares not containing a fixed piece empty
 			for (int i = 0; i < _board.length; i++) {
 				if (_board[i].getOwner() == 0) {
 					_board[i].setEmpty(true);
@@ -173,22 +192,32 @@ public class VBTetrisGameBoard extends JPanel implements ActionListener
 			
 			_power.setPowerUpOnGameBoard(false);
 			powUpOnBoard = null;
-			powUpOnBoard = _power.chooseAPowerUp();
+			powUpOnBoard = _power.chooseAPowerUp();//Choose a power up
+			
+			//if a power up was chosen pick a random empty square on the
+			//board that is not in the top 4 rows and put the power up there
 			if (powUpOnBoard != null) {
 				_power.setPowerUpOnGameBoard(true);
-				int xPos = random.nextInt(BOARD_WIDTH);
-				int yPos = random.nextInt(BOARD_HEIGHT-4);
+				int xPos = random.nextInt(BOARD_WIDTH);//pick a random x value 
+														//in the board
+				int yPos = random.nextInt(BOARD_HEIGHT-4);//pick a random y value in
+															//the board that is not within 
+															//the top 4 rows
+				//If there is already a full square where we randomly picked 
+				//choose another square till the square we pick is empty
 				while (isPlayerBlock(null, xPos, yPos) || isBoardBlock(xPos, yPos)) {
 					xPos = random.nextInt(BOARD_WIDTH);
 					yPos = random.nextInt(BOARD_HEIGHT-4);
 				}
-				powUpOnBoard.setXPosition(xPos);
-				powUpOnBoard.setYPosition(yPos);
-				_board[(yPos * BOARD_WIDTH) + xPos].setEmpty(false);
-				_board[(yPos * BOARD_WIDTH) + xPos].setShape(Tetrominoes.SQUARE_SHAPE);
+				powUpOnBoard.setXPosition(xPos);//Set the power up's x pos
+				powUpOnBoard.setYPosition(yPos);//Set the power up's y pos
+				_board[(yPos * BOARD_WIDTH) + xPos].setEmpty(false);//set the power up square as full
+				_board[(yPos * BOARD_WIDTH) + xPos].setShape(Tetrominoes.SQUARE_SHAPE);//give it 
+																			//the shape SQUARE_SHAPE
 			}
 		}
 	}
+	//***********************************************************************************************
 	// returns a block from a spot on the game board
 	private VBTetrisBlock getBlock(int x, int y)
 	{	if (x>BOARD_WIDTH || y>BOARD_HEIGHT) return new VBTetrisBlock();
