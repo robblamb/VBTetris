@@ -4,13 +4,38 @@ import java.net.*;
 import java.util.ArrayList;
 import java.io.*;
 
+/** CSCI331 ER INTERFACE
+ * 
+ * This is the client portion of the client / server high score leaderboard.
+ * 
+ * The client class provides a very simple interface for connecting to and 
+ * communicating with the high score server.
+ * 
+ * Once the class has been instanciated, the user can call one of four
+ * available methods: connect, disconnect, getHighScores, and putHighScore
+ * 
+ * In addition to connecting to and disconnecting from the server, the clients
+ * only responsibilities are to request a list of high scores from the server,
+ * and to send a single high score to the server. The client communicates
+ * with the server, and the server performs the desired action. The user need
+ * not know ANY details about how the client OR the server has been implimented.
+ * All the user needs to know is how to use the client interface and what the 
+ * methods will return.
+ * 
+ */
 public class VBTetrisClient {
 	
 	private Socket socket = null;
 	private BufferedReader br = null;
 	private BufferedWriter bw = null;
 	
-	
+	/**
+	 * Connects to the high score server.
+	 * 
+	 * @param serverAddr (required) Server hostname or IP address.
+	 * @param serverPort (required) Server port number.
+	 * @param clientAddr (required) Client hostname or IP address.
+	 */
 	public void connect(String serverAddr, int serverPort, String clientAddr) {			
 		try {
 			socket = new Socket(InetAddress.getByName(serverAddr), serverPort, InetAddress.getByName(clientAddr), 0);
@@ -21,6 +46,7 @@ public class VBTetrisClient {
 		}
 	}
 	
+	/** Disconnects from the high score server. */
 	public void disconnect() {
 		try {
 			bw.write("close");
@@ -33,6 +59,13 @@ public class VBTetrisClient {
 		
 	}
 	
+	/**
+	 * Requests a list of high scores from the server.
+	 * 
+	 * @param None
+	 * @return ArrayList<String>, each entry in the list contains
+	 * 			 a colon delimited high score (name:score).
+	 */
 	public ArrayList<String> getHighScores() {	
 		
 		ArrayList<String> highscores = new ArrayList<String>();
@@ -47,7 +80,7 @@ public class VBTetrisClient {
 			while (true) {
 				entry = br.readLine();
 				if (entry.equals("done")) break;
-				// get each line from the file and add it to the ArrayList
+				// get each entry from the server and add it to the highscores list
 				highscores.add(entry);
 			}
 			
@@ -57,6 +90,12 @@ public class VBTetrisClient {
 		return highscores;
 	}
 	
+	/**
+	 * Sends a high score to the server to be added to the high score list.
+	 * 
+	 * @param name (required) Player name.
+	 * @param score (required) Player score.
+	 */
 	public void putHighScore(String name, String score) {
 		String scoreEntry = name + ":" + score;
 		

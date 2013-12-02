@@ -98,10 +98,10 @@ public class VBTetrisServer {
 			String fileHighScore;
 			ArrayList<String> highscores = new ArrayList<String>();	// list of high scores, name:score format
 
-// create the high score file if it doesn't already exist
+			// create the high score file if it doesn't already exist
 			if (!file.exists()) { file.createNewFile(); }
 			
-// read all the entries from the high score file (could be empty)
+			// read all the entries from the high score file (could be empty)
 			brFile = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
 			while ((fileHighScore = brFile.readLine()) != null) {
 				// add the highscore from the file to the highscores ArrayList
@@ -109,13 +109,7 @@ public class VBTetrisServer {
 			}
 			if (brFile != null) brFile.close();
 
-// write the new entries to the high score file
-			
-			//NOTES:
-				// - all entries in the orig high score file will be replicated in the new file
-				// (except the lowest score which wont be written) 
-				// - the lowest score could be the user's score
-			
+			// write the new entries to the high score file			
 			bwFile = new BufferedWriter(new FileWriter(file.getAbsoluteFile(), false)); // overwrite file
 			
 			// for every entry in the highscore list, parse it and eliminate the lowest score

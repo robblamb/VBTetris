@@ -13,6 +13,22 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 
+/** CSCI331 ER PATTERN CREATOR
+ * 
+ * Pattern:			Creator
+ * Problem:			Which class should be responsible for creating the game's
+ * 					main components?
+ * Solution:		This class has expert knowledge of all the information
+ * 					needed to create the game's main companents.  
+ * 
+ * This class has expert knowledge of all the information necessary to create
+ * the game's main components. The main components include the game board,
+ * player pane, status screen, and players. The initializing data includes
+ * the number of players, and game board dimensions. Most of these components
+ * are also JPanels and part of the GUI, and therefore must be created by
+ * this class, as this class is responsible for creating and showing the GUI.
+ * 
+ */
 public class VBTetris extends JPanel {
 	
 	// http://docs.oracle.com/javase/tutorial/uiswing/components/layeredpane.html
@@ -48,7 +64,7 @@ public class VBTetris extends JPanel {
 	
 	static VBTetrisGameBoard _board;
 	static VBTetrisPlayerPane _pane;
-	static VBTetrisPauseScreen _pause;
+	static VBTetrisStatusScreen _pause;
 	private static int numplayers;
 	//private static int killLine;
 	
@@ -78,7 +94,7 @@ public class VBTetris extends JPanel {
 		_pane = new VBTetrisPlayerPane(PANEL_WIDTH_PX, BOARD_HEIGHT, SQUARE_SIZE);
 		
 		// create pause screen panel
-		_pause = new VBTetrisPauseScreen(FRAME_WIDTH_PX, FRAME_HEIGHT_PX, players );
+		_pause = new VBTetrisStatusScreen(FRAME_WIDTH_PX, FRAME_HEIGHT_PX, players );
 
 		// add the game board pane
 		layeredPane.add(_board);
