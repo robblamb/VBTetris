@@ -64,7 +64,7 @@ public class VBTetris extends JPanel {
 	
 	static VBTetrisGameBoard _board;
 	static VBTetrisPlayerPane _pane;
-	static VBTetrisStatusScreen _pause;
+	static VBTetrisPauseScreen _pause;
 	private static int numplayers;
 	//private static int killLine;
 	
@@ -94,7 +94,7 @@ public class VBTetris extends JPanel {
 		_pane = new VBTetrisPlayerPane(PANEL_WIDTH_PX, BOARD_HEIGHT, SQUARE_SIZE);
 		
 		// create pause screen panel
-		_pause = new VBTetrisStatusScreen(FRAME_WIDTH_PX, FRAME_HEIGHT_PX, players );
+		_pause = new VBTetrisPauseScreen(FRAME_WIDTH_PX, FRAME_HEIGHT_PX, players );
 
 		// add the game board pane
 		layeredPane.add(_board);
