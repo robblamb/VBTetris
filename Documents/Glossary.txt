@@ -6,15 +6,14 @@ Authors: Matthew Cormons, Robert Lamb, Eli Reale.  The entries within this secti
 created and decided upon.
 
 
-Background: 
-	Static images that sit behind the game board
-	may be dynamically changing but cannot create
-	effects on the pieces, gameplay, or game board
+Background (ER):
+	A static image that sits behind the game board. It can be changed dynamically but it does not effect
+	the gameplay in any way. It is purely for aesthetics.
 	
-Block:
-	A VBTetrisBlock object is a single square unit that can occupy a single square unit of the game board.
-	It knows what Tetriminoe piece it belongs to, what player owns it, and a set of coordinates. The block
-	is used for painting.
+Block (ER):
+	A VBTetrisBlock object is a single square unit and is essentially the building block of the game, as
+	the game board, game pieces and powerups are all comprised of these blocks. Each VBTetrisBlock knows
+	if it is empty, what Tetriminoe it belongs to, what player owns it, and its position on the board.
 
 Environment:
 	The game environment is held within a class VBTetrisEnvrinment
@@ -51,11 +50,10 @@ Kill Line (RL):
 NUM_PLAYERS:
 	is the constant integer that represents the number of players in the tetris game.
 
-Piece:
-	A VBTetrisPiece is a Tetriminoe piece, that is one of the available game pieces a player can be.
-	A piece can only be in the shape of the preset Tetriminoe shapes.
-	A piece is comprised of many Blocks.  A piece has an owner, and a particular shape with a particular rotation.
-	The shape is of the enumerated type Tetriminoes
+Piece (ER):
+	A piece is an instance of VBTetrisPiece and is comprised of 9 VBTetrisBlock objects.
+	It has an owner, a shape, and it knows how to rotate itself.
+	It’s shape must be one of the preset Tetriminoes defined within its class.
 
 Piece Mover (RL):
 	A class that acts as a message passer between a KeyAdapter and the GameBoard.  The Key adapter will request
@@ -129,9 +127,24 @@ RULES:
 	RL: The kill line is to be used to add a different level of complexity to the game and give new winning
 		conditions.  Every time the kill line is hit by a player, that player will have their score reduced.
 		Reducing the score may cause a player to lose the game.
+
 	MC: At no point in time shall there be more than one power up, whether available to be collected or
 		currently being used, on the game board. 
+
 	MC: After every removal of a row all power ups that have not been collected and that are on the board
 		will be removed from the board.
+
 	MC: Power ups shall be placed on the board approximately 15% of the times that the power up selector is
 		called.
+
+	ER: tryMove (piece movement validation)
+		When a player attempts to move an active piece, the game board must determine if the requested
+		movement is valid. In other words, it must determine if requested movement will cause the piece
+		to hit another player’s active piece, hit the bottom of the board, or move outside of the board’s
+		boundaries. In order to validate a players requested movement, the tryMove method must be invoked.
+		This method accepts the player (object) requesting the movement, the “moved” piece (object), the
+		requested x position (int) and the requested y position (int) of the “moved” piece. With this
+		information, the tryMove method can check each block in the “moved” piece and validate its position
+		on the board. If tryMove cannot move the player’s piece, the reason why is returned and the “moved”
+		piece is destroyed. Likewise, if tryMove can move the player’s piece, it returns that the movement
+		was successful and sets the “moved” piece as the players current piece.
