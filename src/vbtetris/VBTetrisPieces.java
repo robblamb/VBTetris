@@ -2,10 +2,7 @@ package vbtetris;
 
 import java.util.Arrays;
 import java.lang.Math;
-/**
- * @author MatthewCormons
- * Edited December 2, 2013
- */
+
 /*
  * 
  * each new VBTetrisPieces holds coords for each of the 9 blocks (int blockCoords[][])
@@ -31,10 +28,10 @@ public class VBTetrisPieces
     
     private static int[][][] blockCoordsTable;						// holds all possible block coords
     
-    protected Tetrominoes pieceShape;									// piece shape
+    protected Tetrominoes pieceShape;								// piece shape
     private int owner;												// piece owner
    
-    protected VBTetrisBlock blocks[];									// holds the blocks that make up the shape
+    protected VBTetrisBlock blocks[];								// holds the blocks that make up the shape
     
     public VBTetrisPieces()
     {
